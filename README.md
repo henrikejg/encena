@@ -34,7 +34,7 @@ Combina um LLM local (Ollama) para criação de prompts com o ComfyUI para rende
 ## Instalação
 
 ```bash
-git clone https://github.com/<seu-usuario>/encena.git
+git clone https://github.com/henrikejg/encena.git
 cd encena
 # Nenhuma dependência Python além da stdlib
 ```
