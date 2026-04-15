@@ -1,0 +1,27 @@
+{
+  "category": "lago_alpino",
+  "cfg": 1.5,
+  "lora_nature": 0.3,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/lago_alpino",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "dawn_mirror_reflection",
+      "text": "breathtaking photorealistic alpine lake at dawn, perfectly still glassy water surface with mirror reflection of snow-capped mountain peaks, soft golden hour light on mountain ridges, delicate morning mist hovering at water level, lush pine forest along shoreline, crystal clear water revealing smooth rocks below, dramatic alpine sky with warm pink clouds, pristine wilderness, National Geographic style, 8k, award-winning nature photography, Canon EOS R5, f/11"
+    },
+    {
+      "name": "dolomites_turquoise",
+      "text": "RAW photo, professional nature photography, stunning turquoise glacial lake in the Italian Dolomites, vivid cyan-blue water with perfect clarity, dramatic jagged rocky mountain peaks with snow, wildflower meadow along the shore, late afternoon golden light, Canon EOS R5, f/8, ultra realistic, National Geographic, no people"
+    },
+    {
+      "name": "new_zealand_fiord",
+      "text": "stunning photorealistic Milford Sound New Zealand at dawn, perfectly still dark fiord water with perfect mirror reflections of dramatic vertical cliff faces covered in jungle vegetation, waterfalls frozen still on cliffs, soft morning mist, moody atmospheric light, lush greens and deep blues, National Geographic style, 8k, award-winning landscape photography"
+    }
+  ]
+}

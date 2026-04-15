@@ -1,0 +1,39 @@
+{
+  "category": "floresta_bambu",
+  "cfg": 1.5,
+  "lora_nature": 0.3,
+  "lora_detail": 0.5,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/floresta_bambu",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "arashiyama_morning",
+      "text": "serene photorealistic Japanese bamboo forest in Arashiyama Kyoto, towering dense green bamboo stalks reaching high overhead, soft diffused cool morning light filtering through the canopy, gentle mist and atmosphere between stalks, fallen bamboo leaves on earthen path, intricate bamboo texture, peaceful zen tranquility, lush vivid greens, dappled light patterns on ground, National Geographic style, 8k, award-winning nature photography, Canon EOS R5, f/5.6"
+    },
+    {
+      "name": "bamboo_canopy_lookup",
+      "text": "RAW photo, looking straight up through a dense bamboo forest canopy, converging perspective of hundreds of tall bamboo stalks toward a bright sky, vivid greens and yellows, sunlight breaking through the canopy, dramatic radial composition, lush and vibrant, ultra-detailed, photorealistic, National Geographic style, 8k, Canon EOS R5, wide angle"
+    },
+    {
+      "name": "bamboo_mist_dawn",
+      "text": "photorealistic bamboo grove at dawn, thick atmospheric morning mist drifting between tall bamboo trunks, soft diffused golden light beginning to break through, forest floor covered in fallen leaves and moss, ethereal and tranquil atmosphere, deep greens, ultra-detailed, award-winning nature photography, National Geographic style, 8k, Canon EOS R5, f/4"
+    },
+    {
+      "name": "mongolian_steppe_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Mongolian steppe under scorching midday sun, a solitary gnarled tree stands amidst vast golden waves in the foreground, ominous cumulonimbus loom on the horizon, dust devils dance across the scene as the atmosphere hums with anticipation, Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "norwegian_fjord_midday_harsh_li",
+      "text": "RAW photo, professional nature photography: Norwegian Fjord under a brilliant midday sun, rainbow arching over ancient, moss-covered rock formations, dramatic play of light and texture in the misty atmosphere, Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tropical_beach_blue_hour",
+      "text": "Tropical beach at twilight's peak, a fleeting moment of azure and gold illuminates a shell half-buried in the warm sand. Frozen alpine lake, serene and icy, captures a single droplet as it hangs onto life. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    }
+  ]
+}

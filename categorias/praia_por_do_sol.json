@@ -1,0 +1,27 @@
+{
+  "category": "praia_por_do_sol",
+  "cfg": 2.5,
+  "lora_nature": 0.5,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/praia_por_do_sol",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "maldives_calm",
+      "text": "stunning photorealistic Maldives tropical beach at golden sunset, perfectly calm flat turquoise water with glassy mirror reflections of the sky, powdery white sand, overwater bungalows silhouette in distance, coconut palm trees leaning over the shore, warm deep orange and pink sky, wet sand reflecting sunset colors, tide pools with still water, National Geographic style, 8k, award-winning nature photography, Canon EOS R5, f/8"
+    },
+    {
+      "name": "hawaii_rocks_dusk",
+      "text": "RAW photo, professional nature photography, Hawaii volcanic black rock coastline at dusk, calm dark ocean with mirror-like surface, vivid purple and orange twilight sky, dramatic lava rock formations, lone palm tree silhouette, rich saturated colors, golden reflections on still water, Canon EOS R5, f/11, ultra realistic, National Geographic"
+    },
+    {
+      "name": "philippines_aerial",
+      "text": "breathtaking aerial photograph of El Nido Philippines limestone island beach at golden hour, crystal clear emerald green calm water revealing sandy bottom, pristine white sand bar, dramatic karst limestone cliffs covered in jungle, no people, mirror-flat sea surface, vivid tropical colors, National Geographic style, 8k, award-winning nature photography"
+    }
+  ]
+}

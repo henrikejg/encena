@@ -1,0 +1,91 @@
+{
+  "category": "aurora_boreal",
+  "cfg": 1.8,
+  "lora_nature": 0.3,
+  "lora_detail": 0.5,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/aurora_boreal",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "frozen_lake_reflection",
+      "text": "breathtaking photorealistic northern lights aurora borealis over a perfectly frozen lake, vivid green and violet aurora curtains filling the sky, aurora perfectly mirrored on smooth glassy ice surface, snow-covered pine forest silhouette, star-filled clear night sky, milky way visible, crisp cold arctic atmosphere, ultra-detailed, National Geographic style, 8k, award-winning astrophotography, deep rich colors, pristine wilderness, Canon EOS R5, long exposure"
+    },
+    {
+      "name": "norway_fjord_aurora",
+      "text": "RAW photo, professional astrophotography, aurora borealis over Norwegian fjord at midnight, dramatic green and pink aurora ribbons reflected in perfectly still dark fjord water, snow-dusted mountain peaks flanking the fjord, star-filled sky, lone wooden cabin with warm window light on shore, National Geographic style, 8k, Canon EOS R5, ultra realistic"
+    },
+    {
+      "name": "iceland_volcano_aurora",
+      "text": "stunning photorealistic aurora borealis over Iceland volcanic black sand desert at night, vivid green curtains of aurora with purple edges, dramatic snowy mountains in background, mirror-like black volcanic rock ground reflecting aurora colors, extreme clarity and detail, ultra-detailed, National Geographic style, 8k, award-winning night photography"
+    },
+    {
+      "name": "alpine_meadow_early_morning_g",
+      "text": "RAW photo, professional nature photography, alpine meadow at early morning golden hour, after the rain, intimate close detail, flower field, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "tuscany_rolling_hill_aurora_night",
+      "text": "RAW photo, professional nature photography, tuscany rolling hills at aurora night, scattered clouds with light rays, silhouette shot, lone tree, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "amazon_rainforest_blue_hour",
+      "text": "RAW photo, professional nature photography, amazon rainforest at blue hour, dramatic storm clouds approaching, reflection shot, waterfall, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "madagascar_jungle_early_morning_g",
+      "text": "RAW photo, professional nature photography, madagascar jungle at early morning golden hour, golden dust haze, panoramic vista, ancient rock formation, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "japanese_bamboo_grov_blue_hour",
+      "text": "RAW photo, professional nature photography, japanese bamboo grove at blue hour, heavy fog, silhouette shot, mountain peak, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "arctic_tundra_misty_morning",
+      "text": "RAW photo, professional nature photography, arctic tundra at misty morning, golden dust haze, panoramic vista, sunbeam through clouds, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "tropical_beach_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, tropical beach at sunset golden hour, golden dust haze, low angle ground level, winding river, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "madagascar_jungle_early_morning_g_2",
+      "text": "RAW photo, professional nature photography, madagascar jungle at early morning golden hour, crystal clear, wide establishing shot, bird in flight, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "alpine_meadow_aurora_night",
+      "text": "RAW photo, professional nature photography, alpine meadow at aurora night, after the rain, silhouette shot, lightning bolt, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "arctic_tundra_starry_night",
+      "text": "RAW photo, professional nature photography, arctic tundra at starry night, dramatic storm clouds approaching, elevated viewpoint, mountain peak, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "amazon_rainforest_late_afternoon",
+      "text": "RAW photo, professional nature photography: Amazon rainforest late afternoon, golden hour sun rays filtering through dense foliage, dewdrops glistening on a toucan in mid-flight against lush green moss-covered ground, Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tuscany_rolling_hill_sunrise",
+      "text": "RAW photo, professional nature photography: Tuscan rolling hills bathed in the rosy glow of sunrise, shrouded in ethereal mist; a solitary ancient oak stands sentinel against the panorama, Canon EOS R5, f/8, ultra-realistic, National Geographic."
+    },
+    {
+      "name": "icelandic_lava_field_misty_morning",
+      "text": "RAW photo, professional nature photography, Icelandic lava field bathed in the ethereal glow of early morning mist, a solitary waterfall cascading through rugged textures, vibrant yet serene atmosphere, lofty vantage point revealing vast geographical expanse, Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tuscany_rolling_hill_blue_hour",
+      "text": "RAW photo, professional nature photography: Tuscan rolling hills bathed in the deep blues of twilight, dramatic cumulonimbus towering above, golden light filtering through, soft textures of sand dunes at their base, shot from an elevated vantage point, Canon EOS R5, f/8, ultra-realistic, National Geographic."
+    },
+    {
+      "name": "japanese_bamboo_grov_aurora_night",
+      "text": "RAW photo, professional nature photography, luminous Japanese bamboo grove bathed in the ethereal glow of an aurora night, textured with frost and illuminated by moonlight. Panoramic vista expands across silvery sand dunes that stretch toward a distant, misty horizon. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "norwegian_fjord_midday_harsh_li",
+      "text": "RAW photo, professional nature photography: Norwegian Fjords under intense midday sunlight, dramatic cumulonimbus looming overhead, mirroring the textured sand dunes below in a shimmering reflection, Canon EOS R5, f/8, ultra-realistic, National Geographic."
+    }
+  ]
+}

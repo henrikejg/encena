@@ -1,0 +1,8 @@
+# Rascunhos gerados em runtime
+categorias/*_rascunhos.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/

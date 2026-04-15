@@ -1,0 +1,27 @@
+{
+  "category": "lavanda",
+  "cfg": 1.5,
+  "lora_nature": 0.3,
+  "lora_detail": 0.5,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/lavanda",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "provence_golden_sunset",
+      "text": "stunning photorealistic lavender fields in Provence France at golden sunset, endless rows of vivid purple lavender stretching to the horizon, warm golden sunset backlight making lavender glow, ancient stone farmhouse and cypress trees in middle distance, dramatic sky with scattered warm clouds, rich purple and gold tones, rolling Provencal hills in background, National Geographic style, 8k, award-winning nature photography, Canon EOS R5, f/11"
+    },
+    {
+      "name": "provence_aerial_rows",
+      "text": "breathtaking aerial drone photograph of Valensole Plateau Provence lavender fields, geometric purple rows creating graphic patterns across rolling hills, patchwork of lavender and wheat fields, dramatic morning light, stone village visible in distance, vivid purples and greens, National Geographic style, 8k, award-winning aerial photography, birds eye view"
+    },
+    {
+      "name": "japan_lavender_furano",
+      "text": "RAW photo, professional nature photography, Furano Hokkaido Japan lavender farm at peak bloom, dense rows of vivid purple and blue lavender flowers in foreground, rolling green hills, dramatic cloudy sky with rays of sunlight, clean crisp air, ultra-detailed flowers, photorealistic, National Geographic style, 8k, Canon EOS R5, f/8"
+    }
+  ]
+}

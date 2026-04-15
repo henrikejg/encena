@@ -1,0 +1,51 @@
+{
+  "category": "canyon",
+  "cfg": 1.8,
+  "lora_nature": 0.4,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/canyon",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "bryce_sunrise",
+      "text": "RAW photo, professional nature photography, Bryce Canyon Utah at sunrise, tall orange and red hoodoo rock spires, dramatic morning light, blue sky above, wide open canyon view, natural desert tones, sandy ground, Canon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "grand_canyon_aerial",
+      "text": "RAW photo, professional nature photography, vast Grand Canyon at golden hour aerial view, dramatic layered red and orange rock formations, deep gorge with Colorado river far below, warm desert light casting long shadows, expansive landscape view, natural muted tones, Canon EOS R5, f/11, ultra realistic, National Geographic"
+    },
+    {
+      "name": "antelope_light_beams",
+      "text": "epic photorealistic Antelope slot canyon interior, dramatic narrow beams of golden sunlight piercing from the narrow opening above, glowing smooth orange and deep red sandstone walls with flowing sculpted curves, golden dust particles suspended in shafts of light, dry sandy floor, ultra-detailed rock texture, warm amber and crimson tones, deep atmospheric shadows, no water, National Geographic style, 8k, award-winning landscape photography"
+    },
+    {
+      "name": "canyon_livre",
+      "text": "RAW photo, Grand Enchanted Canyon, Arizona at sunrise..."
+    },
+    {
+      "name": "canyon_livre_2",
+      "text": "RAW photo, Grand Enchanter Canyon, Patagonia at golden hour..."
+    },
+    {
+      "name": "canyon_livre_5",
+      "text": "RAW photo, professional nature photography: Grand Prismatic Spring Overhang, Yellowstone National Park, Wyoming, USA. Early morning golden hour, vibrant algae-colored hot springs contrast against the cool blues and whites of frozen winter ice. Sharp textures of icy formations juxtaposed with soft steam rising from the warm spring below create an atmospheric, surreal landscape. The composition focuses on the overhang, framing it between two pillars of ice, set against a backdrop of the pristine snow-covered canyon and distant mountain range. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "canyon_livre_3",
+      "text": "RAW photo, professional nature photography:\nGrand Enchantment Canyon, Petrified Forest National Park, Arizona\nSunset illuminates the multi-hued petrified logs scattered across the canyon floor, casting long shadows that accentuate the rugged textures. A solitary saguaro cactus stands sentinel in the foreground, silhouetted against the vibrant orange and pink hues of the setting sun. The canyon walls are a mix of red-orange sandstone and dark basalt, with intricate patterns of weathering visible. A faint mist hovers over the canyon floor, adding an ethereal atmosphere to the scene. Compositionally, the cactus acts as a leading line drawing the viewer's eye into the depths of the canyon, while the petrified logs and sandstone walls frame the serene landscape. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "canyon_livre_4",
+      "text": "RAW photo, professional nature photography:\nGrand Enchantment Canyon, Arizona, USA. Sunset golden hour illuminates the rugged canyon walls of this lesser-known gem, creating a warm, vibrant glow against the cool desert textures. The rich reds and oranges of Navajo Sandstone contrast with the deep greens of Juniper trees growing along the canyon floor, all framed by the unique S-shaped curve of this hidden canyon. A narrow river winding through the scene adds a touch of serenity to the grandiose landscape. The atmospheric haze from the setting sun enhances the depth and mystery of the canyon's depths, creating an ultra-realistic, evocative image fit for National Geographic.\nCanon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "canyon_livre_6",
+      "text": "RAW photo, professional nature photography:\nGrand Canyon de Chelly, Arizona, USA\nSunset glow illuminates the sandstone walls of this lesser-known canyon, casting warm shadows and revealing intricate textures. A winding Navajo trail snakes through the foreground, leading to the distant Spider Rock mesa. The atmosphere is serene yet powerful, with a rich color palette that ranges from fiery orange to deep purple. Compositionally, the shot focuses on the sweeping curve of the canyon floor, with the towering cliffs framing the scene and a lone cottonwood tree adding depth in the foreground. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    }
+  ]
+}
