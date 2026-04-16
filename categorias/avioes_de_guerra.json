@@ -1,0 +1,88 @@
+{
+  "category": "avioes_de_guerra",
+  "checkpoint_name": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "lora_detail_name": "",
+  "lora_nature_name": "",
+  "cfg": 4.5,
+  "lora_detail": 0,
+  "lora_nature": 0,
+  "steps": 12,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/avioes_de_guerra",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Military might",
+    "Aerial power",
+    "Warfare machinery",
+    "Airborne action",
+    "Strategic operations",
+    "Combat readiness",
+    "Defense technology",
+    "Mobilization of forces"
+  ],
+  "biomas": [
+    "Military aircraft hangar",
+    "Combat zone with wreckage",
+    "Aerial view of military base",
+    "Desert airstrip at sunset",
+    "Jungle canopy flyover",
+    "Nighttime cityscape with military plane",
+    "Battlefield in winter landscape",
+    "Aircraft carrier deck"
+  ],
+  "elementos": [
+    "Pilot in cockpit",
+    "Military aircraft engine",
+    "Missile launch",
+    "Parachute deployment",
+    "Fighter jet formation",
+    "Troops loading onto plane",
+    "Gun turrets and weapons",
+    "Helicopter rescue mission"
+  ],
+  "prompts": [
+    {
+      "name": "avioes_de_guerra_livre",
+      "text": "RAW photo, professional photography\nBattlefield in winter landscape: A frozen tundra illuminated by the setting sun casting long, dark shadows over a vast array of military equipment. An F-15E Eagle fighter jet sits on the snowy runway, its metallic surface reflecting the last rays of daylight. Snow-caked armored vehicles and artillery pieces dot the landscape, their matte gray and green hues contrasting sharply with the pristine white snow. A helicopter hovers overhead, its rotors cutting through the crisp winter air, while infantry soldiers move purposefully in the distance, bundled against the cold. The atmosphere is tense yet controlled, a testament to the combat readiness and strategic operations of the aviões de guerra em combate no paisagem invernal. Sony A7R V, 400mm f/2.8, f/4, ISO 400, ultra realistic, National Geographic"
+    },
+    {
+      "name": "avioes_de_guerra_livre_2",
+      "text": "RAW photo, professional photography\nNighttime cityscape with military plane: A sprawling metropolis bathed in a soft blue-gray glow of artificial lights, silhouettes of towering skyscrapers piercing through the inky black night sky. In the foreground, a state-of-the-art fighter jet, its metallic surface glistening with a mix of reflected city lights and the faint radiance of distant searchlights, sits poised for takeoff on an isolated runway within the heart of the city, casting long shadows that dance across the asphalt. The atmosphere is tense yet controlled, the air thick with anticipation. A subtle haze of exhaust fumes adds a layer of grit and realism to the scene, while intricate details of the military aircraft's sleek design stand out against the dark backdrop. The composition is carefully balanced between the sprawling cityscape and the imposing war machine, creating an image that encapsulates the themes of military might, aerial power, warfare machinery, airborne action, strategic operations, combat readiness, defense technology, and mobilization of forces. Sony A7R V, 24mm f/1.4, f/2, ISO 3200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "avioes_de_guerra_livre_3",
+      "text": "Analog film photograph, professional photography\n\nAircraft carrier deck at dusk under a stormy sky, USS Nimitz or similar, San Diego Bay, California. The carrier is bathed in a mix of harsh artificial light from its towering structures and the soft, muted tones of the setting sun filtering through heavy clouds. A F/A-18 Super Hornet sits at the edge of the runway, its jet engine glowing like molten silver against the weathered gray deck. The aircraft carrier's massive structure casts long shadows on slick metal surfaces and shiny jet engines, creating a sense of imposing power and readiness. The atmosphere is tense but controlled, with military personnel in bright orange fire-fighting gear standing at attention nearby, ready for action. The scene captures the strategic operations, combat readiness, defense technology, mobilization of forces, and aerial power that define the avioes_de_guerra category, while showcasing the unique textures, colors, and compositional elements of an aircraft carrier deck under stormy conditions. Hasselblad medium format, Kodak Portra 400 film scan, ultra realistic, National Geographic."
+    },
+    {
+      "name": "aircraft_carrier_dec_blue_hour",
+      "text": "Aerial drone RAW photograph, professional nature photography, US Navy aircraft carrier deck bathed in blue hour's ethereal glow, dense mist veiling beneath, a silhouette of modern warfare machinery lined up, missile launch tower poised for action under the somber sky, strategic operations unfolding amidst the crisp morning air, Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "aircraft_carrier_dec_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Moonlit aircraft carrier deck amidst a wintry chill, stark shadows accentuating military might, intricate details of warfare machinery glinting under the moonlight, Helicopter gunships arranged in combat readiness, Canon EOS R5, 16-35mm f/2.8, f/14, ISO 800, ultra realistic, National Geographic - avioes_de_guerra category."
+    },
+    {
+      "name": "nighttime_cityscape__misty_morning",
+      "text": "RAW photo, professional nature photography, Nighttime metropolis underwarp with tactical aircraft silhouette against a brooding dawn, heavy mist hovering above the city's sprawl, mirrored on serene waterways below, Stealth pilot poised in dimly lit cockpit, Canon EOS R5, 600mm f/4, f/8, ultra-realistic, National Geographic. Avi_es_de_guerra."
+    },
+    {
+      "name": "battlefield_in_winte_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Winter battlefield twilight scene with a setting sun casting long shadows and illuminating scattered clouds in vibrant orange and red hues, helicopter blades cutting through the crisp winter air against a backdrop of snow-capped mountains, military personnel in tactical gear ready for deployment on the ground, aerial power showcased by the towering silhouette of warfare machinery as it prepares for airborne action, Canon EOS R5, f/2.8, ISO 1600, ultra realistic, National Geographic, avioes_de_guerra."
+    },
+    {
+      "name": "nighttime_cityscape__starry_night",
+      "text": "RAW photo, professional nature photography, Low-lying metropolis aglow under a starlit canopy, military transport aircraft silhouetted against the celestial expanse, plumes of exhaust trails tracing an ethereal path across the night sky. Dusty orange light illuminates the scene as parachutes billow open, their shadows dancing on the cityscape below. Aerial cables taut, ready to deploy troops for strategic operations amidst airborne action. Canon EOS-1D X III, 500mm f/4, f/8, ISO 640, ultra realistic, National Geographic - 'avioes_de_guerra' category."
+    },
+    {
+      "name": "desert_airstrip_at_s_sunrise",
+      "text": "RAW photo, professional nature photography, Stark desert airstrip bathed in the warm glow of dawn's first light, ethereal morning mist gently cloaking military might, intimate close detail revealing troops meticulously loading onto an imposing fighter jet, strategic operations echoing through the silence amidst airborne action and combat readiness, cutting-edge defense technology glinting under the sun, the mobilization of forces poised for action - Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "nighttime_cityscape__blue_hour",
+      "text": "RAW photo, professional nature photography, Nighttime desert landscape under the blue hour, silhouette of a military helicopter with its rotor blades illuminated by a distant city's lights, vast expanse of sand dunes and war machinery scattered around, Stealth fighter jet in the background, low-angle view from the cockpit of an Apache attack helicopter, Canon EOS-1D X Mark III, 70-200mm f/2.8, f/4, ultra realistic, National Geographic, avioes_de_guerra."
+    }
+  ]
+}

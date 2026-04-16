@@ -1,0 +1,88 @@
+{
+  "category": "xadrez",
+  "cfg": 3.5,
+  "lora_nature": 0.4,
+  "lora_detail": 0.5,
+  "steps": 12,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/xadrez",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Geometric Patterns",
+    "Strategic Competition",
+    "Urban Minimalism",
+    "Historical Artifacts",
+    "Detail Orientation",
+    "Abstract Composition",
+    "Narrative Moments",
+    "Cultural Symbolism"
+  ],
+  "biomas": [
+    "Chessboard indoor setting",
+    "Outdoor park with chess pieces",
+    "Night cityscape with chess pieces",
+    "Rooftop chess game",
+    "Abstraction of chess pattern on urban textures",
+    "Close-up of a vintage chess piece",
+    "Antique chess set in library",
+    "Chess tournament hall"
+  ],
+  "elementos": [
+    "Black and white contrast",
+    "Red and white pieces in focus",
+    "Shadow play on board",
+    "Chessboard reflection in a window",
+    "Kingpiece dominating frame",
+    "Detailed carving on pawn",
+    "Chess game setup",
+    "Emotional player expressions"
+  ],
+  "prompts": [
+    {
+      "name": "xadrez_livre",
+      "text": "Analog film photograph, professional photography:\nOutdoor park chess match under twilight, Hasselblad medium format, Kodak Portra 400 film scan.\nUltra-realistic, National Geographic.\n\nChess pieces cast long shadows against the cobblestone ground of an old European park. The setting sun filters through towering trees, casting a warm, golden light that highlights the geometric patterns and intricate details of each chess piece. Urban minimalism is reflected in the clean lines and sleek design of the metal board on which the game unfolds.\n\nA strategic competition unfolds between two players, their intense concentration creating a tense atmosphere filled with anticipation. A historical artifact, the park's vintage chessboard adds to the cultural symbolism of the scene. The abstract composition is framed by the towering trees and the intricate patterns created by the shadowy game pieces on the ground.\n\nDetail orientation allows the viewer to appreciate the craftsmanship of each piece, while narrative moments are captured through the expression of the players and their body language. The overall scene pays homage to the timeless game of chess and its historical significance in society."
+    },
+    {
+      "name": "xadrez_livre_2",
+      "text": "RAW photo, professional photography: Chess tournament hall at dusk - a vast, dimly lit room filled with long tables draped in red-checked cloths, each table set for two players immersed in strategic competition. The air is thick with anticipation and concentration. Urban minimalism dominates the space, punctuated by geometric patterns of the chessboards and intricate shadows cast by towering vintage chandeliers. Historical artifacts adorn the walls, their stories echoing through the hushed atmosphere. A close-up detail reveals an ornate clock with gears intertwining in abstract composition, symbolizing time's relentless march during these games of strategic prowess. Cultural symbols, such as the tournament's banner and the eclectic collection of chess sets, add a narrative moment to the scene, capturing the essence of this timeless game steeped in history and tradition. Sony A7R V, 24mm f/1.4, f/2, ISO 3200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "xadrez_livre_3",
+      "text": "RAW photo, professional photography: Close-up of a worn, antique chess piece, set against a backdrop of an industrial loft in a gritty urban cityscape. The light is soft and warm, streaming through the high, arched windows, casting long shadows that accentuate the intricate geometric patterns on the chess piece. The textures of the weathered wood and timeworn enamel create a sense of historical artifact amidst the minimalist, urban environment. The atmosphere is tense yet tranquil, evoking strategic competition and narrative moments. The composition focuses on the detailed abstract image of the chess piece, with subtle hints of the cityscape beyond, emphasizing its cultural symbolism in this setting.\n\nUltra realistic, National Geographic."
+    },
+    {
+      "name": "xadrez_livre_4",
+      "text": "Aerial drone RAW photograph, professional photography:\nOutdoor urban park with oversized chessboard at dusk - geometric patterns of shadows play on the concrete ground as the sun sets behind vintage chess pieces; the minimalist setting juxtaposes historical artifacts against modern cityscape backdrop. Detailed textures of weathered chessboards and worn-out pieces accentuate strategic competition in an abstract composition, capturing a narrative moment where tension hangs heavy in the cool evening air. Cultural symbolism resonates as a lone player contemplates their next move amidst the symbolic game of life and strategy.\n\nDJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "xadrez_livre_5",
+      "text": "Analog film photograph, professional photography: A captivating early morning scene unfolds at an expansive outdoor park where oversized chess pieces stand proudly on a checkered board laid upon lush, emerald grass. The sun, just beginning to rise, casts a warm golden hue over the scene, highlighting the intricate textures and shadows of each piece. Urban minimalism is evident in the surrounding cityscape with its modern architecture subtly reflected in the glassy surface of a nearby pond. Historical artifacts interspersed among the chess pieces add depth to the narrative moment, such as an old-fashioned clock tower and a vintage chess set placed strategically for added detail orientation. Abstract composition comes into play through the use of geometric patterns created by both the chessboard and the surrounding park structures. The overall atmosphere is serene yet vibrant, with rich greens contrasting beautifully against the warm tones from the sunrise. Cultural symbolism is evident in the game of chess itself, representing strategic competition as players gather around the board, lost in thought, hinting at a deeper narrative moment within this urban landscape.\n\n(Hasselblad medium format, Kodak Portra 400 film scan, ultra realistic, National Geographic)"
+    },
+    {
+      "name": "xadrez_livre_6",
+      "text": "Medium format RAW capture, professional photography:\n\nUrban alleyway during twilight hour, where a worn chessboard is subtly integrated into the brick textures, creating an abstract interpretation of the game's pattern. The soft glow of city lights illuminates the scene, casting long shadows and reflecting off the polished pieces, adding depth and strategic tension to the composition. Minimalistic urban elements such as graffiti, rusted ironworks, and broken tiles contribute to the gritty backdrop, while a solitary streetlamp casts a warm, inviting light over the chessboard, highlighting the cultural symbolism of the game amidst the urban minimalism. Detailed close-ups of worn chess pieces contrast with the modern surroundings, emphasizing the historical artifacts within this strategic competition. A narrative moment unfolds as one player considers their next move, with the atmosphere echoing the tension and focus characteristic of the game. This unique scene embodies geometric patterns, strategic competition, urban minimalism, historical artifacts, detail orientation, abstract composition, narrative moments, and cultural symbolism, fitting perfectly for National Geographic.\n\nCamera settings: Hasselblad X2D, 45mm f/3.5, f/8, ISO 1600, ultra realistic."
+    },
+    {
+      "name": "xadrez_livre_7",
+      "text": "Aerial drone RAW photograph, professional photography:\nChess tournament hall at noon - a grand, well-lit expanse with towering columns and an ornate ceiling. The room is bathed in soft, warm daylight streaming through large arched windows, casting long, geometric shadows that dance across the polished marble floor. Antique chess sets are arranged on various tables, their pieces meticulously aligned in a display of strategic competition. Urban minimalism permeates the scene as sleek modern chairs surround the tables, contrasting with the historical artifacts. Detail orientation is emphasized through the close-up focus on the intricate chess patterns and the worn edges of antique boards. Abstract composition dominates the image, invoking a sense of narrative moments where strategic battles unfold amidst cultural symbolism. The atmosphere is tense yet vibrant, filled with the anticipation of gameplay and the rich history of this intellectual contest.\n\nNational Geographic."
+    },
+    {
+      "name": "xadrez_livre_8",
+      "text": "Medium format RAW capture, professional photography:\nChess tournament hall illuminated by soft, warm spotlights casting dramatic shadows against intricate geometric patterns of wooden chessboards and stone floors. The historic architecture is adorned with minimalist urban elements, reflecting in the polished marble surfaces. A close-up abstract composition highlights a strategic competition scene where pieces, as cultural symbols, seem to narrate an untold story of victory or defeat. Detail orientation reveals ancient artifacts subtly integrated into the decor, enhancing the atmosphere of traditional elegance and competitive intensity. The color palette leans towards deep hues of burgundy, navy blue, and gold, evoking a sense of sophistication and anticipation. Compositionally, the scene focuses on the interplay between the chessboards, with their squares forming abstract geometric patterns that draw the viewer into the heart of the strategic competition.\n\nHasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra realistic, National Geographic."
+    },
+    {
+      "name": "xadrez_livre_9",
+      "text": "RAW photo, professional photography: Night cityscape with chess pieces. Urban minimalism takes center stage as towering skyscrapers cast long shadows over a desolate street below. The soft glow of neon signs illuminates the scene, bathing the ground in an otherworldly blue hue. Scattered chess pieces, reminiscent of geometric patterns and historical artifacts, sit atop a worn-out, checkered pavement. Intricate details in the stone textures and the intricate design of the chess pieces create a sense of strategic competition and abstract composition. A single spotlight illuminates a dramatic narrative moment – a knight poised for its next move against a pawn – amidst the urban minimalism. The contrast between the high-tech cityscape and the traditional game evokes cultural symbolism, blurring the line between past and present. Sony A7R V, 400mm f/2.8, f/4, ISO 400, ultra realistic, National Geographic."
+    },
+    {
+      "name": "xadrez_livre_10",
+      "text": "Aerial drone RAW photograph, professional photography:\nRooftop chess game under dusk's golden hour, New York City skyline. The urban minimalism is highlighted with a stark contrast between the geometric patterns of the checkered rooftop and the intricate metal structures of historic skyscrapers. Strategic competition unfolds atop these buildings, where silhouettes of players cast long shadows against the chessboard. Urban minimalist textures prevail in the weathered stone, rusty iron, and worn wooden pieces. The atmosphere is one of calm yet intense concentration, punctuated by bursts of cultural symbolism as the move is made. Detailed orientations abound: from the close-up shots of the chess pieces to the distant views of the cityscape. Abstract compositions emerge from the interplay between the chessboard, the players, and the backdrop. Narrative moments unfold in the tense standoff or the triumphant victory pose. Shot with DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
+    }
+  ],
+  "checkpoint_name": "RealVisXL_V5.0_fp16.safetensors",
+  "lora_detail_name": "add-detail-xl.safetensors",
+  "lora_nature_name": ""
+}

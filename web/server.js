@@ -7,12 +7,14 @@
 const http = require('http');
 const fs   = require('fs');
 const path = require('path');
+const os   = require('os');
 const { spawn, execFile } = require('child_process');
 
 const PORT          = 3131;
 const ENCENA_DIR    = path.resolve(__dirname, '..');
 const ENCENA_PY     = path.join(ENCENA_DIR, 'encena.py');
 const CATEGORIAS_DIR = path.join(ENCENA_DIR, 'categorias');
+const COMFY_OUTPUT  = process.env.COMFY_OUTPUT || path.join(os.homedir(), 'ComfyUI', 'output');
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -23,6 +25,57 @@ function readJson(p) {
 
 function writeJson(p, obj) {
   fs.writeFileSync(p, JSON.stringify(obj, null, 2) + '\n');
+}
+
+function readPngMeta(filepath) {
+  const buf = fs.readFileSync(filepath);
+  // IHDR é sempre o primeiro chunk (offset 8): width @ 16, height @ 20
+  const meta = {
+    _width:  buf.length >= 24 ? buf.readUInt32BE(16) : null,
+    _height: buf.length >= 24 ? buf.readUInt32BE(20) : null,
+  };
+  let offset = 8;
+  while (offset < buf.length - 12) {
+    const len  = buf.readUInt32BE(offset);
+    const type = buf.subarray(offset + 4, offset + 8).toString('ascii');
+    if (type === 'tEXt') {
+      const raw = buf.subarray(offset + 8, offset + 8 + len).toString('latin1');
+      const nul = raw.indexOf('\0');
+      if (nul !== -1) meta[raw.slice(0, nul)] = raw.slice(nul + 1);
+    }
+    if (type === 'IEND') break;
+    offset += 12 + len;
+  }
+  return meta;
+}
+
+function parseComfyMeta(pngPath) {
+  try {
+    const raw = readPngMeta(pngPath);
+    // Dimensões reais do arquivo (pós-upscale), lidas do IHDR
+    const actual_width  = raw._width;
+    const actual_height = raw._height;
+    if (!raw.prompt) return { actual_width, actual_height };
+    const p = JSON.parse(raw.prompt);
+    return {
+      actual_width,
+      actual_height,
+      checkpoint:    p['1']?.inputs?.ckpt_name        || null,
+      lora_detail:   p['2']?.inputs?.lora_name        || null,
+      lora_detail_s: p['2']?.inputs?.strength_model   ?? null,
+      lora_nature:   p['3']?.inputs?.lora_name        || null,
+      lora_nature_s: p['3']?.inputs?.strength_model   ?? null,
+      positive:      p['4']?.inputs?.text             || null,
+      negative:      p['5']?.inputs?.text             || null,
+      latent_width:  p['6']?.inputs?.width            || null,
+      latent_height: p['6']?.inputs?.height           || null,
+      seed:          p['7']?.inputs?.seed             ?? null,
+      steps:         p['7']?.inputs?.steps            ?? null,
+      cfg:           p['7']?.inputs?.cfg              ?? null,
+      sampler:       p['7']?.inputs?.sampler_name     || null,
+      scheduler:     p['7']?.inputs?.scheduler        || null,
+    };
+  } catch { return null; }
 }
 
 function listarCategorias() {
@@ -77,6 +130,38 @@ function sseRun(res, args) {
   proc.on('close', code => { send({ t: 'done', code }); res.end(); });
 }
 
+// Executa múltiplos processos em sequência, transmitindo tudo num único SSE.
+// Envia 'done' só após o último processo (ou imediatamente se algum falhar).
+function sseRunSeq(res, argsList) {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection':    'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+  });
+
+  const send = obj => res.write(`data: ${JSON.stringify(obj)}\n\n`);
+
+  function runNext(i) {
+    if (i >= argsList.length) { send({ t: 'done', code: 0 }); res.end(); return; }
+    const proc = spawn('python3', [ENCENA_PY, ...argsList[i]], {
+      cwd: ENCENA_DIR,
+      env: { ...process.env, PYTHONUNBUFFERED: '1' },
+    });
+    const pipe = (stream, type) =>
+      stream.on('data', d =>
+        d.toString().split('\n').forEach(l => { if (l.trim()) send({ t: type, s: l }); })
+      );
+    pipe(proc.stdout, 'o');
+    pipe(proc.stderr, 'e');
+    proc.on('close', code => {
+      if (code !== 0) { send({ t: 'done', code }); res.end(); return; }
+      runNext(i + 1);
+    });
+  }
+  runNext(0);
+}
+
 // ─── body parser ─────────────────────────────────────────────────────────────
 
 function readBody(req) {
@@ -108,10 +193,33 @@ const server = http.createServer(async (req, res) => {
   const err = (msg, code = 400) => json({ error: msg }, code);
 
   // ── static ─────────────────────────────────────────────────────────────────
-  if (pathname === '/' && method === 'GET') {
-    const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(html);
+  if (method === 'GET' && !pathname.startsWith('/api/')) {
+    const mimeTypes = { '.html':'text/html;charset=utf-8', '.svg':'image/svg+xml', '.png':'image/png', '.ico':'image/x-icon' };
+    const filePath  = pathname === '/' ? path.join(__dirname, 'index.html')
+                                       : path.join(__dirname, pathname.slice(1));
+    const resolved  = path.resolve(filePath);
+    // Segurança: só serve arquivos dentro do diretório web/
+    if (!resolved.startsWith(path.resolve(__dirname) + path.sep) && resolved !== path.resolve(__dirname)) {
+      res.writeHead(403); res.end('Forbidden'); return;
+    }
+    if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) {
+      const ext  = path.extname(resolved);
+      const mime = mimeTypes[ext] || 'application/octet-stream';
+      res.writeHead(200, { 'Content-Type': mime, 'Cache-Control': 'max-age=3600' });
+      fs.createReadStream(resolved).pipe(res);
+      return;
+    }
+  }
+
+  // ── modelos disponíveis no ComfyUI ────────────────────────────────────────
+  if (pathname === '/api/comfy/models' && method === 'GET') {
+    const [ckpt, lora] = await Promise.all([
+      checkHttp('localhost', 8188, '/object_info/CheckpointLoaderSimple'),
+      checkHttp('localhost', 8188, '/object_info/LoraLoader'),
+    ]);
+    const checkpoints = ckpt.ok ? (ckpt.data?.CheckpointLoaderSimple?.input?.required?.ckpt_name?.[0] ?? []) : [];
+    const loras       = lora.ok ? (lora.data?.LoraLoader?.input?.required?.lora_name?.[0]             ?? []) : [];
+    json({ checkpoints, loras });
     return;
   }
 
@@ -234,18 +342,24 @@ const server = http.createServer(async (req, res) => {
 
   // ── gerar imagens (SSE) ────────────────────────────────────────────────────
   if (pathname === '/api/imagens/gerar' && method === 'POST') {
-    const b = await readBody(req);
-    const args = ['imagens'];
-    if (b.todas) {
-      args.push('--todas');
-    } else {
-      if (!b.categorias) { err('categorias obrigatório'); return; }
-      args.push('-c', b.categorias);
-    }
-    args.push('-q', String(b.quantidade || 1));
-    if (b.prompt_nome)  args.push('--prompt-nome', b.prompt_nome);
-    if (b.orientacao)   args.push('--orientacao', b.orientacao);
-    sseRun(res, args);
+    const b    = await readBody(req);
+    const qtdV = parseInt(b.qtd_vertical)   || 0;
+    const qtdH = parseInt(b.qtd_horizontal) || 0;
+    if (qtdV + qtdH === 0) { err('quantidade inválida'); return; }
+    if (!b.todas && !b.categorias) { err('categorias obrigatório'); return; }
+
+    const makeArgs = (qtd, orientacao) => {
+      const a = ['imagens'];
+      b.todas ? a.push('--todas') : a.push('-c', b.categorias);
+      a.push('-q', String(qtd), '--orientacao', orientacao);
+      if (b.prompt_nome) a.push('--prompt-nome', b.prompt_nome);
+      return a;
+    };
+
+    const argsList = [];
+    if (qtdV > 0) argsList.push(makeArgs(qtdV, 'vertical'));
+    if (qtdH > 0) argsList.push(makeArgs(qtdH, 'horizontal'));
+    sseRunSeq(res, argsList);
     return;
   }
 
@@ -310,6 +424,24 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── votar em prompt ───────────────────────────────────────────────────────
+  const mVote = pathname.match(/^\/api\/prompts\/([^/]+)\/([^/]+)\/vote$/);
+  if (mVote && method === 'POST') {
+    const [, categoria, nome] = mVote;
+    const b = await readBody(req);
+    if (!['up','down'].includes(b.vote)) { err('vote deve ser "up" ou "down"'); return; }
+    const cfgPath = path.join(CATEGORIAS_DIR, `${categoria}.json`);
+    const cfg = readJson(cfgPath);
+    if (!cfg) { err('Categoria não encontrada', 404); return; }
+    const prompt = (cfg.prompts || []).find(p => p.name === nome);
+    if (!prompt) { err('Prompt não encontrado', 404); return; }
+    if (!prompt.votes) prompt.votes = { up: 0, down: 0 };
+    prompt.votes[b.vote] = (prompt.votes[b.vote] || 0) + 1;
+    writeJson(cfgPath, cfg);
+    json({ ok: true, votes: prompt.votes });
+    return;
+  }
+
   // ── editar prompt ─────────────────────────────────────────────────────────
   const mEditP = pathname.match(/^\/api\/prompts\/([^/]+)\/([^/]+)$/);
   if (mEditP && method === 'PUT') {
@@ -361,7 +493,7 @@ const server = http.createServer(async (req, res) => {
     const cfg = readJson(cfgPath);
     if (!cfg) { err('Categoria não encontrada', 404); return; }
     const nums = ['cfg','steps','width','height','lora_nature','lora_detail'];
-    const strs = ['sampler','scheduler','output_subdir','negative'];
+    const strs = ['sampler','scheduler','output_subdir','negative','checkpoint_name','lora_detail_name','lora_nature_name'];
     nums.forEach(k => { if (b[k] !== undefined && b[k] !== '') cfg[k] = parseFloat(b[k]); });
     strs.forEach(k => { if (b[k] !== undefined) cfg[k] = b[k]; });
     if (b.tags !== undefined) {
@@ -391,6 +523,135 @@ const server = http.createServer(async (req, res) => {
       else writeJson(p, list);
       json({ ok: true });
     } catch (e) { json({ ok: false, error: e.message }); }
+    return;
+  }
+
+  // ── galeria: listar imagens ───────────────────────────────────────────────
+  const mGalList = pathname.match(/^\/api\/galeria\/([^/]+)$/);
+  if (mGalList && method === 'GET') {
+    const catNome = mGalList[1];
+    const cfg = readJson(path.join(CATEGORIAS_DIR, `${catNome}.json`));
+    if (!cfg) { err('Categoria não encontrada', 404); return; }
+    const subdir = cfg.output_subdir || catNome;
+    const baseDir = path.join(COMFY_OUTPUT, subdir);
+    const expDir  = path.join(baseDir, 'experimentos');
+    const results = [];
+
+    function scanDir(dir, isExp) {
+      if (!fs.existsSync(dir)) return;
+      for (const f of fs.readdirSync(dir)) {
+        if (!f.endsWith('.png')) continue;
+        const fp   = path.join(dir, f);
+        const stat = fs.statSync(fp);
+        const m    = f.match(new RegExp(`^${catNome}_(.+)_seed(\\d+)_\\d+_\\.png$`));
+        results.push({
+          filename: f,
+          is_exp:   isExp,
+          pnome:    m ? m[1] : null,
+          seed:     m ? parseInt(m[2], 10) : null,
+          mtime:    stat.mtime.toISOString(),
+          size_kb:  Math.round(stat.size / 1024),
+          meta:     parseComfyMeta(fp),
+        });
+      }
+    }
+
+    scanDir(baseDir, false);
+    scanDir(expDir,  true);
+    results.sort((a, b) => (b.mtime > a.mtime ? 1 : -1));
+    json(results);
+    return;
+  }
+
+  // ── galeria: servir thumbnail ─────────────────────────────────────────────
+  const mGalThumb = pathname.match(/^\/api\/galeria\/([^/]+)\/thumb\/([^/]+)$/);
+  if (mGalThumb && method === 'GET') {
+    const catNome  = mGalThumb[1];
+    const filename = mGalThumb[2];
+    const cfg      = readJson(path.join(CATEGORIAS_DIR, `${catNome}.json`));
+    if (!cfg) { err('Categoria não encontrada', 404); return; }
+    const subdir   = cfg.output_subdir || catNome;
+    const stem     = filename.replace(/\.png$/, '');
+    // Procura em thumbs/ e thumbs/ dentro de experimentos/
+    const candidates = [
+      path.join(COMFY_OUTPUT, subdir, 'thumbs', stem + '.jpg'),
+      path.join(COMFY_OUTPUT, subdir, 'experimentos', 'thumbs', stem + '.jpg'),
+    ];
+    const thumbPath = candidates.find(p => fs.existsSync(p));
+    if (!thumbPath) { res.writeHead(404); res.end('Not found'); return; }
+    const resolved = path.resolve(thumbPath);
+    if (!resolved.startsWith(path.resolve(COMFY_OUTPUT) + path.sep)) {
+      err('Acesso negado', 403); return;
+    }
+    res.writeHead(200, { 'Content-Type': 'image/jpeg', 'Cache-Control': 'max-age=86400' });
+    fs.createReadStream(resolved).pipe(res);
+    return;
+  }
+
+  // ── galeria: servir imagem ────────────────────────────────────────────────
+  const mGalImg = pathname.match(/^\/api\/galeria\/([^/]+)\/img\/([^/]+)$/);
+  if (mGalImg && method === 'GET') {
+    const catNome  = mGalImg[1];
+    const filename = mGalImg[2];
+    const cfg      = readJson(path.join(CATEGORIAS_DIR, `${catNome}.json`));
+    if (!cfg) { err('Categoria não encontrada', 404); return; }
+    const subdir   = cfg.output_subdir || catNome;
+    const baseDir  = path.join(COMFY_OUTPUT, subdir);
+    // Aceita arquivo direto ou dentro de experimentos/
+    let imgPath = path.join(baseDir, filename);
+    if (!fs.existsSync(imgPath)) imgPath = path.join(baseDir, 'experimentos', filename);
+    // Segurança: garante que o path resolvido está dentro de COMFY_OUTPUT
+    const resolved = path.resolve(imgPath);
+    if (!resolved.startsWith(path.resolve(COMFY_OUTPUT) + path.sep)) {
+      err('Acesso negado', 403); return;
+    }
+    if (!fs.existsSync(resolved)) { err('Imagem não encontrada', 404); return; }
+    res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'max-age=3600' });
+    fs.createReadStream(resolved).pipe(res);
+    return;
+  }
+
+  // ── galeria: deletar imagem + thumbnail ───────────────────────────────────
+  const mGalDel = pathname.match(/^\/api\/galeria\/([^/]+)\/img\/([^/]+)$/);
+  if (mGalDel && method === 'DELETE') {
+    const catNome  = mGalDel[1];
+    const filename = decodeURIComponent(mGalDel[2]);
+    const cfg      = readJson(path.join(CATEGORIAS_DIR, `${catNome}.json`));
+    if (!cfg) { err('Categoria não encontrada', 404); return; }
+    const subdir  = cfg.output_subdir || catNome;
+    const baseDir = path.join(COMFY_OUTPUT, subdir);
+
+    // Localiza a imagem (raiz ou experimentos/)
+    let imgPath = path.join(baseDir, filename);
+    let isExp   = false;
+    if (!fs.existsSync(imgPath)) { imgPath = path.join(baseDir, 'experimentos', filename); isExp = true; }
+    const resolved = path.resolve(imgPath);
+    if (!resolved.startsWith(path.resolve(COMFY_OUTPUT) + path.sep)) { err('Acesso negado', 403); return; }
+    if (!fs.existsSync(resolved)) { err('Imagem não encontrada', 404); return; }
+
+    // Thumbnail correspondente
+    const stem      = filename.replace(/\.png$/, '');
+    const thumbPath = path.join(baseDir, ...(isExp ? ['experimentos', 'thumbs'] : ['thumbs']), stem + '.jpg');
+
+    try {
+      fs.unlinkSync(resolved);
+      if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
+
+      // Auto-vote-down: extrai pnome do nome do arquivo e registra no prompt
+      const fnMatch = filename.match(new RegExp(`^${catNome}_(.+)_seed\\d+_\\d+_\\.png$`));
+      if (fnMatch) {
+        const pnome   = fnMatch[1];
+        const catCfg  = readJson(path.join(CATEGORIAS_DIR, `${catNome}.json`));
+        const prompt  = catCfg && (catCfg.prompts || []).find(p => p.name === pnome);
+        if (prompt) {
+          if (!prompt.votes) prompt.votes = { up: 0, down: 0 };
+          prompt.votes.down = (prompt.votes.down || 0) + 1;
+          writeJson(path.join(CATEGORIAS_DIR, `${catNome}.json`), catCfg);
+        }
+      }
+
+      json({ ok: true });
+    } catch(e) { json({ ok: false, error: e.message }); }
     return;
   }
 

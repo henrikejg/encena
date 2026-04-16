@@ -1,0 +1,88 @@
+{
+  "category": "grandes_felinos",
+  "checkpoint_name": "RealVisXL_V5.0_fp16.safetensors",
+  "lora_detail_name": "photorealistic_slider.safetensors",
+  "lora_nature_name": "",
+  "cfg": 3.5,
+  "lora_detail": 0.4,
+  "lora_nature": 0,
+  "steps": 10,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/grandes_felinos",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Wilderness majesty",
+    "Apex predators",
+    "Stripes and spots",
+    "Power and grace",
+    "Nature's prowess",
+    "Big cat intimacy",
+    "Solitary hunters",
+    "Global felines"
+  ],
+  "biomas": [
+    "African savannah at sunset",
+    "Brazilian rainforest canopy",
+    "Indoor big cat enclosure",
+    "Russian tundra during winter",
+    "Asian temple ruins",
+    "South African rocky cliffs",
+    "Arabian desert dunes at dawn",
+    "North American mountainous terrain"
+  ],
+  "elementos": [
+    "Close-up of a jaguar's eyes",
+    "Lion pride lounging under acacia trees",
+    "Tiger stalking through reeds",
+    "Leopard hiding in tree branches",
+    "Puma leaping through air",
+    "Cheetah running across open plains",
+    "Snow leopard on rocky outcrop",
+    "Jaguarundi in dense foliage"
+  ],
+  "prompts": [
+    {
+      "name": "grandes_felinos_livre",
+      "text": "RAW photo, professional photography\nArabian desert dunes at dawn: A grand lion prowls through golden sand dunes bathed in the soft, warm light of sunrise. The lion's majestic form is accentuated by the play of shadows and highlights on its tawny stripes, creating a sense of power and grace. Its eyes, filled with an ancient wisdom, meet the viewer's gaze from beneath arched eyebrows. The scene captures the solitude of this apex predator in its natural habitat, showcasing the global diversity of big cats - a leopard lies camouflaged on a distant rocky outcrop, and a jaguar is silhouetted against the rising sun in the distance. A sense of nature's prowess pervades as the early morning air vibrates with life, from the sweeping sands to the resilient cacti dotting the landscape. The composition focuses on the lion and its surroundings, evoking awe and respect for these magnificent creatures. Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "grandes_felinos_livre_2",
+      "text": "RAW photo, professional photography\nIndoor big cat enclosure in a lush, tropical rainforest biome - A majestic jaguar, sporting vibrant rosettes on its golden fur, stands alone against the backdrop of dense greenery and dappled sunlight filtering through the foliage. The atmospheric quality is heavy with moisture, creating an ethereal glow on the jaguar's sinewy muscles and sharp teeth that hint at its power and grace. Its piercing green eyes lock onto the camera, conveying a sense of solitude and raw intensity. The composition focuses on the jaguar while subtly incorporating elements of nature's prowess with surrounding vegetation, adding to the global felines theme.\n\nCanon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "grandes_felinos_livre_3",
+      "text": "Medium format RAW capture, professional photography: African savannah at sunset - Serengeti Plains, Tanzania. A breathtaking dusk scene unfolds as the setting sun casts long, warm shadows over golden grasses and scattered acacia trees. The air is filled with the distinct scent of damp earth and burning savannah.\n\nThe composition revolves around a solitary leopard (Panthera pardus) poised atop a termite mound, its fiery-orange coat illuminated by the last rays of the sun. The leopard's eyes glimmer with predatory intent and keen awareness, embodying the power and grace of nature's greatest hunters.\n\nIn the distance, a jaguar (Panthera onca) stalks through the long grasses of the Pantanal wetlands in Brazil, its majestic form echoing the grandeur of the setting. Its spotted coat blends effortlessly with the dappled sunlight filtering through the foliage, adding an air of mystery to the scene.\n\nThe photograph showcases the big cat intimacy and solitary hunter themes as these two global felines, continents apart, embody the raw beauty and untamed wildness of their respective habitats. Nature's prowess is undeniable in this powerful, evocative image that celebrates the grandes_felinos in their natural African savannah habitat.\n\nHasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra realistic, National Geographic."
+    },
+    {
+      "name": "african_savannah_at__early_morning_g",
+      "text": "RAW photo, professional nature photography, African savannah sunset at golden hour, dramatic cumulonimbus casting long shadows, Cheetah with its distinctive spotted coat and sleek physique running along the leading lines of grasslands and termite mounds, solitary hunter's power and grace captured in the wilderness majesty, intimate close-up revealing the cat's intense gaze as it scans the vast open plains for prey, global felines showcased in a single image - Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "african_savannah_at__stormy_overcast",
+      "text": "RAW photo, professional nature photography, South American rainforest twilight, golden sunlight breaking through dense canopy, tactile moss-covered foliage and wet earth beneath paw prints, solitary jaguar emerging from shadows on ancient stone ruins, Canon EOS R5, f/8, ultra realistic, National Geographic - grandes_felinos."
+    },
+    {
+      "name": "indoor_big_cat_enclo_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Moonlit, mist-shrouded Siberian wilderness; lone tiger perched on a jagged cliff-edge, its golden stripes contrasting with the somber hues of the landscape, Canon EOS R5, f/14, ultra realistic, ISO 200, 30s exposure, capturing both power and grace in the solitary hunter, global felines series for National Geographic."
+    },
+    {
+      "name": "indoor_big_cat_enclo_misty_morning",
+      "text": "RAW photo, professional nature photography, Dawn's ethereal glow illuminates a secluded big cat enclosure, golden dust haze shrouding the air with mystery. A solitary leopard's striking spots stand out amidst the lush greenery, its powerful grace captured in the serene stillness of the scene. The majestic wilderness around it is teeming with life, as a pride of lions lounges under ancient acacia trees, their stripes blending seamlessly with the natural surroundings. This captivating image encapsulates nature's prowess and big cat intimacy, showcasing the grandeur of these global felines at the zenith of their solitary existence. Canon EOS R5, f/4, ultra realistic, National Geographic."
+    },
+    {
+      "name": "asian_temple_ruins_sunrise",
+      "text": "Grandes Felinos: Majestic wilderness engulfed by the golden afterglow of sunrise, where ancient Asian temple ruins glisten in a mirror-like pond after the rain. In the heart of it all, a solitary jaguar gazes from the shadows with an air of power and grace, its striking stripes and spots etched in perfect detail. Captured with Hasselblad X2D, 45mm f/3.5, f/8, ISO 64, this ultra-realistic image speaks to the prowess of nature's apex predators and the intimacy between humans and these global felines. National Geographic."
+    },
+    {
+      "name": "russian_tundra_durin_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Siberian tundra's wintry storm-stricken landscape bathed in golden haze, low-lying fog and soft diffused light filtering through dense clouds, a solitary leopard crouching among snow-laden acacia branches, Canon EOS R5, 600mm f/4, f/8, ultra realistic, National Geographic - grandes_felinos."
+    },
+    {
+      "name": "russian_tundra_durin_sunset_golden_h",
+      "text": "Grandes Felinos: Arctic Tundra Sunset, RAW photo, professional nature photography - A solitary leopard camouflaged among the snow-dusted tree branches of a Russian tundra landscape at twilight. The golden hour sun casts warm light through morning mist, accentuating the power and grace of this global apex predator as it surveys its vast territory. Texture of ice, snow, and fur is captured in pristine detail by the Canon EOS R5, with nature's prowess on full display. Big cat intimacy unfolds within the wilderness majesty, evoking a sense of both the solitary hunter's dominance and its fragile existence among the world's grand felines. Ultra realistic, National Geographic."
+    }
+  ]
+}

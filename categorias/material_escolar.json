@@ -1,0 +1,88 @@
+{
+  "category": "material_escolar",
+  "checkpoint_name": "DreamShaperXL_Lightning.safetensors",
+  "lora_detail_name": "add-detail-xl.safetensors",
+  "lora_nature_name": "",
+  "cfg": 3.5,
+  "lora_detail": 0.3,
+  "lora_nature": 0,
+  "steps": 8,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/material_escolar",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Education",
+    "Learning",
+    "Knowledge",
+    "School supplies",
+    "Teaching",
+    "Discovery",
+    "Cultural exchange",
+    "Youth empowerment"
+  ],
+  "biomas": [
+    "Classroom with school supplies",
+    "Factory producing educational materials",
+    "Rural village schoolyard",
+    "Urban rooftop learning center",
+    "Library interior",
+    "Outdoor classroom in a forest",
+    "Desert camp with teaching equipment",
+    "Night-time cityscape with illuminated school sign"
+  ],
+  "elementos": [
+    "Close-up of textbooks",
+    "Student engaged in a science experiment",
+    "Blackboard filled with equations",
+    "Teacher explaining using visual aids",
+    "Child reading under a tree",
+    "Stacks of chalks and erasers",
+    "Globes and maps on display",
+    "Sunlight streaming through open school windows"
+  ],
+  "prompts": [
+    {
+      "name": "material_escolar_livre",
+      "text": "RAW photo, professional photography.\nOutdoor classroom in a forest, under a canopy of ancient trees with sunlight filtering through emerald green leaves casting dappled patterns on desks and students. A diverse group of youthful faces engages in an animated discussion while exchanging school supplies such as books, tablets, and notebooks from different cultures. Chalkboards and whiteboards display equations, maps, and diagrams, hinting at ongoing lessons. A sense of discovery and empowerment fills the air as students learn and share knowledge within this unique and inspiring learning environment.\nSony A7R V, 24mm f/1.4, f/2, ISO 3200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "material_escolar_livre_2",
+      "text": "RAW photo, professional photography\nNight-time cityscape with illuminated school sign, New York City. A bustling metropolis backdrop sets the stage for an intriguing scene where a youthful group of international students collaborate under the school's glowing sign. The soft, ambient streetlights create a warm, inviting glow that highlights their passion for learning and discovery. Scattered around them are assorted school supplies and cultural artifacts, symbolizing the exchange of knowledge and ideas. A sense of youth empowerment fills the air as they engage in lively discussions, their faces illuminated by the school sign above them. The composition focuses on the dynamic interplay between the cityscape, the students, and the iconic school sign, emphasizing the fusion of education, learning, knowledge, and cultural exchange within this urban setting.\n\nCanon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "material_escolar_livre_3",
+      "text": "RAW photo, professional photography\nDesert camp at dusk, educational equipment scattered across the sandy terrain under the warm glow of setting sun. The light casts long shadows, creating a dramatic yet serene atmosphere. The texture of the desert's golden sands contrasts with the sleek surfaces of laptops, books, and teaching aids. A group of youths from various cultural backgrounds are gathered around a fire, engaging in animated discussions, symbolizing knowledge exchange and learning. The scene radiates a sense of discovery, empowerment, and unity. Canon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "urban_rooftop_learni_aurora_night",
+      "text": "RAW photo, professional nature photography, Evocative urban rooftop learning center under the ethereal glow of an aurora night, textured concrete structures blending seamlessly with the celestial lights. A panoramic vista revealing a bustling cityscape, juxtaposed against untouched wilderness. An array of globes and maps on display, symbolizing cultural exchange and discovery. School supplies scattered around, signifying education, learning, and knowledge transfer among youth. Teaching tools like chalkboards and books create an ambiance of empowerment and intellectual exploration. Canon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "factory_producing_ed_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Sunset-bathed educational materials factory in a remote Brazilian rainforest, vivid textures of wooden desks and school supplies contrasting against lush greenery, atmospheric haze evoking a sense of global cooperation, youth empowerment and cultural exchange taking place under the watchful gaze of a young teacher guiding her students, Canon EOS R5, f/2.8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "outdoor_classroom_in_misty_morning",
+      "text": "RAW photo, professional nature photography, Vibrant forest classroom nestled amid ancient oak trees under a misty morning light, dramatic storm clouds looming ominously in the distance, panoramic vista of rolling hills and valleys, intricate detail on textbooks and school supplies scattered across wooden desks, youthful students engaged in passionate cultural exchange, Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "rural_village_school_sunrise",
+      "text": "RAW photo, professional nature photography, Verdant rural schoolyard of a remote Brazilian village bathed in the golden hues of sunrise, rainbow arcing above, venerable old trees surrounding with textured bark and verdant foliage, young local students engaged in cultural exchange activities using traditional school supplies like colorful chalks, erasers, and books strewn on tables, a teacher guiding them amidst a backdrop of empowering education and discovery, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "urban_rooftop_learni_starry_night",
+      "text": "Aerial drone RAW photograph, professional nature photography, Sun-kissed rooftop classroom at twilight, following a rain shower, high angle skyward perspective, Chalkboard teeming with mathematical formulas and educational illustrations beneath the shade of vibrant school supplies scattered around, youthful learners engaged in cultural exchange and knowledge sharing under the watchful gaze of a sprawling cityscape. DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "night_time_cityscape_starry_night",
+      "text": "Nighttime urban scene, professional nature photography in medium format RAW capture. Canon EOS R5, 16-35mm f/4L IS USM, f/8, ISO 64. A cityscape under a starlit sky, where the soft glow of streetlights and the illuminated sign of an open school are shimmering against the falling snowflakes. The focus is on a weathered textbook left open at a page filled with complex equations, symbols of knowledge and learning, nestled among colorful school supplies, symbolizing cultural exchange and youth empowerment. The scene exudes an atmosphere of discovery, teaching, and an enduring spirit of education under the cold winter's night sky. National Geographic."
+    },
+    {
+      "name": "library_interior_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Serene library interior bathed in sunset golden hour glow, intricately textured wooden shelves lined with school supplies and books, a youthful exchange of ideas unfolding under the dappled sunlight streaming through open arched windows, Canon EOS R5, f/4, ISO 800, ultra realistic, National Geographic."
+    }
+  ]
+}

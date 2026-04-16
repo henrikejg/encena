@@ -1,0 +1,90 @@
+{
+  "category": "trens",
+  "checkpoint_name": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "lora_detail_name": "photorealistic_slider.safetensors",
+  "lora_nature_name": "",
+  "cfg": 4.5,
+  "lora_detail": 0.3,
+  "lora_nature": 0,
+  "steps": 12,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/trens",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Transportation",
+    "Industrial heritage",
+    "Night cityscapes",
+    "Railway aesthetics",
+    "Motion and movement",
+    "Urban exploration",
+    "Landscape juxtaposition",
+    "Engineering marvels",
+    "Steam locomotive",
+    "iron horse"
+  ],
+  "biomas": [
+    "Railway station at dusk",
+    "Inside a train cabin",
+    "Urban railway tracks at sunrise",
+    "Tunnel with steamy windows",
+    "Rural countryside crossing",
+    "Abandoned warehouse with graffiti trains",
+    "Modern subway system interior",
+    "Snow-covered mountain train route"
+  ],
+  "elementos": [
+    "Wheels and tracks",
+    "Train headlight",
+    "Passenger reflections",
+    "Steam billowing from engine",
+    "Ticket or timetable",
+    "Graffiti art on train cars",
+    "Architectural details of station",
+    "Landscape view from moving train"
+  ],
+  "prompts": [
+    {
+      "name": "trens_livre",
+      "text": "RAW photo, professional photography\nUrban railway tracks at sunrise in São Paulo, Brazil\nThe first light of dawn illuminates the industrial heritage of an urban landscape as it meets the raw aesthetics of railway tracks, casting long, dramatic shadows over rusted rails and graffiti-covered carriages. The city skyline looms behind, a testament to modern architecture, with towering skyscrapers silhouetted against the vibrant hues of sunrise. A train roars through the frame, its motion blurred by the early morning light, adding an element of movement and dynamism to the otherwise static scene. Urban explorers can be seen scouring the tracks for hidden gems amidst the grit and decay, their torches casting pools of light on the textured ground. The atmosphere is one of contrast - the beauty of the sunrise juxtaposed with the harshness of the industrial setting, creating a landscape that is both inviting and foreboding. Compositionally, the train serves as the central focus, leading the eye through the frame from the depths of the railway to the towering cityscape beyond.\nCanon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "trens_livre_2",
+      "text": "RAW photo, professional photography\nTunnel with steamy windows, an industrial heritage site nestled within a modern metropolis. The dimly lit, sprawling tunnel network showcases the raw power and resilience of railway aesthetics, as vintage steam locomotives contrast with sleek modern trains. The atmosphere is electrifying yet eerie, punctuated by flickering neon lights and glowing orange embers from the steam engines.\n\nThe walls are lined with rough concrete textures, adorned with graffiti art that adds a vibrant pop of color amidst the grimy industrial setting. Concrete pillars supporting the ceiling create an intricate web, providing a composition rich in lines and shapes that lead the eye towards the train emerging from the darkness at the end of the tunnel.\n\nThe light quality is a blend of soft ambient glow emanating from the cityscape beyond the tunnel entrance and harsh spotlights illuminating the industrial machinery within the tunnel. The steamy windows create a veil of mystery, gradually revealing the chaotic beauty unfolding inside as the train approaches.\n\nNight cityscapes can be glimpsed through the windows, their vibrant lights providing an intriguing contrast to the dark and gritty industrial landscape. Urban exploration enthusiasts scurry around the tracks, capturing fleeting moments of motion and movement that add a dynamic energy to the scene. The juxtaposition between the old and new, the raw and refined, the decaying and thriving, creates an engineering marvel that encapsulates the essence of transportation in a city that never sleeps.\n\nSony A7R V, 24mm f/1.4, f/2, ISO 3200, ultra realistic, National Geographic"
+    },
+    {
+      "name": "trens_livre_3",
+      "text": "RAW photo, professional photography\nModern subway system interior at night - the dimly lit, sleek corridors of a futuristic metro station in Tokyo. The glossy black tiles reflecting the soft glow of neon signs and the distant hum of city life. A train rushes through the tunnel, its bright headlights cutting through the darkness, casting an ethereal light that illuminates the industrial textures of rusted metal beams and worn concrete walls. The station's urban landscape is juxtaposed with the clean lines and advanced engineering of the train cars. A blur of motion captures the dynamic energy of transportation, while the city skyline outside the windows offers a glimpse into the pulsing heart of the metropolis.\n\nRAW photo, professional photography\nCanon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "urban_railway_tracks_aurora_night",
+      "text": "RAW photo, professional nature photography, Industrial-heritage urban railway tracks at sunrise under the aurora, snowflakes shimmering in the dim light, reflective long exposure shot of a steam-powered engine in motion, gritty textures juxtaposed with gleaming metal and glass, night cityscape towering behind the aging railway structures, Canon EOS R5, f/2.8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tunnel_with_steamy_w_late_afternoon",
+      "text": "Nighttime railway tunnel illuminated by flickering glow from steamy windows, industrial heritage merging with urban exploration. The scene captures a timetable in hand, hinting at the tunnel's historical significance amidst the backdrop of an expansive cityscape. Aerial drone RAW photograph, Trens category, Canon EOS R5, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "urban_railway_tracks_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Urban railway tracks bathed in the glow of sunrise amidst a stormy overcast sky, golden dust haze enveloping the industrial heritage station architecture, dramatic wide-angle shot capturing both urban exploration and landscape juxtaposition, focusing on intricate details of the engineering marvel - an old steam engine silhouetted against the gritty cityscape, motion and movement hinted by swaying electrical wires and dimly lit trains, night cityscapes illuminated in the distance, Canon EOS R5, 24-70mm f/2.8 lens, f/8 aperture, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "modern_subway_system_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Abandoned railway station at twilight after the rain, industrial heritage meets urban exploration. Highlighting the subterranean tunnel's gritty textures and patina of age, with motion blur from the approaching train's headlights illuminating the damp cobblestones. Landscape juxtaposition of city skyline's reflections on the station's soaked windows and the engineering marvel of the railway system in a night cityscape backdrop. Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "urban_railway_tracks_misty_morning",
+      "text": "Nighttime aerial shot of industrial railway tracks sprawled across a densely foggy urban landscape, snowflakes gently dancing in the cold air, focus on weathered steel structures and glowing city lights. Drone-captured image from a moving train, revealing a captivating juxtaposition of transportation history and modern cityscape. DJI Mavic 3 Pro, 24mm equivalent lens, f/8, ISO 100, National Geographic."
+    },
+    {
+      "name": "urban_railway_tracks_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Nighttime urban exploration along disused railway tracks, a rusty industrial heritage bathed in the ethereal glow of sunset's golden hour, with distant cityscapes silhouetted against the horizon. A lone train car rests on the tracks, its weather-beaten exterior contrasting sharply with the vibrant backdrop, evoking a sense of motion and movement frozen in time. An intricate play of light filters through scattered clouds, casting dramatic shadows and illuminating the textured landscape, while the architecture of the abandoned station stands as an engineering marvel amidst the urban wilderness. Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tunnel_with_steamy_w_sunrise",
+      "text": "Nighttime railway tunnel expedition, industrial legacy shrouded in steamy window reflections at sunset. A solitary train moves through a sprawling urban landscape juxtaposed with the grandeur of engineering marvels. The scene captures motion and movement as city lights dance across dampened textures, illuminating the rusted tracks and aging brickwork. DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra-realistic, National Geographic."
+    }
+  ]
+}

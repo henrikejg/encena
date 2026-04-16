@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- céu noturno, mais iluminado no centro do feixe -->
+    <radialGradient id="bg" cx="50%" cy="18%" r="72%">
+      <stop offset="0%"   stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#07090f"/>
+    </radialGradient>
+    <!-- feixe do holofote: intenso na fonte, difuso embaixo -->
+    <linearGradient id="beam" x1="32" y1="6" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#a5b4fc" stop-opacity="0.85"/>
+      <stop offset="55%"  stop-color="#818cf8" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.06"/>
+    </linearGradient>
+    <!-- brilho quente no horizonte -->
+    <linearGradient id="glow" x1="32" y1="43" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#fbbf24" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.5"/>
+    </linearGradient>
+    <!-- halo ao redor da lâmpada -->
+    <radialGradient id="lamp" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#e0e7ff" stop-opacity="1"/>
+      <stop offset="40%"  stop-color="#818cf8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="c">
+      <circle cx="32" cy="32" r="30"/>
+    </clipPath>
+  </defs>
+
+  <!-- fundo externo (aro sutil) -->
+  <circle cx="32" cy="32" r="32" fill="#12103a"/>
+  <!-- fundo interior com gradiente de céu -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg)"/>
+
+  <!-- feixe de luz do holofote (triângulo largo, clipado no círculo) -->
+  <polygon points="32,6  2,60  62,60" fill="url(#beam)" clip-path="url(#c)"/>
+
+  <!-- cordilheira — silhueta escura contra o feixe iluminado -->
+  <path d="M2,58
+           L13,41 L19,49
+           L27,27 L33,40
+           L39,31 L46,45
+           L53,36 L62,52
+           L62,60 L2,60 Z"
+        fill="#07090f" clip-path="url(#c)"/>
+
+  <!-- brilho quente no horizonte (sobre as montanhas) -->
+  <rect x="2" y="43" width="60" height="17" fill="url(#glow)" clip-path="url(#c)"/>
+
+  <!-- halo da lâmpada (grande, difuso) -->
+  <circle cx="32" cy="7" r="11" fill="url(#lamp)" clip-path="url(#c)"/>
+  <!-- corpo da lâmpada -->
+  <circle cx="32" cy="7" r="3.2" fill="#e0e7ff"/>
+
+  <!-- borda do ícone -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#4338ca" stroke-width="0.7" opacity="0.5"/>
+</svg>

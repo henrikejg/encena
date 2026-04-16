@@ -53,6 +53,7 @@ EXEMPLOS
 
 import argparse
 import json
+import os
 import random
 import re
 import sys
@@ -63,10 +64,12 @@ from pathlib import Path
 
 # ─── Configuração ─────────────────────────────────────────────────────────────
 
-CONFIGS_DIR = Path(__file__).parent / "categorias"
-OLLAMA_URL  = "http://localhost:11434"
-COMFY_URL   = "http://localhost:8188"
-CLIENT_ID   = str(uuid.uuid4())
+CONFIGS_DIR  = Path(__file__).parent / "categorias"
+OLLAMA_URL   = "http://localhost:11434"
+COMFY_URL    = "http://localhost:8188"
+CLIENT_ID    = str(uuid.uuid4())
+COMFY_OUTPUT = Path(os.environ.get("COMFY_OUTPUT", Path.home() / "ComfyUI" / "output"))
+THUMB_MAX    = 500  # px — dimensão máxima do lado maior da thumbnail
 
 CHECKPOINT  = "DreamShaperXL_Lightning.safetensors"
 LORA_DETAIL = "add-detail-xl.safetensors"
@@ -325,6 +328,56 @@ def adicionar_rascunho(categoria: str, entrada: dict):
         rascunhos.append(entrada)
         salvar_rascunhos(categoria, rascunhos)
 
+# ─── Thumbnails ──────────────────────────────────────────────────────────────
+
+def gerar_thumbnail(png_path: Path) -> bool:
+    """Gera thumbnail JPEG em thumbs/ ao lado do PNG original.
+    Não regera se o thumb já existir. Retorna True se bem-sucedido."""
+    try:
+        from PIL import Image  # type: ignore
+    except ImportError:
+        print("  aviso: Pillow não instalado — instale com: pip install Pillow", flush=True)
+        return False
+    try:
+        thumb_dir  = png_path.parent / "thumbs"
+        thumb_dir.mkdir(parents=True, exist_ok=True)
+        thumb_path = thumb_dir / (png_path.stem + ".jpg")
+        if thumb_path.exists():
+            return True
+        with Image.open(png_path) as img:
+            img.thumbnail((THUMB_MAX, THUMB_MAX), Image.LANCZOS)
+            img.save(thumb_path, "JPEG", quality=75, optimize=True)
+        return True
+    except Exception as e:
+        print(f"  aviso: thumbnail falhou ({png_path.name}): {e}", flush=True)
+        return False
+
+
+def cmd_gerar_thumbs(categorias: list[str]) -> None:
+    """Gera thumbnails para todas as imagens existentes nas categorias indicadas."""
+    total = ok = ignoradas = 0
+    for cat in categorias:
+        cfg    = carregar_json(cat)
+        subdir = cfg.get("output_subdir", f"landscapes/{cat}")
+        base   = COMFY_OUTPUT / subdir
+        dirs   = [base, base / "experimentos"]
+        for d in dirs:
+            if not d.exists():
+                continue
+            for f in sorted(d.glob("*.png")):
+                thumb = f.parent / "thumbs" / (f.stem + ".jpg")
+                if thumb.exists():
+                    ignoradas += 1
+                    continue
+                total += 1
+                if gerar_thumbnail(f):
+                    ok += 1
+                    print(f"  ✓  {f.relative_to(COMFY_OUTPUT)}", flush=True)
+                else:
+                    print(f"  ✗  {f.name}", flush=True)
+    print(f"\n  {ok}/{total} gerado(s)  |  {ignoradas} já existia(m)")
+
+
 # ─── Ollama ───────────────────────────────────────────────────────────────────
 
 def _ollama_get(path: str) -> dict:
@@ -552,13 +605,19 @@ def ollama_livre(categoria: str, modelo: str, captura: str, abertura: str,
 # ─── ComfyUI ──────────────────────────────────────────────────────────────────
 
 def _comfy_post(endpoint: str, dados: dict) -> dict:
+    import urllib.error
     body = json.dumps(dados).encode()
     req = urllib.request.Request(
         f"{COMFY_URL}/{endpoint}", data=body,
         headers={"Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        detalhe = e.read().decode("utf-8", errors="replace")
+        print(f"ERRO ComfyUI {e.code}: {detalhe}", flush=True)
+        raise
 
 
 def _comfy_get(endpoint: str) -> dict:
@@ -578,42 +637,63 @@ def comfy_montar_workflow(cfg: dict, positivo: str, negativo: str,
                           prefixo: str, seed: int,
                           orientacao: str = "vertical") -> dict:
     """
-    Grafo ComfyUI:
-      1  CheckpointLoader
-      2  LoraLoader (add-detail-xl)
-      3  LoraLoader (nature-landscapes)
-      4  CLIPTextEncode positivo
-      5  CLIPTextEncode negativo
-      6  EmptyLatentImage
-      7  KSampler
-      8  VAEDecode
-      9  UpscaleModelLoader
-      10 ImageUpscaleWithModel
-      11 SaveImage
+    Grafo ComfyUI construído dinamicamente.
+    Os nós de LoraLoader só são incluídos quando há lora configurado na categoria.
+
+      1   CheckpointLoader
+      2   LoraLoader (lora_detail) — opcional
+      3   LoraLoader (lora_nature) — opcional
+      4   CLIPTextEncode positivo
+      5   CLIPTextEncode negativo
+      6   EmptyLatentImage
+      7   KSampler
+      8   VAEDecode
+      9   UpscaleModelLoader
+      10  ImageUpscaleWithModel
+      11  SaveImage
     """
-    return {
-        "1":  {"class_type": "CheckpointLoaderSimple",
-               "inputs": {"ckpt_name": CHECKPOINT}},
-        "2":  {"class_type": "LoraLoader",
-               "inputs": {"model": ["1", 0], "clip": ["1", 1],
-                          "lora_name": LORA_DETAIL,
-                          "strength_model": cfg.get("lora_detail", 0.6),
-                          "strength_clip":  cfg.get("lora_detail", 0.6)}},
-        "3":  {"class_type": "LoraLoader",
-               "inputs": {"model": ["2", 0], "clip": ["2", 1],
-                          "lora_name": LORA_NATURE,
-                          "strength_model": cfg["lora_nature"],
-                          "strength_clip":  cfg["lora_nature"]}},
+    ckpt_name   = cfg.get("checkpoint_name") or CHECKPOINT
+    lora_d_name = cfg.get("lora_detail_name") or None
+    lora_d_str  = float(cfg.get("lora_detail", 0.6))
+    lora_n_name = cfg.get("lora_nature_name") or None
+    lora_n_str  = float(cfg.get("lora_nature", 0.4))
+
+    wf: dict = {
+        "1": {"class_type": "CheckpointLoaderSimple",
+              "inputs": {"ckpt_name": ckpt_name}},
+    }
+
+    last_model: list = ["1", 0]
+    last_clip:  list = ["1", 1]
+
+    if lora_d_name:
+        wf["2"] = {"class_type": "LoraLoader",
+                   "inputs": {"model": last_model, "clip": last_clip,
+                              "lora_name": lora_d_name,
+                              "strength_model": lora_d_str,
+                              "strength_clip":  lora_d_str}}
+        last_model, last_clip = ["2", 0], ["2", 1]
+
+    if lora_n_name:
+        wf["3"] = {"class_type": "LoraLoader",
+                   "inputs": {"model": last_model, "clip": last_clip,
+                              "lora_name": lora_n_name,
+                              "strength_model": lora_n_str,
+                              "strength_clip":  lora_n_str}}
+        last_model, last_clip = ["3", 0], ["3", 1]
+
+    w = cfg.get("height", 1344) if orientacao == "horizontal" else cfg.get("width",  768)
+    h = cfg.get("width",   768) if orientacao == "horizontal" else cfg.get("height", 1344)
+
+    wf.update({
         "4":  {"class_type": "CLIPTextEncode",
-               "inputs": {"text": positivo, "clip": ["3", 1]}},
+               "inputs": {"text": positivo, "clip": last_clip}},
         "5":  {"class_type": "CLIPTextEncode",
-               "inputs": {"text": negativo, "clip": ["3", 1]}},
+               "inputs": {"text": negativo,  "clip": last_clip}},
         "6":  {"class_type": "EmptyLatentImage",
-               "inputs": {"width":  cfg.get("height", 1344) if orientacao == "horizontal" else cfg.get("width", 768),
-                          "height": cfg.get("width", 768)   if orientacao == "horizontal" else cfg.get("height", 1344),
-                          "batch_size": 1}},
+               "inputs": {"width": w, "height": h, "batch_size": 1}},
         "7":  {"class_type": "KSampler",
-               "inputs": {"model": ["3", 0], "positive": ["4", 0],
+               "inputs": {"model": last_model, "positive": ["4", 0],
                           "negative": ["5", 0], "latent_image": ["6", 0],
                           "seed": seed, "steps": cfg.get("steps", 8),
                           "cfg": cfg["cfg"],
@@ -628,7 +708,8 @@ def comfy_montar_workflow(cfg: dict, positivo: str, negativo: str,
                "inputs": {"upscale_model": ["9", 0], "image": ["8", 0]}},
         "11": {"class_type": "SaveImage",
                "inputs": {"images": ["10", 0], "filename_prefix": prefixo}},
-    }
+    })
+    return wf
 
 
 def comfy_enfileirar(workflow: dict) -> str:
@@ -636,7 +717,8 @@ def comfy_enfileirar(workflow: dict) -> str:
     return resultado["prompt_id"]
 
 
-def comfy_aguardar(prompt_id: str, tag: str) -> bool:
+def comfy_aguardar(prompt_id: str, tag: str) -> list[Path]:
+    """Aguarda conclusão do prompt. Retorna lista de Paths das imagens salvas (vazia = falha)."""
     inicio = time.time()
     pontos = 0
     print(f"  {tag} | enviado...", flush=True)
@@ -652,19 +734,24 @@ def comfy_aguardar(prompt_id: str, tag: str) -> bool:
             status = historico[prompt_id].get("status", {}).get("status_str", "")
             if status == "success":
                 elapsed = time.time() - inicio
-                arquivos = [
-                    img.get("filename", "")
+                imagens = [
+                    img
                     for node in historico[prompt_id].get("outputs", {}).values()
                     for img in node.get("images", [])
                 ]
+                caminhos = [
+                    COMFY_OUTPUT / img.get("subfolder", "") / img.get("filename", "")
+                    for img in imagens
+                    if img.get("filename")
+                ]
                 print(f"\r  {tag} | PRONTA em {elapsed:.0f}s{' ' * 10}", flush=True)
-                for arq in arquivos:
-                    print(f"    -> output/{arq}", flush=True)
-                return True
+                for p in caminhos:
+                    print(f"    -> output/{p.relative_to(COMFY_OUTPUT)}", flush=True)
+                return caminhos
             elif status == "error":
                 msgs = historico[prompt_id].get("status", {}).get("messages", [])
                 print(f"\n  {tag} | ERRO: {msgs}", flush=True)
-                return False
+                return []
 
         try:
             fila = _comfy_get("queue")
@@ -894,16 +981,18 @@ def cmd_imagens(
     jobs = [(cat, carregar_json(cat)) for cat in categorias]
     total = len(jobs) * quantidade
 
+    fmt = "1344×768 (horizontal)" if orientacao == "horizontal" else "768×1344 (vertical)"
     print("=" * 70)
     print(f"  {len(jobs)} categoria(s) × {quantidade} imagem(ns) = {total} total")
-    print(f"  Checkpoint : {CHECKPOINT}")
-    print(f"  LoRAs      : {LORA_DETAIL}  +  {LORA_NATURE}")
-    fmt = "1344×768 (horizontal)" if orientacao == "horizontal" else "768×1344 (vertical)"
     print(f"  Upscaler   : {UPSCALER}  |  Formato: {fmt}")
     print("=" * 70)
     for cat, cfg in jobs:
-        n = len(cfg.get("prompts", []))
-        print(f"  • {cat:24s}  cfg={cfg['cfg']}  nature={cfg['lora_nature']}  {n} prompts")
+        n         = len(cfg.get("prompts", []))
+        ckpt      = (cfg.get("checkpoint_name") or CHECKPOINT).replace(".safetensors", "")
+        lora_d    = cfg.get("lora_detail_name") or ""
+        lora_n    = cfg.get("lora_nature_name") or ""
+        loras_str = "  +  ".join(l for l in [lora_d, lora_n] if l) or "sem lora"
+        print(f"  • {cat:24s}  ckpt={ckpt}  loras={loras_str}  cfg={cfg['cfg']}  {n} prompts")
     print()
 
     if not comfy_disponivel():
@@ -947,12 +1036,20 @@ def cmd_imagens(
             time.sleep(0.3)
 
     print()
-    sucessos = sum(comfy_aguardar(pid, tag) for pid, tag in fila)
+    resultados = [comfy_aguardar(pid, tag) for pid, tag in fila]
+    sucessos   = sum(1 for r in resultados if r)
     print()
     print("=" * 70)
     print(f"  Concluído: {sucessos}/{total} imagens")
     print(f"  Local    : ~/ComfyUI/output/landscapes/")
     print("=" * 70)
+    # Gera thumbnails para as imagens recém salvas
+    n_thumbs = sum(
+        1 for caminhos in resultados for p in caminhos
+        if p.exists() and gerar_thumbnail(p)
+    )
+    if n_thumbs:
+        print(f"  Thumbnails: {n_thumbs} gerado(s)")
 
 
 def cmd_experimentar(
@@ -999,7 +1096,10 @@ def cmd_experimentar(
         prefixo = f"{subdir}/experimentos/{nome}_seed{seed}"
         wf = comfy_montar_workflow(dados, texto, negativo, prefixo, seed, orientacao)
         pid = comfy_enfileirar(wf)
-        comfy_aguardar(pid, f"[{i + 1}/{quantidade}] {nome}")
+        caminhos = comfy_aguardar(pid, f"[{i + 1}/{quantidade}] {nome}")
+        for p in caminhos:
+            if p.exists():
+                gerar_thumbnail(p)
 
         rascunho = {"name": nome, "text": texto}
         adicionar_rascunho(categoria, rascunho)
@@ -1090,9 +1190,9 @@ def cmd_gerar_tema(categoria: str):
 
     # Gera prompts iniciais se a categoria ainda não tiver nenhum
     if not dados.get("prompts"):
-        print(f"\n  ── Gerando 3 prompts iniciais ──────────────────────────")
+        print(f"\n  ── Gerando 10 prompts iniciais ──────────────────────────")
         cmd_prompts(
-            categoria=categoria, quantidade=3, modo="ollama", livre=True,
+            categoria=categoria, quantidade=10, modo="ollama", livre=True,
             bioma=None, hora=None, clima=None,
             perspectiva=None, elemento=None,
             simular=False, estilo=None,
@@ -1160,9 +1260,9 @@ def cmd_nova_categoria(nome: str, cfg: float, lora_nature: float, lora_detail: f
 
     # Gera prompts iniciais aproveitando o modelo já resolvido
     modelo_disponivel = tema_gerado is not None  # True se Ollama funcionou
-    print(f"\n  ── Gerando 3 prompts iniciais ──────────────────────────")
+    print(f"\n  ── Gerando 10 prompts iniciais ──────────────────────────")
     cmd_prompts(
-        categoria=slug, quantidade=3,
+        categoria=slug, quantidade=10,
         modo="ollama" if modelo_disponivel else "combinatorio",
         livre=modelo_disponivel,
         bioma=None, hora=None, clima=None,
@@ -1505,6 +1605,23 @@ def main():
     _arg_ajuda(p_dc)
     _arg_categoria(p_dc)
 
+    # ── gerar-thumbs ───────────────────────────────────────────────────────────
+    p_th = _sub(sub, "gerar-thumbs", ["th"],
+        "Gera thumbnails JPEG para imagens existentes sem thumbnail",
+        "Processa todos os .png de uma categoria (ou de todas) e cria versões\n"
+        "JPEG compactas em thumbs/ para uso no grid da galeria web.\n"
+        "Imagens que já têm thumbnail são ignoradas automaticamente.\n"
+        "Requer: pip install Pillow",
+        exemplos=(
+            "  encena.py gerar-thumbs -c canyon\n"
+            "  encena.py gerar-thumbs --todas\n"
+        ),
+    )
+    _arg_ajuda(p_th)
+    _arg_categoria(p_th, obrigatorio=False)
+    p_th.add_argument("--todas", action="store_true", default=False,
+                      help="Processar todas as categorias")
+
     # ── estilos ────────────────────────────────────────────────────────────────
     p_es = _sub(sub, "estilos", ["es"],
         "Lista os estilos fotográficos disponíveis",
@@ -1559,6 +1676,14 @@ def main():
     if args.acao in ("deletar-categoria", "dc"):
         cats = validar_categorias(args.categoria)
         cmd_deletar_categoria(cats[0])
+        return
+
+    if args.acao in ("gerar-thumbs", "th"):
+        cats = validar_categorias(args.categoria, getattr(args, "todas", False))
+        if not cats:
+            cats = listar_categorias()
+        print(f"\n  Gerando thumbnails para: {', '.join(cats)}\n")
+        cmd_gerar_thumbs(cats)
         return
 
     if args.acao in ("estilos", "es"):

@@ -1,0 +1,93 @@
+{
+  "category": "piano",
+  "cfg": 1.8,
+  "lora_nature": 0.4,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/piano",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Melodic harmony",
+    "Classical elegance",
+    "Creative composition",
+    "Timeless instrument",
+    "Artistic expression",
+    "Urban inspiration",
+    "Natural atmosphere",
+    "Striking contrast"
+  ],
+  "biomas": [
+    "Grand piano concert hall",
+    "Antique piano shop interior",
+    "Piano keys close-up outdoors",
+    "Piano on a city rooftop at sunset",
+    "Abandoned piano in a forest",
+    "Street musician with street piano",
+    "Nocturnal urban alleyway featuring a piano",
+    "Beach piano with waves crashing"
+  ],
+  "elementos": [
+    "Piano legs and pedals",
+    "Pianist's hands playing keys",
+    "Piano reflection in mirror",
+    "Piano keyboard under soft light",
+    "Piano with music sheets open",
+    "Detailed piano interior mechanics",
+    "Piano shadow on a wall",
+    "Piano silhouette against city skyline"
+  ],
+  "prompts": [
+    {
+      "name": "piano_livre",
+      "text": "Analog film photograph, professional photography:\n\nAbandoned Piano in a Forest - Melodic Harmony, Classical Elegance, Creative Composition, Timeless Instrument, Artistic Expression, Urban Inspiration, Natural Atmosphere, Striking Contrast.\n\nA hauntingly beautiful scene unfolds as an abandoned grand piano sits amidst the dense foliage of a moss-covered forest floor. The sun filters through the canopy above, casting dappled light onto the aged keys and weathered wood. The surrounding flora creates a rich tapestry of greens, browns, and earthy tones that contrast sharply with the piano's pristine white surface. A fallen branch rests on the open lid, evoking a sense of abandonment while also providing an unexpected perch for a bird, adding to the melodic harmony of the scene. The camera is positioned slightly off-center, capturing the entirety of the forest backdrop and emphasizing the isolation of the piano. With its classical elegance and artistic expression, this surreal image serves as a testament to the timeless beauty of both music and nature.\n\nHasselblad medium format, Kodak Portra 400 film scan, ultra realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_2",
+      "text": "RAW photo, professional photography:\nSeashore Pianoforte Symphony - Timeless Instrument Embraced by Waves\n\nA captivating scene unfolds at a secluded beach cove, where a grand piano stands defiant against the relentless advance of the ocean. The sun dips low in the sky, casting an ethereal golden glow that bathes both instrument and surrounding environment in soft, warm light. Waves crash violently against the rocky shoreline, creating a dynamic backdrop for this enchanting image.\n\nThe piano's rich black lacquer gleams under the fading sunlight, contrasting sharply with the white foam of the crashing waves and the sandy beach beyond. The ivory keys glint invitingly, as if beckoning to an unseen performer to play a melody that would echo through the cove and out to sea.\n\nThe composition is deliberately artistic, with the piano positioned on a narrow ledge between two towering rock formations. These natural pillars frame the instrument, drawing focus to its classical elegance while also emphasizing the urban inspiration inherent in such an unlikely setting. The waves themselves add a sense of movement and energy, further enhancing the overall feeling of creative composition.\n\nThe atmosphere is charged with a sense of timelessness, as if this piano has stood here for centuries, weathering countless storms while still retaining its dignity and beauty. This is not merely a photograph of a piano on a beach - it is a poignant exploration of artistic expression, natural atmosphere, and the enduring power of music in even the most seemingly unlikely settings.\n\nSony A7R V, 24mm f/1.4, f/2, ISO 3200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_3",
+      "text": "Aerial drone RAW photograph, professional photography:\nBeach Piano Harmonies – Urban Elegance in Natural Atmosphere\n\nSetting: A secluded beach with turquoise waters and soft golden sands, where a classic grand piano appears to have been gently placed by the crashing waves.\n\nLight Quality: The early morning light creates a warm, ethereal glow over the scene. Sunlight filtering through clouds illuminates the piano keys, casting long shadows on the sand.\n\nTextures: The weathered wooden surface of the grand piano contrasts with the pristine sands and shimmering sea water. The waves create a textured backdrop as they crash against the shore, leaving wet footprints on the sand.\n\nAtmosphere: The peaceful tranquility is interrupted by the melodic harmony emanating from the piano, hinting at an artistic expression that transcends time and place. The urban inspiration of the grand piano brings a sense of sophistication to the otherwise untouched natural surroundings.\n\nColors: The palette consists of earthy tones – deep browns of the weathered wood, golden hues from the sunlit sands, and turquoise waters that mirror the clear blue sky. The contrast between these warm colors and the cool ocean creates a striking visual effect.\n\nComposition: The grand piano serves as the focal point, skillfully positioned at the water's edge where the waves gently lap against its legs. Framing the piano from different angles will highlight various aspects of the scene – waves crashing behind it, the vast ocean stretching out before it, or the beach and sky beyond. The use of leading lines from the piano keys, sand, and sea foam create visual interest while maintaining a sense of harmony in the composition.\n\nDJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic.",
+      "votes": {
+        "up": 0,
+        "down": 2
+      }
+    },
+    {
+      "name": "piano_livre_4",
+      "text": "Aerial drone RAW photograph, professional photography:\n\nGrand Piano Concert Hall at Dusk - Urban Serenade\n\nSet in a sprawling urban concert hall bathed in twilight, an ornate grand piano sits center stage, its polished black surface gleaming under the warm, diffused glow of stage lights. The concert hall's intricate architecture, a blend of classical elegance and contemporary design, creates a striking contrast with the timeless instrument. A gentle breeze wafts in through open windows, mingling with the velvety drapes to create a natural atmosphere that enhances the sense of artistic expression. The composition is designed around a melody of light and shadow, with dramatic highlights casting melodic harmony across the piano's keys and the concert hall's grandeur. Urban elements such as the cityscape glimpsed through the windows provide an inspiring backdrop to this scene of creative composition and musical serenity.\n\nDJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic.",
+      "votes": {
+        "up": 1,
+        "down": 0
+      }
+    },
+    {
+      "name": "piano_livre_5",
+      "text": "RAW photo, professional photography:\nStreet Musician with Street Piano - Melodic Harmony & Urban Inspiration\n\nSetting: A dimly lit cobblestone alley in the heart of Paris, with the Notre-Dame Cathedral illuminated in the distance. The street is bustling with activity, yet the alley provides a serene and intimate atmosphere.\n\nLight quality: Soft, warm ambient light from the surrounding buildings and street lamps mixes with the cooler blue tones emanating from the Notre-Dame, creating a stunning contrast.\n\nTextures: The cobblestone road's weathered texture juxtaposes the polished, glossy finish of the vintage street piano. The musician's worn jacket and weathered face add to the scene's authenticity.\n\nAtmosphere: A quiet and captivating scene as the melodic notes float through the air, mingling with the sounds of the bustling city. The Cathedral looming in the background adds a sense of timelessness to the setting.\n\nColors: Warm hues dominate the image, with yellow and orange street lamps casting a gentle glow over the scene. Cooler blues from the Notre-Dame add depth and contrast.\n\nComposition: The musician is positioned in the foreground, playing the street piano with a focus on his hands and facial expression. The Cathedral dominates the background, while the alley creates a leading line that draws the viewer into the scene. The piano is placed slightly off-center to add dynamism to the composition.\n\nCanon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_6",
+      "text": "Raw photo, professional photography:\n\nAbandoned Piano in a Forest - Enchanting Solitude\n\nSetting: An overgrown, moss-covered forest floor with fallen leaves and wildflowers, adorned by a weathered grand piano, its ivory keys dusty and untouched.\n\nLight Quality: Soft, dappled sunlight filtering through the dense canopy above, casting an ethereal glow on the scene, creating a harmonious interplay of light and shadow.\n\nTextures: The rich textures of decaying wood, velvety moss, and rugged bark contrast with the smooth, polished piano surface, emphasizing the juxtaposition between urban elegance and natural growth.\n\nAtmosphere: A tranquil yet haunting atmosphere permeates the scene, invoking a sense of timelessness and artistic expression as nature gradually reclaims this once cherished instrument.\n\nColors: Earthy hues dominate - deep greens, browns, and burnt oranges from the foliage, contrasted by the stark white keys and gleaming metal frame of the piano.\n\nComposition: The camera is positioned low, looking up at the piano and the forest canopy above, with a diagonal composition that leads the viewer's eye through the scene, highlighting the striking contrast between the urban object and its verdant surroundings.\n\nSony A7R V, 24mm f/1.4, f/2.8, ISO 6400, ultra-realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_7",
+      "text": "Medium format RAW capture, professional photography: Grand Concert Hall Piano Symphony - Elegant Urban Harmony\n\nInside an opulent grand concert hall, a concert piano stands center stage bathed in golden spotlights that reflect off its polished black surface. A lone pianist's fingers dance above the keys, creating a symphony of classical elegance that echoes through the massive space. The high-ceilinged room is adorned with rich velvet curtains and marble columns, adding an air of timeless sophistication to the scene.\n\nThe concert hall's large windows offer views of the cityscape outside, casting urban inspiration into the natural atmosphere within. The juxtaposition between the grandeur of the concert hall and the modern city creates striking contrast in the photograph. A carefully composed shot captures both the musician's expressive face and the piano's artful design, making this a photograph of artistic expression that is truly unforgettable.\n\nHasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_8",
+      "text": "Medium format RAW capture, professional photography: 'Melodious Serenade in a Nocturnal Urban Alleyway'\n\nA lone grand piano rests amidst an enigmatic urban alleyway, engulfed by the embrace of night. The cobblestone path leads to a dimly lit brick building whose windows cast a warm glow on the instrument and its surroundings. Rustic textures blend with the industrial backdrop, creating a harmonious contrast that accentuates the classical elegance of the piano. The soft, ambient light sources from nearby buildings illuminate the ivory keys, casting long, dramatic shadows that dance across the alley's walls.\n\nThe atmosphere is filled with an artistic expression that seems to resonate from within the very heart of the city itself. The timeless instrument stands like a beacon amidst the gritty urban backdrop, exuding an air of refinement that transcends the urban environment. A striking contrast between natural and artificial elements permeates the scene, as the serene, harmonious melody from the piano echoes through the alleyway, adding another layer to the enchanting ambiance.\n\nCompositionally, the piano takes center stage, flanked by the brick walls on either side. The alley's archway serves as a picturesque frame, leading the viewer's eye towards the mesmerizing spectacle. A harmonious blend of melodic harmony, classical elegance, creative composition, timeless instrument, artistic expression, urban inspiration, natural atmosphere, and striking contrast, this scene encapsulates the essence of the 'piano' photography category.\n\nHasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra realistic, National Geographic"
+    },
+    {
+      "name": "piano_livre_9",
+      "text": "RAW photo, professional photography:\nAntique Piano Shop Interior - Timeless Harmony\n\nAn urban scene captures an antique piano shop nestled within a historical building in the heart of a bustling city. The space is filled with timeless instruments, each exuding classical elegance and artistic expression. Natural light floods through large, arched windows, casting soft, warm tones that dance upon the polished pianos and weathered wooden floorboards. Shadows play on the textured walls, adding striking contrast to the pristine white grand piano at the center. A single, empty chair invites the viewer into a scene of melodic harmony, while vines cascading from above infuse the room with an organic, natural atmosphere that juxtaposes the urban inspiration.\n\nCanon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "piano_livre_10",
+      "text": "RAW photo, professional photography:\nAntiquated Piano Emporium: Timeless Echoes of Melodic Mastery\n\nAn antique piano shop interior bathed in a soft, warm ambient glow emanating from strategically placed vintage lamps and the sun filtering through the dusty, aged stained-glass windows. The air is thick with the scent of polished wood, worn leather, and decades-old sheet music. In the heart of the shop lies a grand piano draped in a velvet cloth, its ivory keys glinting under the spotlight. Its ornate design exudes classical elegance, while the open lid reveals a melody frozen mid-play, symbolizing the harmonious blend of past and present.\n\nA creative composition juxtaposes the urban industrial elements - exposed brick walls, metal rafters, and vintage musical instruments - with natural touches like wilting flowers in an antique vase, a potted fern hanging from the ceiling, and dappled sunlight streaming through the stained-glass windows. This striking contrast creates an artistic expression that encapsulates the essence of the urban setting while simultaneously evoking a sense of tranquility and timeless beauty.\n\nCanon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    }
+  ]
+}

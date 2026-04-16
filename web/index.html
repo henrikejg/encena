@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>encena — studio</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/favicon.svg">
 <style>
 :root {
   --bg:       #0b0d14;
@@ -38,8 +40,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   padding:0 20px;height:50px;flex-shrink:0;
   background:var(--surf);border-bottom:1px solid var(--border);
 }
-.logo{font-size:16px;font-weight:700;letter-spacing:-.4px}
+.logo{font-size:16px;font-weight:700;letter-spacing:-.4px;display:flex;align-items:center;gap:9px}
 .logo em{color:var(--accent);font-style:normal}
+.logo img{width:30px;height:30px;border-radius:7px;flex-shrink:0}
 .pills{display:flex;gap:7px;margin-left:auto}
 .pill{
   display:flex;align-items:center;gap:5px;
@@ -207,6 +210,14 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
   border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;
   flex-shrink:0;margin-top:1px;white-space:nowrap
 }
+.vote-row{display:flex;gap:5px;margin-top:4px}
+.vote-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;
+  white-space:nowrap
+}
+.vote-up  {background:rgba(52,211,153,.15);color:#34d399}
+.vote-down{background:rgba(248,113,113,.15);color:#f87171}
 
 /* ── Category cards ──────────────────────────────────── */
 .cat-card{
@@ -364,6 +375,103 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 
+/* ── Galeria grid ─────────────────────────────────────── */
+.gal-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:12px;
+}
+.gal-thumb{
+  position:relative;border-radius:var(--r);overflow:hidden;
+  cursor:pointer;aspect-ratio:9/16;background:var(--surf2);
+  border:1px solid var(--border);transition:.15s;
+}
+.gal-thumb:hover{border-color:var(--border2);transform:translateY(-2px)}
+.gal-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-thumb-info{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));
+  padding:20px 8px 7px;
+}
+.gal-thumb-name{font-size:10px;font-weight:700;color:#fff;font-family:var(--mono);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gal-thumb-sub{font-size:9px;color:rgba(255,255,255,.55);margin-top:2px}
+.gal-thumb-badge{
+  position:absolute;top:6px;right:6px;
+  background:var(--warn-bg);color:var(--warn);
+  border-radius:3px;padding:1px 5px;font-size:9px;font-weight:700
+}
+
+/* ── Galeria modal ────────────────────────────────────── */
+.gal-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);
+  z-index:110;display:none;
+  align-items:center;justify-content:center;gap:0;
+}
+.gal-modal-overlay.visible{display:flex}
+.gal-modal{
+  display:flex;max-width:95vw;max-height:95vh;
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+}
+.gal-modal-img-wrap{
+  position:relative;flex-shrink:0;
+  max-width:65vw;max-height:95vh;
+  background:#000;display:flex;align-items:center;justify-content:center
+}
+.gal-modal-img-wrap img{
+  max-width:100%;max-height:95vh;object-fit:contain;display:block
+}
+.gal-fs-btn{
+  position:absolute;top:8px;right:8px;
+  background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:5px;padding:4px 8px;font-size:13px;
+  cursor:pointer;transition:.15s
+}
+.gal-fs-btn:hover{background:rgba(0,0,0,.8)}
+.gal-nav-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(0,0,0,.5);border:none;color:#fff;
+  font-size:28px;padding:8px 14px;cursor:pointer;transition:.15s;
+  border-radius:5px;line-height:1
+}
+.gal-nav-btn:hover{background:rgba(0,0,0,.8)}
+.gal-prev{left:8px} .gal-next{right:8px}
+.gal-modal-info{
+  width:340px;flex-shrink:0;overflow-y:auto;
+  padding:20px;display:flex;flex-direction:column;gap:14px
+}
+.gal-section{border-top:1px solid var(--border);padding-top:12px}
+.gal-section:first-child{border-top:none;padding-top:0}
+.gal-section-title{
+  font-size:10px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted);margin-bottom:8px
+}
+.gal-row{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:12px;padding:2px 0}
+.gal-row-label{color:var(--muted);flex-shrink:0;margin-right:10px}
+.gal-row-val{color:var(--text);font-family:var(--mono);text-align:right;
+  word-break:break-all}
+.gal-prompt-box{
+  background:var(--surf2);border:1px solid var(--border);
+  border-radius:5px;padding:8px 10px;font-size:11px;color:var(--dim);
+  line-height:1.5;font-family:var(--mono);max-height:120px;
+  overflow-y:auto;white-space:pre-wrap;word-break:break-word;
+  cursor:text;user-select:text
+}
+.gal-copy-btn{
+  align-self:flex-end;font-size:10px;padding:3px 8px;
+  margin-top:-8px
+}
+.gal-modal-close{
+  position:fixed;top:16px;right:20px;z-index:111;
+  background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.2);
+  color:#fff;font-size:18px;border-radius:50%;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.15s
+}
+.gal-modal-close:hover{background:rgba(0,0,0,.9)}
+
 /* ── Responsive ──────────────────────────────────────── */
 @media(max-width:900px){
   .two-col{grid-template-columns:1fr}
@@ -373,6 +481,10 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
   .nav-icon{margin:0}
   .drawer{width:100%;max-width:100%}
   .cfg-form-grid{grid-template-columns:1fr 1fr}
+  .gal-modal{flex-direction:column}
+  .gal-modal-img-wrap{max-width:95vw}
+  .gal-modal-info{width:100%;max-height:40vh}
+  .gal-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
 </style>
 </head>
@@ -380,7 +492,10 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
 
 <!-- ── Header ───────────────────────────────────────── -->
 <header class="hdr">
-  <div class="logo"><em>encena</em> studio</div>
+  <div class="logo">
+    <img src="/favicon.svg" alt="encena">
+    <span><em>encena</em> studio</span>
+  </div>
   <div class="pills">
     <div class="pill" id="pill-comfy"><span class="dot"></span>ComfyUI</div>
     <div class="pill" id="pill-ollama"><span class="dot"></span><span id="ollama-lbl">Ollama</span></div>
@@ -421,6 +536,13 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
         <div class="nav-sub">prompts, rascunhos, config</div>
       </div>
     </div>
+    <div class="nav-item" data-panel="galeria" onclick="switchPanel('galeria',this)">
+      <div class="nav-icon">🖼</div>
+      <div class="nav-text">
+        <div class="nav-label">Galeria</div>
+        <div class="nav-sub">imagens geradas</div>
+      </div>
+    </div>
   </nav>
 
   <!-- ── Panels ───────────────────────────────────────── -->
@@ -450,26 +572,23 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
           </div>
 
           <div class="fg">
-            <label class="fl">QUANTIDADE POR CATEGORIA</label>
-            <input class="fc" type="number" id="im-qtd" value="1" min="1" max="20">
+            <label class="fl">QUANTIDADE POR ORIENTAÇÃO</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px"><span class="orient-icon">▯</span> Vertical</label>
+                <input class="fc" type="number" id="im-qtd-v" value="1" min="0" max="20">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:5px"><span class="orient-icon">▭</span> Horizontal</label>
+                <input class="fc" type="number" id="im-qtd-h" value="0" min="0" max="20">
+              </div>
+            </div>
           </div>
 
           <div class="fg">
             <label class="fl">FORÇAR PROMPT ESPECÍFICO <span style="font-weight:400;color:var(--muted)">(opcional — clique em "usar" ao lado)</span></label>
             <input class="fc" type="text" id="im-pnome" placeholder="deixe em branco para sortear entre todos">
             <div id="im-spbar" style="display:none"></div>
-          </div>
-
-          <div class="fg">
-            <label class="fl">ORIENTAÇÃO</label>
-            <div class="orient-grp">
-              <button class="orient-btn active" id="im-orient-v" onclick="setOrient('im','vertical')">
-                <span class="orient-icon">▯</span> Vertical
-              </button>
-              <button class="orient-btn" id="im-orient-h" onclick="setOrient('im','horizontal')">
-                <span class="orient-icon">▭</span> Horizontal
-              </button>
-            </div>
           </div>
 
           <div class="btn-row">
@@ -674,7 +793,40 @@ textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
       <div id="cat-detail-box" style="display:none" class="cat-detail-box"></div>
     </div>
 
+    <!-- ══ GALERIA ════════════════════════════════════ -->
+    <div class="panel" id="panel-galeria">
+      <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:16px">
+        <div class="panel-title" style="margin:0">Galeria</div>
+        <div class="fg" style="margin:0;flex:0 0 220px">
+          <select class="fc" id="gal-cat" onchange="onGalCatChange()"></select>
+        </div>
+        <span id="gal-count" style="font-size:12px;color:var(--muted)"></span>
+        <label class="tgl" style="margin-left:auto">
+          <input type="checkbox" id="gal-exp" onchange="onGalCatChange()">
+          <span class="tgl-t"></span>
+        </label>
+        <span class="tgl-lbl">Incluir experimentos</span>
+      </div>
+      <div id="gal-grid" class="gal-grid">
+        <div class="empty"><span class="empty-icon">🖼</span>Selecione uma categoria.</div>
+      </div>
+    </div>
+
   </div>
+</div>
+
+<!-- ══ GALERIA MODAL ══════════════════════════════════ -->
+<div class="gal-modal-overlay" id="gal-modal" onclick="galModalOverlayClick(event)">
+  <div class="gal-modal">
+    <div class="gal-modal-img-wrap" id="gal-img-wrap">
+      <img id="gal-img" src="" alt="">
+      <button class="gal-fs-btn" onclick="galFullscreen()" title="Tela cheia">⤢</button>
+      <button class="gal-nav-btn gal-prev" onclick="galNav(-1)">‹</button>
+      <button class="gal-nav-btn gal-next" onclick="galNav(+1)">›</button>
+    </div>
+    <div class="gal-modal-info" id="gal-info"></div>
+  </div>
+  <button class="gal-modal-close" onclick="closeGalModal()">✕</button>
 </div>
 
 <!-- ══ EDIT DRAWER ════════════════════════════════════ -->
@@ -835,6 +987,7 @@ function switchPanel(name, el) {
   el.classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
   if (name === 'categorias') renderCatsGrid();
+  if (name === 'galeria') { initGaleria(); loadGaleria(); }
 }
 
 // ─── categories ───────────────────────────────────────────────────────────────
@@ -910,10 +1063,11 @@ function renderImCtx(data) {
     body.innerHTML = '<div class="empty"><span class="empty-icon">🎬</span>Nenhum prompt salvo nesta categoria.</div>';
     return;
   }
-  body.innerHTML = `<div class="plist">${prompts.map(p => `
+  body.innerHTML = `<div class="plist">${sortByVotes(prompts).map(p => `
     <div class="pitem">
       <div class="pinfo">
         <div class="pname">${esc(p.name)}</div>
+        ${voteBadges(p)}
         <div class="ptext">${esc(p.text)}</div>
       </div>
       <div class="pacts">
@@ -994,11 +1148,12 @@ function renderPrCtx(data) {
   }
   const selMode = _selMode[ctxId];
   const cat     = data.nome;
-  body.innerHTML = _selToolbar(ctxId) + `<div class="plist">${prompts.map(p => `
+  body.innerHTML = _selToolbar(ctxId) + `<div class="plist">${sortByVotes(prompts).map(p => `
     <div class="${_sCls(ctxId,p.name,'pitem')}">
       ${_chk(ctxId,p.name)}
       <div class="pinfo">
         <div class="pname">${esc(p.name)}</div>
+        ${voteBadges(p)}
         <div class="ptext">${esc(p.text)}</div>
       </div>
       ${selMode ? '' : `<div class="pacts">
@@ -1069,7 +1224,7 @@ function renderCatDetailBox(data) {
   box.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
-function catSubTab(btn, showId) {
+async function catSubTab(btn, showId) {
   const box = document.getElementById('cat-detail-box');
   box.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1077,6 +1232,26 @@ function catSubTab(btn, showId) {
     const el = document.getElementById(id);
     if (el) el.style.display = el.id === showId ? '' : 'none';
   });
+  if (showId === 'cd-cfg') await _loadCfgModels();
+}
+
+async function _loadCfgModels() {
+  try {
+    const m = await api('/api/comfy/models');
+    _populateModelSelect('cfe-checkpoint',       m.checkpoints, '-- padrão do sistema --');
+    _populateModelSelect('cfe-lora-detail-name', m.loras,       '-- padrão do sistema --');
+    _populateModelSelect('cfe-lora-nature-name', m.loras,       '-- padrão do sistema --');
+  } catch { /* ComfyUI offline — selects mantêm valor atual */ }
+}
+
+function _populateModelSelect(id, options, emptyLabel) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  const current = sel.value;
+  const list = (current && !options.includes(current)) ? [current, ...options] : options;
+  sel.innerHTML = `<option value="">${esc(emptyLabel)}</option>` +
+    list.map(o => `<option value="${esc(o)}"${o === current ? ' selected' : ''}>${esc(o)}</option>`).join('');
+  if (!current) sel.value = '';
 }
 
 function renderPromptsFull(cat, prompts) {
@@ -1084,11 +1259,12 @@ function renderPromptsFull(cat, prompts) {
   _initSel(ctxId);
   if (!prompts.length) return '<div class="empty">Nenhum prompt salvo nesta categoria.</div>';
   const selMode = _selMode[ctxId];
-  return _selToolbar(ctxId) + `<div class="plist">${prompts.map(p => `
+  return _selToolbar(ctxId) + `<div class="plist">${sortByVotes(prompts).map(p => `
     <div class="${_sCls(ctxId,p.name,'pitem')}">
       ${_chk(ctxId,p.name)}
       <div class="pinfo">
         <div class="pname">${esc(p.name)}</div>
+        ${voteBadges(p)}
         <div class="ptext">${esc(p.text)}</div>
       </div>
       ${selMode ? '' : `<div class="pacts">
@@ -1123,14 +1299,25 @@ function renderDraftsFull(cat, rascunhos) {
 function renderCfgForm(cat, cfg) {
   if (!cfg) return '<div class="empty">Config não encontrada.</div>';
   return `
+    <div style="margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">MODELOS</div>
+      <div class="fg" style="margin-bottom:8px"><label class="fl">CHECKPOINT</label>
+        <select class="fc" id="cfe-checkpoint"><option value="${esc(cfg.checkpoint_name ?? '')}">${cfg.checkpoint_name ? esc(cfg.checkpoint_name) : '-- padrão --'}</option></select></div>
+      <div class="cfg-form-grid">
+        <div class="fg"><label class="fl">LORA DETAIL (arquivo)</label>
+          <select class="fc" id="cfe-lora-detail-name"><option value="${esc(cfg.lora_detail_name ?? '')}">${cfg.lora_detail_name ? esc(cfg.lora_detail_name) : '-- padrão --'}</option></select></div>
+        <div class="fg"><label class="fl">LORA NATURE (arquivo)</label>
+          <select class="fc" id="cfe-lora-nature-name"><option value="${esc(cfg.lora_nature_name ?? '')}">${cfg.lora_nature_name ? esc(cfg.lora_nature_name) : '-- padrão --'}</option></select></div>
+      </div>
+    </div>
     <div class="cfg-form-grid">
       <div class="fg"><label class="fl">CFG (guidance)</label>
         <input class="fc" type="number" id="cfe-cfg"    value="${cfg.cfg ?? ''}" step="0.1"></div>
       <div class="fg"><label class="fl">STEPS</label>
         <input class="fc" type="number" id="cfe-steps"  value="${cfg.steps ?? ''}"></div>
-      <div class="fg"><label class="fl">LORA NATURE</label>
+      <div class="fg"><label class="fl">LORA NATURE (strength)</label>
         <input class="fc" type="number" id="cfe-nature" value="${cfg.lora_nature ?? ''}" step="0.05"></div>
-      <div class="fg"><label class="fl">LORA DETAIL</label>
+      <div class="fg"><label class="fl">LORA DETAIL (strength)</label>
         <input class="fc" type="number" id="cfe-detail" value="${cfg.lora_detail ?? ''}" step="0.05"></div>
       <div class="fg"><label class="fl">LARGURA (px)</label>
         <input class="fc" type="number" id="cfe-width"  value="${cfg.width ?? ''}"></div>
@@ -1172,17 +1359,20 @@ function renderCfgForm(cat, cfg) {
 async function saveCfg(cat) {
   const get = id => document.getElementById(id)?.value ?? '';
   const payload = {
-    cfg:          get('cfe-cfg'),
-    steps:        get('cfe-steps'),
-    lora_nature:  get('cfe-nature'),
-    lora_detail:  get('cfe-detail'),
-    width:        get('cfe-width'),
-    height:       get('cfe-height'),
-    sampler:      get('cfe-sampler'),
-    scheduler:    get('cfe-scheduler'),
-    output_subdir:get('cfe-subdir'),
-    negative:     get('cfe-negative'),
-    tags:         get('cfe-tags'),
+    cfg:              get('cfe-cfg'),
+    steps:            get('cfe-steps'),
+    lora_nature:      get('cfe-nature'),
+    lora_detail:      get('cfe-detail'),
+    width:            get('cfe-width'),
+    height:           get('cfe-height'),
+    sampler:          get('cfe-sampler'),
+    scheduler:        get('cfe-scheduler'),
+    output_subdir:    get('cfe-subdir'),
+    negative:         get('cfe-negative'),
+    tags:             get('cfe-tags'),
+    checkpoint_name:  get('cfe-checkpoint'),
+    lora_detail_name: get('cfe-lora-detail-name'),
+    lora_nature_name: get('cfe-lora-nature-name'),
   };
   try {
     const r = await api(`/api/categoria/${enc(cat)}/cfg`, 'PUT', payload);
@@ -1285,11 +1475,14 @@ function runImagens() {
   const cat   = document.getElementById('im-cat').value;
   const cats  = document.getElementById('im-cats-txt').value.trim();
   if (!todas && !cat) { toast('Selecione uma categoria', 'err'); return; }
+  const qtdV = parseInt(document.getElementById('im-qtd-v').value) || 0;
+  const qtdH = parseInt(document.getElementById('im-qtd-h').value) || 0;
+  if (qtdV + qtdH === 0) { toast('Defina ao menos 1 imagem em alguma orientação', 'err'); return; }
   const payload = {
     todas, categorias: todas ? (cats||null) : cat,
-    quantidade:   parseInt(document.getElementById('im-qtd').value) || 1,
-    prompt_nome:  document.getElementById('im-pnome').value.trim() || null,
-    orientacao:   _orient.im,
+    qtd_vertical:   qtdV,
+    qtd_horizontal: qtdH,
+    prompt_nome:    document.getElementById('im-pnome').value.trim() || null,
   };
   sseAction('/api/imagens/gerar', payload, 'Gerando imagens…', async () => {
     if (!todas) { invalidateCache(cat); loadCtx('imagens', cat); }
@@ -1556,7 +1749,8 @@ function cfgPills(cfg) {
   if (!cfg) return '';
   return [['cfg',cfg.cfg],['steps',cfg.steps],['sampler',cfg.sampler],
     ['scheduler',cfg.scheduler],[null,cfg.width&&cfg.height?`${cfg.width}×${cfg.height}`:null],
-    ['nature',cfg.lora_nature],['detail',cfg.lora_detail]]
+    ['nature',cfg.lora_nature],['detail',cfg.lora_detail],
+    ['ckpt', cfg.checkpoint_name?.replace(/\.safetensors$/,'') ?? null]]
     .filter(([,v])=>v!=null)
     .map(([k,v])=>`<span class="cfg-pill">${k?k+' ':''}${esc(String(v))}</span>`)
     .join('');
@@ -1574,6 +1768,182 @@ function toast(msg, type='ok') {
 }
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const enc = s => encodeURIComponent(s);
+
+// ─── galeria ──────────────────────────────────────────────────────────────────
+let galData = [];
+let galIdx  = 0;
+let galCat  = null;
+let galInited = false;
+
+function initGaleria() {
+  const s = document.getElementById('gal-cat');
+  s.innerHTML = catList.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+  if (catList.length) { galCat = catList[0].nome; s.value = galCat; }
+  galInited = true;
+}
+
+async function onGalCatChange() {
+  galCat = document.getElementById('gal-cat').value;
+  await loadGaleria();
+}
+
+async function loadGaleria() {
+  if (!galCat) return;
+  document.getElementById('gal-grid').innerHTML = '<div class="empty">Carregando…</div>';
+  try {
+    const all    = await api(`/api/galeria/${enc(galCat)}`);
+    const incExp = document.getElementById('gal-exp').checked;
+    galData = incExp ? all : all.filter(i => !i.is_exp);
+    renderGalGrid();
+  } catch(e) {
+    document.getElementById('gal-grid').innerHTML =
+      `<div class="empty">Erro ao carregar: ${esc(e.message)}</div>`;
+  }
+}
+
+function renderGalGrid() {
+  const grid = document.getElementById('gal-grid');
+  document.getElementById('gal-count').textContent =
+    galData.length ? `${galData.length} imagem${galData.length !== 1 ? 's' : ''}` : '';
+  if (!galData.length) {
+    grid.innerHTML = '<div class="empty"><span class="empty-icon">🖼</span>Nenhuma imagem encontrada.</div>';
+    return;
+  }
+  grid.innerHTML = galData.map((img, i) => `
+    <div class="gal-thumb" onclick="openGalModal(${i})">
+      <img src="/api/galeria/${enc(galCat)}/thumb/${enc(img.filename)}"
+           onerror="this.onerror=null;this.src='/api/galeria/${enc(galCat)}/img/${enc(img.filename)}'"
+           loading="lazy" alt="${esc(img.pnome || img.filename)}">
+      <div class="gal-thumb-info">
+        <div class="gal-thumb-name">${esc(img.pnome || img.filename)}</div>
+        <div class="gal-thumb-sub">${img.meta?.cfg != null ? 'cfg ' + img.meta.cfg + ' · ' : ''
+          }${img.meta?.steps != null ? img.meta.steps + 's · ' : ''}${img.size_kb}kb</div>
+      </div>
+      ${img.is_exp ? '<span class="gal-thumb-badge">exp</span>' : ''}
+    </div>`).join('');
+}
+
+function openGalModal(idx) {
+  galIdx = idx;
+  renderGalModal();
+  document.getElementById('gal-modal').classList.add('visible');
+}
+
+function closeGalModal() {
+  document.getElementById('gal-modal').classList.remove('visible');
+}
+
+function galModalOverlayClick(e) {
+  if (e.target === document.getElementById('gal-modal')) closeGalModal();
+}
+
+function galNav(delta) {
+  galIdx = (galIdx + delta + galData.length) % galData.length;
+  renderGalModal();
+}
+
+function renderGalModal() {
+  const img = galData[galIdx];
+  document.getElementById('gal-img').src =
+    `/api/galeria/${enc(galCat)}/img/${enc(img.filename)}`;
+  document.getElementById('gal-info').innerHTML = renderGalInfo(img);
+}
+
+function galFullscreen() {
+  const el = document.getElementById('gal-img-wrap');
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+}
+
+function voteBadges(p) {
+  const up   = p.votes?.up   || 0;
+  const down = p.votes?.down || 0;
+  return `<div class="vote-row"><span class="vote-badge vote-up">👍 ${up}</span><span class="vote-badge vote-down">👎 ${down}</span></div>`;
+}
+function voteScore(p) { return (p.votes?.up || 0) - (p.votes?.down || 0); }
+function sortByVotes(prompts) { return [...prompts].sort((a, b) => voteScore(b) - voteScore(a)); }
+
+async function voteGalImg() {
+  const img = galData[galIdx];
+  if (!img.pnome) { toast('Prompt não identificado nesta imagem', 'err'); return; }
+  try {
+    const r = await api(`/api/prompts/${enc(galCat)}/${enc(img.pnome)}/vote`, 'POST', { vote: 'up' });
+    if (r.ok) toast('👍 Prompt validado', 'ok');
+    else toast('Erro ao registrar voto', 'err');
+  } catch { toast('Erro ao registrar voto', 'err'); }
+}
+
+async function deleteGalImg() {
+  const img = galData[galIdx];
+  if (!confirm(`Deletar "${img.pnome || img.filename}"?\nA imagem e o thumbnail serão apagados permanentemente.`)) return;
+  try {
+    const r = await api(`/api/galeria/${enc(galCat)}/img/${enc(img.filename)}`, 'DELETE');
+    if (r.ok) {
+      toast('Imagem deletada', 'ok');
+      galData.splice(galIdx, 1);
+      renderGalGrid();
+      if (galData.length === 0) { closeGalModal(); return; }
+      galIdx = Math.min(galIdx, galData.length - 1);
+      renderGalModal();
+    } else {
+      toast('Erro: ' + (r.error || 'falha ao deletar'), 'err');
+    }
+  } catch { toast('Erro ao deletar', 'err'); }
+}
+
+function renderGalInfo(img) {
+  const m = img.meta || {};
+  const r = (label, val) => val != null
+    ? `<div class="gal-row"><span class="gal-row-label">${label}</span><span class="gal-row-val">${esc(String(val))}</span></div>`
+    : '';
+  const promptBox = (text, label) => !text ? '' : `
+    <div class="gal-section-title">${label}</div>
+    <div class="gal-prompt-box">${esc(text)}</div>
+    <button class="btn btn-sm btn-ghost gal-copy-btn"
+      onclick="navigator.clipboard.writeText(${esc(JSON.stringify(text))}).then(()=>toast('Copiado','ok'))">⎘ copiar</button>`;
+
+  const lora1 = m.lora_detail
+    ? `${m.lora_detail.replace(/\.safetensors$/, '')} (${m.lora_detail_s ?? '?'})` : null;
+  const lora2 = m.lora_nature
+    ? `${m.lora_nature.replace(/\.safetensors$/, '')} (${m.lora_nature_s ?? '?'})` : null;
+
+  return `
+    <div class="gal-section">
+      <div class="gal-section-title">Arquivo</div>
+      ${r('nome', img.pnome || img.filename)}
+      ${r('seed', m.seed)}
+      ${r('resolução', m.actual_width && m.actual_height
+          ? m.actual_width + '×' + m.actual_height +
+            (m.latent_width && m.latent_height ? ` (latente ${m.latent_width}×${m.latent_height})` : '')
+          : null)}
+      ${r('tamanho', img.size_kb ? img.size_kb + 'kb' : null)}
+      ${r('data', img.mtime ? new Date(img.mtime).toLocaleString('pt-BR') : null)}
+      ${img.is_exp ? '<div style="font-size:10px;color:var(--warn);margin-top:4px">Experimento</div>' : ''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <button class="btn btn-ok"  onclick="voteGalImg()" ${!img.pnome ? 'disabled title="prompt não identificado"' : ''}>👍 Bom prompt</button>
+        <button class="btn btn-err" onclick="deleteGalImg()">✕ Deletar</button>
+      </div>
+    </div>
+    <div class="gal-section">
+      <div class="gal-section-title">KSampler</div>
+      ${r('cfg', m.cfg)}
+      ${r('steps', m.steps)}
+      ${r('sampler', m.sampler)}
+      ${r('scheduler', m.scheduler)}
+    </div>
+    <div class="gal-section">
+      <div class="gal-section-title">Modelos</div>
+      ${r('checkpoint', m.checkpoint?.replace(/\.safetensors$/, ''))}
+      ${r('lora detail', lora1)}
+      ${r('lora nature', lora2)}
+    </div>
+    <div class="gal-section">
+      ${promptBox(m.positive, 'Prompt Positivo')}
+    </div>
+    <div class="gal-section">
+      ${promptBox(m.negative, 'Prompt Negativo')}
+    </div>`;
+}
 </script>
 </body>
 </html>

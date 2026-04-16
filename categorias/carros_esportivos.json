@@ -1,10 +1,13 @@
 {
   "category": "carros_esportivos",
-  "cfg": 1.8,
-  "lora_nature": 0.4,
-  "lora_detail": 0.6,
-  "steps": 8,
-  "sampler": "dpmpp_2m_sde",
+  "checkpoint_name": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "lora_detail_name": "",
+  "lora_nature_name": "",
+  "cfg": 4.5,
+  "lora_detail": 0,
+  "lora_nature": 0,
+  "steps": 14,
+  "sampler": "dpmpp_2m",
   "scheduler": "karras",
   "width": 768,
   "height": 1344,
@@ -18,7 +21,11 @@
     "Race Circuit",
     "Performance",
     "Racing Cars",
-    "Motorsports"
+    "Motorsports",
+    "Supercars",
+    "Hypercars",
+    "Exotic Car",
+    "High-performance sports car"
   ],
   "biomas": [
     "Race Circuit",

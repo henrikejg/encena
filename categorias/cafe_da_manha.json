@@ -1,28 +1,31 @@
 {
   "category": "cafe_da_manha",
-  "cfg": 1.8,
-  "lora_nature": 0.4,
-  "lora_detail": 0.6,
-  "steps": 8,
-  "sampler": "dpmpp_2m_sde",
+  "checkpoint_name": "RealVisXL_V5.0_fp16.safetensors",
+  "lora_detail_name": "add-detail-xl.safetensors",
+  "lora_nature_name": "",
+  "cfg": 3.0,
+  "lora_detail": 0.4,
+  "lora_nature": 0,
+  "steps": 10,
+  "sampler": "dpmpp_2m",
   "scheduler": "karras",
   "width": 768,
   "height": 1344,
   "output_subdir": "landscapes/cafe_da_manha",
   "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
   "tags": [
-    "xicaras",
-    "pães",
-    "mesa de café",
-    "toalha",
-    "bule",
+    "xicas",
+    "pao",
+    "mesa de cafe",
+    "towel",
+    "boa",
     "bolos",
     "biscoitos",
-    "toalha xadrez",
-    "janela ensolarada",
-    "farelo na mesa",
-    "colheres pequenas",
-    "açúcar"
+    "towel checkerboard",
+    "window sunny",
+    "crumbs on table",
+    "small forks",
+    "sugar"
   ],
   "prompts": [
     {
@@ -37,5 +40,25 @@
       "name": "japanese_bamboo_grov_stormy_overcast",
       "text": "RAW photo, professional nature photography, morning mist illuminates a Portuguese riverside café nestled amidst vibrant green vineyards. The scene unfolds as if captured on a roll of FujiPro 400H film, with warm hues that speak of dawn breaking over the horizon. A rustic wooden table, adorned with a checkered cloth and a gleaming sunlit window, serves as the focal point.\n\nLined with xicaras filled to the brim with freshly brewed coffee, pães de açucar, bule, bolos, and biscoitos, the table invites a sense of tranquility and serenity. A lone linen napkin, the only pop of contrast against the earthy tones, lies draped elegantly over the edge of the table.\n\nIntricately patterned woven baskets (bule) serve as the base for the morning's offerings, while sugar bowls and small spoons await those who come to partake in this picturesque setting. A hint of freshly cracked farinha on the wooden table adds a layer of texture and authenticity to the scene.\n\nThis idyllic café scape finds its soul in the enchanting atmosphere that only the 'cafe_da_manha' category can offer, all set against the backdrop of an early morning sun-drenched window. Canon EOS R5, f/8, ultra realistic, National Geographic."
     }
+  ],
+  "biomas": [
+    "Interior cafe with natural light",
+    "Outdoor patio at sunrise",
+    "Cafeteria countertop with fresh pastries",
+    "Checkerboard towel on an outdoor table",
+    "Small kitchen preparing traditional Brazilian breakfast",
+    "Historic coffee shop interior",
+    "Rustic bakery with warm lighting",
+    "Street cafe in lively city center"
+  ],
+  "elementos": [
+    "Xica (traditional Brazilian woman) serving coffee",
+    "Steaming cup of cafe da manha",
+    "Loaf of pao de queijo on a white dish",
+    "Checkerboard towel pattern in close-up",
+    "Crumbs and sugar on the cafe table",
+    "Small forks and sugar packets on a saucer",
+    "Bolos and biscoitos displayed on a wood tray",
+    "Window with sunlight streaming through"
   ]
 }

@@ -1,10 +1,13 @@
 {
   "category": "fundo_do_mar",
-  "cfg": 1.8,
-  "lora_nature": 0.4,
-  "lora_detail": 0.6,
-  "steps": 8,
-  "sampler": "dpmpp_2m_sde",
+  "checkpoint_name": "RealVisXL_V5.0_fp16.safetensors",
+  "lora_detail_name": "underwater.safetensors",
+  "lora_nature_name": "",
+  "cfg": 2.0,
+  "lora_detail": 0.5,
+  "lora_nature": 0,
+  "steps": 10,
+  "sampler": "dpmpp_2m",
   "scheduler": "karras",
   "width": 768,
   "height": 1344,
@@ -22,6 +25,34 @@
     {
       "name": "fundo_do_mar_livre_3",
       "text": "RAW photo, professional photography:\nCoral reef shimmering with iridescent life amidst a deep sea kelp forest in the Sipadan-Kapalai Marine Reserve, Malaysia. As twilight descends, bioluminescent fish dance through the underwater landscape, casting an ethereal glow upon vibrant corals and swaying fronds of kelp. The composition frames a dramatic tunnel formed by intertwining seaweed, with a lone swim-through illuminated by a single shaft of sunlight filtering through the ocean's surface above, creating a surreal balance between light and darkness.\nSony A7R V, 16-35mm f/2.8, f/8, ISO 200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "submerged_shipwreck_aurora_night",
+      "text": "RAW photo, professional nature photography, Abandoned Galleon entwined in bioluminescent kelp forest at twilight of the deep sea, looming thunderhead casts a dramatic shadow, intimate shot focusing on ethereal glowing scales of fish amidst coral reef, Canon EOS R5, f/4, ultra realistic, National Geographic"
+    },
+    {
+      "name": "bioluminescent_under_starry_night",
+      "text": "Underwater bioluminescent coral reef cave at twilight, kelp forest silhouettes against the night sky, deep-sea glow illuminating vibrant corals and shoals of glowing fish, breathtaking perspective from above, Canon EOS R5, 24-70mm f/2.8 lens, f/11, ISO 400, ultra realistic, National Geographic, fundo_do_mar category."
+    },
+    {
+      "name": "deep_sea_abyss_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Dramatic underwater scene in the heart of a kelp forest, dappled with sunlight breaking through storm clouds above. The deep sea abyss shimmers with the ethereal glow of bioluminescent fish, casting an otherworldly light that illuminates the vibrant coral reef below. Captured in a silhouette shot, the scene showcases a mesmerizing balance between the chaotic power of nature and the serene beauty of the ocean depths. Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "kelp_forest_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Kelp forest at sunset golden hour, with dramatic cumulonimbus casting deep sea shadows, silhouette shot of a school of bioluminescent fish dancing amidst the glowing kelp forest, Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "kelp_forest_midday_harsh_li",
+      "text": "RAW photo, professional nature photography: Bioluminescent fish illuminate a deep-sea kelp forest during midday, their ethereal glow contrasting against the harsh sunlight filtering through the emerald canopy above. The crystal-clear water reveals intricate details of the vibrant coral reef beneath, while tendrils of seaweed sway gently in the current. Shot with a Hasselblad X2D and 45mm f/3.5 lens at f/8, ISO 64 for ultimate clarity and ultra-realism, this panoramic vista brings the breathtaking beauty of the 'fundo_do_mar' to life, National Geographic."
+    },
+    {
+      "name": "submerged_shipwreck_midday_harsh_li",
+      "text": "Underwater kelp forest, twilight hour. Bioluminescent fish illuminate a coral reef surrounding an ancient shipwreck submerged within the depths of the ocean floor. The wreckage, encrusted with marine life and shrouded in shadows, glimmers with rusted metal hinting at its past glory. A thick layer of kelp sways gently, creating a mystical atmosphere as it catches the faint glow from the luminescent creatures above. Nikon Z7 II, 24-70mm f/2.8 lens, f/16, ISO 200, ultra realistic, National Geographic."
+    },
+    {
+      "name": "nighttime_open_ocean_sunrise",
+      "text": "Underwater nightscape RAW photograph, professional nature photography, Sunrise illuminates the deep sea's edge, revealing a vibrant kelp forest swaying gently in the current. The underwater canyon walls shimmer with bioluminescent coral reef and glowing fish, casting an ethereal glow across the scene. A panoramic view from below showcases the rich diversity of marine life in this unique ecosystem. Drone-captured from a low angle, DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
     }
   ],
   "tags": [
@@ -30,5 +61,25 @@
     "deep sea",
     "underwater light",
     "kelp forest"
+  ],
+  "biomas": [
+    "Coral reef",
+    "Deep sea abyss",
+    "Kelp forest",
+    "Bioluminescent underwater cave",
+    "Submerged shipwreck",
+    "Underwater canyon",
+    "Sea floor with seaweed",
+    "Nighttime open ocean"
+  ],
+  "elementos": [
+    "Vibrant coral structures",
+    "School of bioluminescent fish",
+    "Giant kelp forest fronds",
+    "Glowing underwater flora",
+    "Rusty shipwreck debris",
+    "Underwater canyon walls",
+    "Close-up of seaweed tendrils",
+    "Shimmering underwater light rays"
   ]
 }

@@ -1,0 +1,91 @@
+{
+  "category": "futebol",
+  "cfg": 3.5,
+  "lora_nature": 0.4,
+  "lora_detail": 0.45,
+  "steps": 12,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/futebol",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Intensity",
+    "Passion",
+    "Sportsmanship",
+    "Teamwork",
+    "Action",
+    "Community",
+    "Skill",
+    "Emotion",
+    "Soccer Statium",
+    "Soccer Fans",
+    "Soccer Ball"
+  ],
+  "biomas": [
+    "Futebol stadium daylight",
+    "Rio de Janeiro's Maracanã nighttime",
+    "Grass field under sunset",
+    "Rural village football pitch",
+    "Indoor gymnasium action",
+    "Street football in urban setting",
+    "Favela rooftop match",
+    "Abandoned stadium ruins"
+  ],
+  "elementos": [
+    "Player's intense focus",
+    "Celebratory jubilation",
+    "Tense referee decision",
+    "Team huddle before game",
+    "Football in flight",
+    "Fan's passionate flag-waving",
+    "Goalkeeper's acrobatic save",
+    "Spectator's emotional reaction"
+  ],
+  "prompts": [
+    {
+      "name": "rio_de_janeiro_s_mar_blue_hour",
+      "text": "Nighttime aerial drone RAW photograph over Rio de Janeiro's illuminated Maracanã stadium during the blue hour, with snowflakes gently cascading, capturing the soccer ball in mid-air, suspended against the backdrop of thousands of lit torch-like fan stands. DJI Mavic 3 Pro, 24mm equivalent lens, f/8, ISO 100 for an ultra-realistic depiction of the intense passion, sportsmanship, teamwork, and action unfolding beneath, with emotions running high amidst the bustling soccer community. National Geographic."
+    },
+    {
+      "name": "futebol_stadium_dayl_misty_morning",
+      "text": "RAW photo, professional nature photography, Futebol stadium shrouded in the soft glow of a misty morning, light snow gently cascading down, dynamic composition showcasing the intense passion and teamwork on display amidst the roar of the crowd. Captured with a Sony A7R V, 400mm f/2.8 lens at an aperture of f/4, ISO 400 to highlight the skill and emotion pulsating through the soccer players as they perform under the watchful eye of adoring fans in this symbolic representation of unity and sportsmanship. Ultra realistic, National Geographic."
+    },
+    {
+      "name": "rural_village_footba_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Dramatic rural village football stadium under stormy twilight, following a downpour, intense team huddle in lush green grass, Canon EOS R5, f/4, ISO 800, ultra-realistic, capturing the essence of passion, sportsmanship, community, and skill amidst roaring soccer fans under floodlit stands, National Geographic."
+    },
+    {
+      "name": "indoor_gymnasium_act_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Dramatic indoor soccer stadium amidst a stormy overcast with golden dust haze, intense action-packed gameplay on the field under the ominous sky, passionate fans in vibrant team colors erupting with emotion, beads of sweat and determination etched on players' faces, intricate lines leading from the cheering crowd to the heart of the action - a soccer ball soaring through the air, captured in a split second of skillful teamwork. Canon EOS R5, f/4, 400mm f/2.8, ISO 1600, ultra realistic, National Geographic."
+    },
+    {
+      "name": "rio_de_janeiro_s_mar_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Rio de Janeiro's Maracanã bathed in midday's harsh golden light, a dusty haze accentuating the intensity of soccer fans gathered within. In this silhouette shot, a moment of passion and sportsmanship unfolds as players leap for a header against the backdrop of a vibrant sea of team colors. The stadium roars with action-packed emotion as spectators stand united in their devotion to the game. Skill and teamwork are on full display, every move a testament to years of training and camaraderie. A single soccer ball suspended between players, symbolizing the unity of purpose that binds them together in the heat of competition. Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "grass_field_under_su_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Intense soccer stadium bathed in midday sunset's harsh light, with a vivid rainbow arching overhead, low angle shot capturing the lush grass field and passionate crowd from ground level, dramatic moment of a goalkeeper's acrobatic save amidst the chaos of action-filled teamwork, Soccer ball in close focus, vibrant spectator emotions reflected in their faces, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "abandoned_stadium_ru_late_afternoon",
+      "text": "RAW photo, professional nature photography, Aging football stadium amidst a passionate sunset, dramatic light streaming through dilapidated grandstands, vibrant community gatherings beneath the shadow of towering bleachers, team's emotional huddle before kick-off, Canon EOS R5, 70mm f/2.8, f/4, ISO 1600, ultra realistic, National Geographic."
+    },
+    {
+      "name": "rural_village_footba_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Lush, verdant rural village football stadium bathed in the fiery hues of sunset golden hour, with a delicate morning mist hovering over the emerald grass field. A sweeping wide establishing shot captures the intense passion and camaraderie as teams huddle together, their faces etched with determination and sportsmanship. The focus shifts to a solo player, eyes alight with emotion, poised to kick the soccer ball towards the goal amidst a sea of vibrant supporters. Canon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "rio_de_janeiro_s_mar_early_morning_g",
+      "text": "RAW photo, professional nature photography, Maracanã Stadium's night-turning-to-dawn during Rio de Janeiro's golden hour, snowflakes swirling in the crisp air, intense focus on a soccer ball soaring through the misty, electric atmosphere, Soccer fans huddled together, united by passion and sportsmanship, Canon EOS R5, f/4, ISO 800, ultra realistic, National Geographic"
+    },
+    {
+      "name": "abandoned_stadium_ru_misty_morning",
+      "text": "Aerial drone RAW photograph, professional nature photography, Intense soccer stadium underpass bathed in first light after a passionate downpour, dew-kissed turf reflecting the community's spirit and vibrancy. Emotional close-up of a goalkeeper performing an acrobatic save against the backdrop of ecstatic fans, all clad in team colors. DJI Mavic 3 Pro, 24mm equivalent, f/8, ultra realistic, National Geographic."
+    }
+  ],
+  "checkpoint_name": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "lora_detail_name": "add-detail-xl.safetensors",
+  "lora_nature_name": ""
+}
