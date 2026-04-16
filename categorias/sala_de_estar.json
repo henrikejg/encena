@@ -1,0 +1,125 @@
+{
+  "category": "sala_de_estar",
+  "cfg": 1.8,
+  "lora_nature": 0.4,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/sala_de_estar",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Relaxation",
+    "Cultural Heritage",
+    "European Charm",
+    "Mediterranean Style",
+    "Historic Architecture",
+    "Café Atmosphere",
+    "Traditional Design",
+    "Exotic Getaway"
+  ],
+  "biomas": [
+    "Luxurious sitting room within a historic European castle",
+    "Terrace overlooking Mediterranean sea with café chairs",
+    "Intimate corner of an old European tavern",
+    "Ornate interior courtyard of a Portuguese manor",
+    "Nighttime streetscape of a bustling Mediterranean town",
+    "Exotic patio with traditional tilework and potted plants",
+    "Interior of an ancient library filled with leather-bound books",
+    "Street art in the alleyway of a vibrant European city"
+  ],
+  "elementos": [
+    "Decorative wrought iron balconies",
+    "Candles and fresh flowers on antique wooden tables",
+    "Sunlight streaming through stained glass windows",
+    "Architectural details such as arches, domes, and columns",
+    "Steaming cups of espresso and pastries displayed in a café",
+    "Hand-painted ceramic tiles",
+    "Ancient tapestries or frescoes adorning walls",
+    "Chairs with woven cane seats arranged around a fireplace"
+  ],
+  "prompts": [
+    {
+      "name": "sala_de_estar_livre",
+      "text": "RAW photo, professional photography:\nRooftop terrace of a historic building in the heart of a Mediterranean city. The setting boasts elegant, timeworn architecture with intricate stonework, vibrant terra cotta tiles, and lush greenery cascading from colorful planters. Golden hour sunlight bathes the scene, casting long shadows and warm tones over the space. A traditional coffeehouse occupies one corner of the terrace, with a rustic wooden bar adorned with vintage ceramic cups and brass details. The coffeehouse exudes an inviting ambiance, with a cloud of steam rising from freshly brewed espresso. A wrought-iron balcony extends along the backdrop, framing picturesque views of nearby buildings boasting cultural heritage and European charm. Exotic plants in vibrant pots are interspersed throughout the terrace, adding to its exotic escape appeal. The whole scene is artfully composed with a focus on the coffeehouse as the centerpiece, while the Mediterranean design elements harmoniously blend into the backdrop, creating an idyllic retreat that feels both familiar and foreign.\nCanon EOS R5, 16-35mm f/2.8, f/11, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "sala_de_estar_livre_2",
+      "text": "Medium format RAW capture, professional photography: Intimate corner of an antique library within a grand European chateau. The warm glow of sunset filters through arched windows, casting long shadows across aged leather armchairs and vintage books lining the shelves. A small wooden table with a steaming cup of coffee sits between two worn velvet sofas, their rich burgundy color contrasting against the dusty yellow hue of the library walls. The atmosphere is one of serene relaxation amidst cultural heritage, the exotic escape being found in the rare Mediterranean-inspired design elements scattered throughout the space. The composition focuses on the inviting nook, with a slight tilt towards the coffee and books, emphasizing the harmonious blend of tradition and modernity that encapsulates this historic study. Hasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra realistic, National Geographic."
+    },
+    {
+      "name": "sala_de_estar_livre_3",
+      "text": "RAW photo, professional photography: Cozy nook within an ancient coffeehouse at dusk, European Charm permeates the air as warm golden light cascades through antique stained-glass windows, illuminating intricate Mediterranean design elements and traditional decor. The atmosphere is serene yet inviting, filled with the aroma of freshly brewed coffee and aged leather. Exotic escape echoes in the faded wall tapestries, while the historic architecture showcases grand arches and intricately carved woodwork. Composition focuses on a vintage coffee table laden with rustic mugs and vintage books nestled under the embrace of ancient stone walls, leading the viewer's eye to the picturesque outdoor seating area beyond, framed by vibrant foliage casting long shadows. Canon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "intimate_corner_of_a_aurora_night",
+      "text": "RAW photo, professional nature photography, Tranquil alcove within a historic European tavern at dawn's first light, enveloped in mystic Mediterranean mist, picturesque bird's-eye vantage, intricate wrought iron balconies adorned with fresh blooms, Canon EOS R5, 24mm f/2.8, f/4, ISO 1600, ultra realistic, National Geographic."
+    },
+    {
+      "name": "luxurious_sitting_ro_late_afternoon",
+      "text": "Sala de Estar within an ancient Portuguese manor, nestled among lush Mediterranean gardens, late afternoon sun casting warm golden light through ornate windows. A rainbow arches across the distant horizon. Traditional café ambiance permeates the room with steaming espressos and delicate pastries artfully arranged on a vintage marble table. European charm radiates from handcrafted tiles, antique furniture, and intricate architectural details. This exotic getaway offers a tranquil retreat, a testament to the rich cultural heritage of its storied past. Canon EOS R5, 24mm equivalent, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "intimate_corner_of_a_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Elegant nook within a historic European tavern bathed in midday sunlight filtering through stained-glass windows, distant Mediterranean landscape dotted with olive trees and cobblestone streets, intimate view of a traditional café setting surrounded by aged tapestries depicting local folklore, Canon EOS R5, f/2.8, ultra realistic, National Geographic, exotic getaway vibe capturing the essence of relaxation amidst cultural heritage, European charm, and Mediterranean style."
+    },
+    {
+      "name": "street_art_in_the_al_starry_night",
+      "text": "RAW photo, professional nature photography, A quaint European cobblestone alleyway bathed in the soft glow of a Mediterranean sunset, transforming into an enchanting starry night. The golden dust haze caresses the historic architecture, revealing intricate hand-painted ceramic tiles that tell stories of bygone eras. With a traditional café nestled within, the scene is imbued with a warm and inviting atmosphere reminiscent of an exotic getaway. This evocative image captures the essence of relaxation, cultural heritage, European charm, and traditional design - a perfect embodiment of 'sala_de_estar'. Canon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "luxurious_sitting_ro_stormy_overcast",
+      "text": "RAW photo, professional nature photography, opulent sitting room nestled within a medieval European castle at twilight on the Mediterranean coast, soft glow from candles and fireplaces contrasting with the stormy overcast sky, fresh snowfall dusting the cobblestone courtyard, panoramic view of the tranquil sea beyond the arched windows, antique wooden furniture adorned with vibrant floral arrangements, vintage tapestries, and traditional ceramics, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "terrace_overlooking__sunset_golden_h",
+      "text": "RAW photo, professional nature photography,\nTerrace of a historic European villa nestled along the shores of the azure Mediterranean, bathed in the golden hues of sunset. A vibrant rainbow arches over the sea, casting its colors on the whitewashed walls and hand-painted ceramic tiles beneath. Traditional café chairs arranged in an inviting composition lead the eye towards the picturesque view. The atmosphere is reminiscent of a charming café in the heart of old Europe, offering an exotic getaway for weary travelers seeking relaxation amidst cultural heritage and Mediterranean style.\nCanon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "intimate_corner_of_a_midday_harsh_li_2",
+      "text": "RAW photo, professional nature photography: Ancient Mediterranean tavern corner in golden midday light, delicate snowflakes drifting down, grand vistas of historic architecture, warm candlelight casting shadows on traditional wooden tables adorned with fresh flowers, Hasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra-realistic, evoking an exotic European getaway atmosphere, National Geographic."
+    },
+    {
+      "name": "street_art_in_the_al_misty_morning",
+      "text": "RAW photo, professional nature photography: A tranquil Mediterranean town at dawn, showcasing the charming allure of historic architecture. An exotic getaway nestled amidst sun-drenched cobblestone streets, where a quaint European café beckons. Vibrant street art adorns the alleyways, contrasting against the rich hues of stained glass windows bathed in the warm glow of sunlight filtering through. The air carries the aroma of freshly brewed coffee and the distant sound of chatter echoes off picturesque buildings. A panoramic vista unfolds as the city awakens, with dramatic cumulonimbus clouds painting the sky above. Taken from a birds-eye view using DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100 for ultra realistic imagery. National Geographic."
+    },
+    {
+      "name": "interior_of_an_ancie_blue_hour",
+      "text": "RAW photo, professional nature photography, Blue hour illumination of an antique European library with hand-painted azulejos, following a gentle rain, mirror reflections captured on polished mahogany tables, evoking a traditional café ambience amidst historic architecture, Mediterranean charm radiating, exuding a sense of exotic relaxation as a cultural getaway, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "luxurious_sitting_ro_blue_hour",
+      "text": "Lush Mediterranean garden, centuries-old stone walls and terra cotta tile roofs of a charming European castle, bathed in soft blue hour light. A historic sitting room with traditional decor nestled within, inviting guests to unwind. In the distance, exotic palms sway as they frame a vibrant café atmosphere with flickering candlelight spilling onto ancient stone steps. Wrought iron balconies adorned with climbing ivy glisten under a sky peppered with dramatic cumulonimbus clouds, evoking an enchanting European escape. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "nighttime_streetscap_stormy_overcast",
+      "text": "RAW photo, professional nature photography, Twilight embrace of a historic European town along the Mediterranean coastline, amidst a stormy overcast sky after a refreshing rainfall, capturing the charm and allure of traditional architectural wonders, cobblestone streets, cafes bustling with local life, and exotic getaway ambiance, all framed through intricate arches, majestic domes, and stately columns. Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "terrace_overlooking__aurora_night",
+      "text": "RAW photo, professional nature photography: Terrace of an ancient Mediterranean villa illuminated by twilight, exuding a tranquil ambiance reminiscent of a café atmosphere. The terrace overlooks the shimmering sea beneath a thick layer of morning fog, the silhouette of historic architecture echoing European charm and traditional design. Golden sunlight filters through stained glass windows, casting intricate patterns on the time-worn cobblestones below, while the cool mist adds an ethereal touch to this exotic getaway. Canon EOS R5, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "ornate_interior_cour_sunrise",
+      "text": "RAW photo, professional nature photography, Sunrise illuminates the exquisite cobblestone courtyard of an ancient Portuguese manor, evoking a sense of tranquil luxury. A warm Mediterranean glow filters through ornate archways adorned with vibrant bougainvillea vines. Antique wooden tables laden with candles and fresh blooms create an intimate café atmosphere amidst the historic architecture. Traditional azulejos tiles underfoot, combined with soft linen drapes fluttering gently in the breeze, exemplify traditional European design. This exotic getaway, bathed in soft morning light, invites visitors to unwind and embrace the charm of a bygone era - Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "intimate_corner_of_a_aurora_night_2",
+      "text": "RAW photo, professional nature photography, Historic European tavern at dawn, Mediterranean coastline, soft candlelight flickers through traditional design and cultural artifacts, terracotta tiles underfoot, cobblestone courtyard beyond the arched window, fireplace crackles with logs as patrons sip coffee, vintage lanterns cast a warm glow, view towards a vibrant rainbow stretching across the horizon, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic"
+    },
+    {
+      "name": "nighttime_streetscap_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, Moonlit evening in a charming European town, illuminating the historic architecture and traditional design of a bustling Mediterranean square. The warm glow of café lights mingles with the soft, ethereal ambiance created by stained-glass windows casting prismatic patterns on cobblestone streets. A hint of exotic allure lingers in the air as palm trees sway gently, framing the vibrant scene. Exotic getaway meets cultural heritage, a captivating sala de estar moment, Canon EOS R5, 24mm f/16, 60s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "exotic_patio_with_tr_sunset_golden_h",
+      "text": "RAW photo, professional nature photography\nExotic patio of a historic European villa, adorned with traditional tilework and lush potted plants, bathed in golden hour sunlight filtering through Mediterranean cypress trees. The air is filled with the aroma of freshly brewed espresso and pastries, evoking a café atmosphere amidst cultural heritage charm. A distant cumulonimbus casts dramatic shadows over the picturesque scene, creating an exotic getaway vibe.\nCanon EOS R5, f/8, ultra realistic, National Geographic"
+    },
+    {
+      "name": "nighttime_streetscap_aurora_night",
+      "text": "RAW photo, professional nature photography, Nighttime tableau of a serene Mediterranean town bathed in the soft glow of an aurora night. Dramatic storm clouds loom on the horizon, casting long, ominous shadows over historic architecture adorned with intricate stucco patterns and traditional terracotta roofs. A reflection shimmering in the calm waters below mirrors the charm of this exotic getaway, with its cobblestone streets and quaint cafes inviting passersby to embrace a sense of relaxation steeped in European allure. Sunlight streams through stained glass windows of centuries-old buildings, casting vibrant hues across the wet cobblestones, while a warm café atmosphere beckons weary travelers seeking respite from the encroaching storm. Captured on Canon EOS R5, f/8, with an ultra-realistic quality reminiscent of Kodak Portra 400 film scans, this image speaks to the enduring allure of cultural heritage and traditional design that defines the 'sala_de_estar' category. National Geographic."
+    }
+  ]
+}

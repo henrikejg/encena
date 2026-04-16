@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>encena — studio</title>
+<style>
+:root {
+  --bg:       #0b0d14;
+  --surf:     #111420;
+  --surf2:    #181c2b;
+  --surf3:    #1f2435;
+  --border:   #252b3b;
+  --border2:  #2f3650;
+  --accent:   #818cf8;
+  --accent-d: #4f46e5;
+  --accent-bg:rgba(79,70,229,.12);
+  --ok:       #34d399;
+  --ok-bg:    rgba(52,211,153,.1);
+  --warn:     #fbbf24;
+  --warn-bg:  rgba(251,191,36,.1);
+  --err:      #f87171;
+  --err-bg:   rgba(248,113,113,.1);
+  --text:     #e2e8f0;
+  --dim:      #94a3b8;
+  --muted:    #4b5574;
+  --r:        8px;
+  --mono:     'JetBrains Mono','Fira Code','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* ── Header ─────────────────────────────────────────── */
+.hdr{
+  display:flex;align-items:center;gap:16px;
+  padding:0 20px;height:50px;flex-shrink:0;
+  background:var(--surf);border-bottom:1px solid var(--border);
+}
+.logo{font-size:16px;font-weight:700;letter-spacing:-.4px}
+.logo em{color:var(--accent);font-style:normal}
+.pills{display:flex;gap:7px;margin-left:auto}
+.pill{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;
+  background:var(--surf2);border:1px solid var(--border);color:var(--muted);
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.pill.ok .dot{background:var(--ok);box-shadow:0 0 5px var(--ok)}
+.pill.ok{color:var(--dim)}
+.pill.err .dot{background:var(--err)}
+.refresh-btn{
+  padding:4px 10px;border-radius:5px;font-size:11px;font-weight:500;
+  background:var(--surf2);border:1px solid var(--border);color:var(--muted);
+  cursor:pointer;transition:.15s;margin-left:8px;
+}
+.refresh-btn:hover{color:var(--dim)}
+
+/* ── Body ────────────────────────────────────────────── */
+.body{display:flex;flex:1;overflow:hidden}
+
+/* ── Nav ─────────────────────────────────────────────── */
+.nav{
+  width:200px;flex-shrink:0;
+  background:var(--surf);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;padding:12px 0;
+}
+.nav-item{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:11px 16px;cursor:pointer;
+  border-left:2px solid transparent;transition:.15s;
+}
+.nav-item:hover{background:var(--surf2)}
+.nav-item.active{background:var(--surf2);border-left-color:var(--accent)}
+.nav-icon{font-size:15px;margin-top:1px;flex-shrink:0;opacity:.7;width:18px;text-align:center}
+.nav-item.active .nav-icon{opacity:1}
+.nav-label{font-size:13px;font-weight:600;color:var(--dim);line-height:1.2}
+.nav-item.active .nav-label{color:var(--text)}
+.nav-sub{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3}
+.nav-divider{border:none;border-top:1px solid var(--border);margin:10px 16px}
+
+/* ── Main ────────────────────────────────────────────── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.panel{display:none;flex:1;overflow-y:auto;padding:24px}
+.panel.active{display:block}
+.panel-title{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+.panel-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+
+/* ── Layouts ─────────────────────────────────────────── */
+.two-col{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+
+/* ── Cards ───────────────────────────────────────────── */
+.card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.card-hd{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+
+/* ── Forms ───────────────────────────────────────────── */
+.fg{margin-bottom:11px}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.3px}
+.fc{
+  width:100%;background:var(--surf2);border:1px solid var(--border);
+  border-radius:6px;padding:7px 10px;color:var(--text);
+  font-size:13px;outline:none;transition:border-color .15s;font-family:inherit
+}
+.fc:focus{border-color:var(--accent)}
+select.fc{cursor:pointer}
+textarea.fc{resize:vertical;min-height:90px;line-height:1.5}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.toggle-row{display:flex;align-items:center;gap:9px;padding:5px 0}
+.tgl{position:relative;width:32px;height:17px;flex-shrink:0}
+.tgl input{opacity:0;width:0;height:0}
+.tgl-t{position:absolute;inset:0;background:var(--border);border-radius:9px;cursor:pointer;transition:.2s}
+.tgl input:checked+.tgl-t{background:var(--accent-d)}
+.tgl-t::after{content:'';position:absolute;top:2.5px;left:2.5px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.2s}
+.tgl input:checked+.tgl-t::after{transform:translateX(15px)}
+.tgl-lbl{font-size:12px;color:var(--dim);cursor:pointer;line-height:1.4}
+
+.adv-hd{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted);cursor:pointer;
+  padding:5px 0;margin-top:2px;user-select:none
+}
+.adv-hd:hover{color:var(--dim)}
+.adv-arrow{transition:transform .2s;font-size:9px}
+.adv-arrow.open{transform:rotate(90deg)}
+.adv-body{display:none}
+.adv-body.open{display:block;margin-top:8px}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{
+  padding:9px 16px;border-radius:6px;font-size:13px;font-weight:500;
+  border:none;cursor:pointer;transition:.15s;
+  display:inline-flex;align-items:center;gap:7px
+}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--accent-d);color:#fff}
+.btn-primary:hover:not(:disabled){background:#4338ca}
+.btn-ghost{background:var(--surf2);color:var(--dim);border:1px solid var(--border)}
+.btn-ghost:hover:not(:disabled){background:var(--surf3)}
+.btn-sm{padding:4px 9px;font-size:11px;border-radius:5px}
+.btn-ok{background:transparent;color:var(--ok);border:1px solid rgba(52,211,153,.3)}
+.btn-ok:hover{background:var(--ok-bg)}
+.btn-err{background:transparent;color:var(--err);border:1px solid rgba(248,113,113,.25)}
+.btn-err:hover{background:var(--err-bg)}
+.btn-accent{background:transparent;color:var(--accent);border:1px solid rgba(129,140,248,.3)}
+.btn-accent:hover{background:var(--accent-bg)}
+.btn-warn{background:transparent;color:var(--warn);border:1px solid rgba(251,191,36,.3)}
+.btn-warn:hover{background:var(--warn-bg)}
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
+/* ── Orientation toggle ──────────────────────────────── */
+.orient-grp{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.orient-btn{flex:1;padding:9px 12px;font-size:12px;font-weight:600;background:var(--surf2);color:var(--dim);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s;letter-spacing:.03em}
+.orient-btn:hover{background:var(--surf3)}
+.orient-btn.active{background:var(--accent-d);color:#fff}
+.orient-btn .orient-icon{font-size:20px;line-height:1}
+
+/* ── Contextual panel ────────────────────────────────── */
+.ctx-panel{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ctx-hd{
+  padding:11px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap
+}
+.ctx-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.ctx-cat{font-size:12px;font-weight:700;color:var(--accent);font-family:var(--mono)}
+.ctx-count{font-size:10px;color:var(--muted);background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:1px 7px;margin-left:auto}
+.ctx-body{padding:12px;max-height:500px;overflow-y:auto}
+
+/* ── Prompt / Draft items ────────────────────────────── */
+.plist{display:flex;flex-direction:column;gap:7px}
+.pitem{
+  background:var(--surf2);border:1px solid var(--border);
+  border-radius:6px;padding:10px 12px;
+  display:flex;align-items:flex-start;gap:9px;transition:.15s;
+}
+.pitem:hover{border-color:var(--border2)}
+.pinfo{flex:1;min-width:0}
+.pname{font-size:11px;font-weight:700;color:var(--accent);font-family:var(--mono);margin-bottom:3px}
+.ptext{
+  font-size:11px;color:var(--muted);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  transition:.2s;
+}
+.pitem:hover .ptext{-webkit-line-clamp:4}
+.pacts{display:flex;gap:4px;flex-shrink:0}
+
+.ditem{
+  background:var(--surf2);border:1px solid rgba(251,191,36,.2);
+  border-radius:6px;padding:10px 12px;
+  display:flex;align-items:flex-start;gap:9px
+}
+.pitem.sel-on,.ditem.sel-on{border-color:rgba(129,140,248,.45);background:var(--surf3)}
+
+/* ── Selection toolbar ───────────────────────────────── */
+.sel-bar{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:6px 10px;background:var(--accent-bg);
+  border:1px solid rgba(129,140,248,.3);border-radius:6px;
+  margin-bottom:8px;
+}
+.sel-count{font-size:11px;font-weight:600;color:var(--accent);flex:1}
+.sel-toggle{margin-bottom:8px}
+
+.dbadge{
+  display:inline-block;background:var(--warn-bg);color:var(--warn);
+  border-radius:4px;padding:1px 5px;font-size:9px;font-weight:700;
+  flex-shrink:0;margin-top:1px;white-space:nowrap
+}
+
+/* ── Category cards ──────────────────────────────────── */
+.cat-card{
+  background:var(--surf);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;cursor:pointer;transition:.15s;
+}
+.cat-card:hover{border-color:var(--border2)}
+.cat-card.selected{border-color:var(--accent)}
+.cc-name{font-size:14px;font-weight:700;margin-bottom:8px}
+.cc-stats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.badge{display:inline-block;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600}
+.badge-p{background:var(--accent-bg);color:var(--accent)}
+.badge-r{background:var(--warn-bg);color:var(--warn)}
+.cc-cfg{font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8}
+
+/* ── Cat detail box ──────────────────────────────────── */
+.cat-detail-box{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.cat-detail-hd{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap
+}
+.cat-detail-hd h2{font-size:16px;font-weight:700}
+.cfg-pills{display:flex;gap:5px;flex-wrap:wrap}
+.cfg-pill{
+  background:var(--surf2);border:1px solid var(--border);border-radius:4px;
+  padding:2px 7px;font-size:10px;color:var(--muted);font-family:var(--mono)
+}
+.subtabs{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.stab{
+  padding:5px 13px;font-size:12px;font-weight:500;color:var(--muted);
+  background:var(--surf2);border:none;cursor:pointer;
+  border-right:1px solid var(--border);transition:.15s
+}
+.stab:last-child{border-right:none}
+.stab:hover{color:var(--dim)}
+.stab.active{background:var(--accent-d);color:#fff}
+.cat-detail-body{padding:16px 18px}
+
+/* ── Config form (editable) ──────────────────────────── */
+.cfg-form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.cfg-form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.cfg-save-row{display:flex;gap:8px;align-items:center;padding-top:6px;border-top:1px solid var(--border);margin-top:6px}
+.cfg-saved-msg{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
+.cfg-saved-msg.show{opacity:1}
+
+/* ── Imagens: selected prompt bar ────────────────────── */
+.spbar{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;background:var(--accent-bg);
+  border:1px solid rgba(129,140,248,.3);border-radius:6px;margin-top:7px;
+}
+.spbar-name{font-size:12px;font-weight:600;color:var(--accent);font-family:var(--mono);flex:1}
+.spbar-clear{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px;transition:.15s}
+.spbar-clear:hover{color:var(--text)}
+
+/* ── Edit Drawer ─────────────────────────────────────── */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:90;backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .2s
+}
+.drawer-overlay.visible{opacity:1;pointer-events:all}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;
+  width:500px;max-width:95vw;
+  background:var(--surf);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:91;
+  transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1)
+}
+.drawer-overlay.visible .drawer{transform:translateX(0)}
+.drawer-hd{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0
+}
+.drawer-title{font-size:15px;font-weight:700;flex:1}
+.drawer-close{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  font-size:18px;padding:2px 5px;transition:.15s;line-height:1
+}
+.drawer-close:hover{color:var(--text)}
+.drawer-body{flex:1;overflow-y:auto;padding:20px}
+.drawer-foot{
+  padding:14px 20px;border-top:1px solid var(--border);
+  display:flex;gap:8px;flex-shrink:0
+}
+
+/* ── Terminal ────────────────────────────────────────── */
+.term-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:100;display:flex;align-items:flex-end;
+  backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .2s
+}
+.term-overlay.visible{opacity:1;pointer-events:all}
+.term-panel{
+  width:100%;max-height:65vh;min-height:260px;
+  background:#0d1019;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;
+  transform:translateY(16px);transition:transform .2s
+}
+.term-overlay.visible .term-panel{transform:translateY(0)}
+.term-hdr{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 18px;background:var(--surf);
+  border-bottom:1px solid var(--border);flex-shrink:0
+}
+.term-label{font-size:12px;font-weight:600;color:var(--dim)}
+.spinner{
+  width:12px;height:12px;border:2px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;
+  animation:spin .7s linear infinite;flex-shrink:0
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner.done{display:none}
+.term-actions{display:flex;gap:6px;margin-left:auto;align-items:center}
+.term-copy-btn{
+  padding:3px 9px;border-radius:5px;font-size:11px;font-weight:500;
+  background:var(--surf2);border:1px solid var(--border);color:var(--muted);
+  cursor:pointer;transition:.15s
+}
+.term-copy-btn:hover{color:var(--text)}
+.term-close{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  font-size:17px;padding:1px 4px;line-height:1;transition:.15s
+}
+.term-close:hover{color:var(--text)}
+.term-out{
+  flex:1;overflow-y:auto;padding:14px 18px;
+  font-family:var(--mono);font-size:11.5px;line-height:1.65;
+  user-select:text;cursor:text;
+}
+.tline{white-space:pre-wrap;word-break:break-word}
+.tline.e{color:var(--err)}
+.tline.done-ok{color:var(--ok);font-weight:700;margin-top:6px}
+.tline.done-err{color:var(--err);font-weight:700;margin-top:6px}
+
+/* ── Toasts ──────────────────────────────────────────── */
+.toasts{position:fixed;top:12px;right:12px;z-index:200;display:flex;flex-direction:column;gap:6px}
+.toast{
+  padding:10px 14px;border-radius:7px;font-size:13px;font-weight:500;
+  background:var(--surf2);border:1px solid var(--border);
+  animation:tslide .2s;max-width:300px
+}
+@keyframes tslide{from{transform:translateX(110%);opacity:0}}
+.toast.ok{border-color:var(--ok);color:var(--ok)}
+.toast.err{border-color:var(--err);color:var(--err)}
+
+/* ── Empty ───────────────────────────────────────────── */
+.empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;line-height:1.6}
+.empty-icon{font-size:28px;opacity:.3;display:block;margin-bottom:8px}
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media(max-width:900px){
+  .two-col{grid-template-columns:1fr}
+  .nav{width:56px}
+  .nav-text{display:none}
+  .nav-item{padding:12px;justify-content:center}
+  .nav-icon{margin:0}
+  .drawer{width:100%;max-width:100%}
+  .cfg-form-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ───────────────────────────────────────── -->
+<header class="hdr">
+  <div class="logo"><em>encena</em> studio</div>
+  <div class="pills">
+    <div class="pill" id="pill-comfy"><span class="dot"></span>ComfyUI</div>
+    <div class="pill" id="pill-ollama"><span class="dot"></span><span id="ollama-lbl">Ollama</span></div>
+  </div>
+  <button class="refresh-btn" onclick="refreshStatus()">↻</button>
+</header>
+
+<div class="body">
+
+  <!-- ── Nav ──────────────────────────────────────────── -->
+  <nav class="nav">
+    <div class="nav-item active" data-panel="imagens" onclick="switchPanel('imagens',this)">
+      <div class="nav-icon">▶</div>
+      <div class="nav-text">
+        <div class="nav-label">Gerar Imagens</div>
+        <div class="nav-sub">envia prompts pro ComfyUI</div>
+      </div>
+    </div>
+    <div class="nav-item" data-panel="experimentar" onclick="switchPanel('experimentar',this)">
+      <div class="nav-icon">⚗</div>
+      <div class="nav-text">
+        <div class="nav-label">Experimentar</div>
+        <div class="nav-sub">prompt livre + imagem</div>
+      </div>
+    </div>
+    <div class="nav-item" data-panel="prompts" onclick="switchPanel('prompts',this)">
+      <div class="nav-icon">✎</div>
+      <div class="nav-text">
+        <div class="nav-label">Prompts</div>
+        <div class="nav-sub">gera e gerencia</div>
+      </div>
+    </div>
+    <hr class="nav-divider">
+    <div class="nav-item" data-panel="categorias" onclick="switchPanel('categorias',this)">
+      <div class="nav-icon">◫</div>
+      <div class="nav-text">
+        <div class="nav-label">Categorias</div>
+        <div class="nav-sub">prompts, rascunhos, config</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Panels ───────────────────────────────────────── -->
+  <div class="main">
+
+    <!-- ══ GERAR IMAGENS ══════════════════════════════ -->
+    <div class="panel active" id="panel-imagens">
+      <div class="panel-title">Gerar Imagens</div>
+      <div class="panel-sub">Envia os prompts salvos para o ComfyUI renderizar. Requer ComfyUI rodando.</div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-hd">Configuração</div>
+
+          <div class="toggle-row" style="margin-bottom:10px">
+            <label class="tgl"><input type="checkbox" id="im-todas" onchange="onImagesTodasChange()"><span class="tgl-t"></span></label>
+            <label class="tgl-lbl" for="im-todas">Todas as categorias</label>
+          </div>
+
+          <div id="im-cat-group" class="fg">
+            <label class="fl">CATEGORIA</label>
+            <select class="fc" id="im-cat" onchange="onImagesCatChange()"></select>
+          </div>
+          <div id="im-cats-multi" style="display:none" class="fg">
+            <label class="fl">CATEGORIAS (separadas por vírgula)</label>
+            <input class="fc" type="text" id="im-cats-txt" placeholder="ex: canyon, lavanda, aurora_boreal">
+          </div>
+
+          <div class="fg">
+            <label class="fl">QUANTIDADE POR CATEGORIA</label>
+            <input class="fc" type="number" id="im-qtd" value="1" min="1" max="20">
+          </div>
+
+          <div class="fg">
+            <label class="fl">FORÇAR PROMPT ESPECÍFICO <span style="font-weight:400;color:var(--muted)">(opcional — clique em "usar" ao lado)</span></label>
+            <input class="fc" type="text" id="im-pnome" placeholder="deixe em branco para sortear entre todos">
+            <div id="im-spbar" style="display:none"></div>
+          </div>
+
+          <div class="fg">
+            <label class="fl">ORIENTAÇÃO</label>
+            <div class="orient-grp">
+              <button class="orient-btn active" id="im-orient-v" onclick="setOrient('im','vertical')">
+                <span class="orient-icon">▯</span> Vertical
+              </button>
+              <button class="orient-btn" id="im-orient-h" onclick="setOrient('im','horizontal')">
+                <span class="orient-icon">▭</span> Horizontal
+              </button>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="runImagens()">▶ Gerar Imagens</button>
+          </div>
+        </div>
+
+        <div class="ctx-panel" id="im-ctx">
+          <div class="ctx-hd">
+            <span class="ctx-title">PROMPTS DISPONÍVEIS</span>
+            <span class="ctx-cat" id="im-ctx-cat">—</span>
+            <span class="ctx-count" id="im-ctx-count"></span>
+          </div>
+          <div class="ctx-body" id="im-ctx-body">
+            <div class="empty"><span class="empty-icon">🎬</span>Selecione uma categoria para ver os prompts.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ EXPERIMENTAR ═══════════════════════════════ -->
+    <div class="panel" id="panel-experimentar">
+      <div class="panel-title">Experimentar</div>
+      <div class="panel-sub">Gera prompt e imagem sem comprometer o JSON definitivo. Os prompts ficam em rascunhos para revisão e promoção.</div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-hd">Configuração</div>
+
+          <div class="fg">
+            <label class="fl">CATEGORIA</label>
+            <select class="fc" id="ex-cat" onchange="onExCatChange()"></select>
+          </div>
+          <div class="fr2">
+            <div class="fg">
+              <label class="fl">QUANTIDADE</label>
+              <input class="fc" type="number" id="ex-qtd" value="1" min="1" max="10">
+            </div>
+            <div class="fg">
+              <label class="fl">MODO</label>
+              <select class="fc" id="ex-modo">
+                <option value="auto">auto</option>
+                <option value="combinatorio">combinatório</option>
+                <option value="ollama">ollama</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">ESTILO FOTOGRÁFICO</label>
+            <select class="fc" id="ex-estilo">
+              <option value="">▸ sortear aleatoriamente</option>
+              <option value="padrao">padrão — DSLR versátil</option>
+              <option value="ultrawide">ultrawide — grande angular</option>
+              <option value="telefoto">telefoto — bokeh</option>
+              <option value="medioformato">médio formato</option>
+              <option value="noturno">noturno</option>
+              <option value="longaexposicao">longa exposição</option>
+              <option value="analogico">analógico — filme</option>
+              <option value="aereo">aéreo — drone</option>
+            </select>
+          </div>
+          <div class="toggle-row">
+            <label class="tgl"><input type="checkbox" id="ex-livre"><span class="tgl-t"></span></label>
+            <label class="tgl-lbl" for="ex-livre">Modo livre — Ollama escolhe o cenário sem base fixo</label>
+          </div>
+          <div class="adv-hd" onclick="adv('ex')">
+            <span class="adv-arrow" id="ex-arrow">▶</span> Parâmetros avançados
+          </div>
+          <div class="adv-body" id="ex-adv">
+            <div class="fg"><label class="fl">BIOMA</label><input class="fc" type="text" id="ex-bioma" placeholder="ex: patagonia steppe"></div>
+            <div class="fr2">
+              <div class="fg"><label class="fl">HORA</label><input class="fc" type="text" id="ex-hora" placeholder="ex: blue hour"></div>
+              <div class="fg"><label class="fl">CLIMA</label><input class="fc" type="text" id="ex-clima" placeholder="ex: heavy fog"></div>
+            </div>
+            <div class="fr2">
+              <div class="fg"><label class="fl">PERSPECTIVA</label><input class="fc" type="text" id="ex-persp" placeholder="ex: low angle"></div>
+              <div class="fg"><label class="fl">ELEMENTO FOCAL</label><input class="fc" type="text" id="ex-elem" placeholder="ex: winding river"></div>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">ORIENTAÇÃO</label>
+            <div class="orient-grp">
+              <button class="orient-btn active" id="ex-orient-v" onclick="setOrient('ex','vertical')">
+                <span class="orient-icon">▯</span> Vertical
+              </button>
+              <button class="orient-btn" id="ex-orient-h" onclick="setOrient('ex','horizontal')">
+                <span class="orient-icon">▭</span> Horizontal
+              </button>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="runExperimentar()">⚗ Experimentar</button>
+          </div>
+        </div>
+
+        <div class="ctx-panel" id="ex-ctx">
+          <div class="ctx-hd">
+            <span class="ctx-title">RASCUNHOS PENDENTES</span>
+            <span class="ctx-cat" id="ex-ctx-cat">—</span>
+            <span class="ctx-count" id="ex-ctx-count"></span>
+          </div>
+          <div class="ctx-body" id="ex-ctx-body">
+            <div class="empty"><span class="empty-icon">📝</span>Selecione uma categoria para ver os rascunhos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROMPTS ════════════════════════════════════ -->
+    <div class="panel" id="panel-prompts">
+      <div class="panel-title">Prompts</div>
+      <div class="panel-sub">Gera novos prompts via Ollama ou combinatório e gerencia os prompts salvos por categoria.</div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-hd">Gerar Novos Prompts</div>
+
+          <div class="fg">
+            <label class="fl">CATEGORIA</label>
+            <select class="fc" id="pr-cat" onchange="onPrCatChange()"></select>
+          </div>
+          <div class="fr2">
+            <div class="fg">
+              <label class="fl">QUANTIDADE</label>
+              <input class="fc" type="number" id="pr-qtd" value="3" min="1" max="20">
+            </div>
+            <div class="fg">
+              <label class="fl">MODO</label>
+              <select class="fc" id="pr-modo">
+                <option value="auto">auto</option>
+                <option value="combinatorio">combinatório</option>
+                <option value="ollama">ollama</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">ESTILO FOTOGRÁFICO</label>
+            <select class="fc" id="pr-estilo">
+              <option value="">▸ sortear aleatoriamente</option>
+              <option value="padrao">padrão — DSLR versátil</option>
+              <option value="ultrawide">ultrawide — grande angular</option>
+              <option value="telefoto">telefoto — bokeh</option>
+              <option value="medioformato">médio formato</option>
+              <option value="noturno">noturno</option>
+              <option value="longaexposicao">longa exposição</option>
+              <option value="analogico">analógico — filme</option>
+              <option value="aereo">aéreo — drone</option>
+            </select>
+          </div>
+          <div class="toggle-row">
+            <label class="tgl"><input type="checkbox" id="pr-livre"><span class="tgl-t"></span></label>
+            <label class="tgl-lbl" for="pr-livre">Modo livre — Ollama escolhe o cenário</label>
+          </div>
+          <div class="toggle-row">
+            <label class="tgl"><input type="checkbox" id="pr-simular"><span class="tgl-t"></span></label>
+            <label class="tgl-lbl" for="pr-simular">Simular — exibe sem salvar</label>
+          </div>
+          <div class="adv-hd" onclick="adv('pr')">
+            <span class="adv-arrow" id="pr-arrow">▶</span> Parâmetros avançados
+          </div>
+          <div class="adv-body" id="pr-adv">
+            <div class="fg"><label class="fl">BIOMA</label><input class="fc" type="text" id="pr-bioma" placeholder="ex: zion narrow canyon"></div>
+            <div class="fr2">
+              <div class="fg"><label class="fl">HORA</label><input class="fc" type="text" id="pr-hora" placeholder="ex: golden hour"></div>
+              <div class="fg"><label class="fl">CLIMA</label><input class="fc" type="text" id="pr-clima" placeholder="ex: heavy fog"></div>
+            </div>
+            <div class="fr2">
+              <div class="fg"><label class="fl">PERSPECTIVA</label><input class="fc" type="text" id="pr-persp" placeholder="ex: low angle ground level"></div>
+              <div class="fg"><label class="fl">ELEMENTO FOCAL</label><input class="fc" type="text" id="pr-elem" placeholder="ex: lone tree"></div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="runPrompts()">✎ Gerar Prompts</button>
+          </div>
+        </div>
+
+        <div class="ctx-panel" id="pr-ctx">
+          <div class="ctx-hd">
+            <span class="ctx-title">PROMPTS SALVOS</span>
+            <span class="ctx-cat" id="pr-ctx-cat">—</span>
+            <span class="ctx-count" id="pr-ctx-count"></span>
+          </div>
+          <div class="ctx-body" id="pr-ctx-body">
+            <div class="empty"><span class="empty-icon">✎</span>Selecione uma categoria para ver os prompts salvos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CATEGORIAS ════════════════════════════════ -->
+    <div class="panel" id="panel-categorias">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px">
+        <div class="panel-title" style="margin:0">Categorias</div>
+        <button class="btn btn-sm btn-accent" onclick="openNewCatDrawer()">+ Nova categoria</button>
+      </div>
+      <div class="panel-sub">Clique numa categoria para gerenciar seus prompts, rascunhos e parâmetros técnicos.</div>
+
+      <div class="cat-grid" id="cats-grid">
+        <div class="empty">Carregando…</div>
+      </div>
+      <div id="cat-detail-box" style="display:none" class="cat-detail-box"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ EDIT DRAWER ════════════════════════════════════ -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="drawerOverlayClick(event)">
+  <div class="drawer" id="drawer">
+    <div class="drawer-hd">
+      <span class="drawer-title" id="drawer-title">Editar Prompt</span>
+      <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+    <div class="drawer-foot" id="drawer-foot"></div>
+  </div>
+</div>
+
+<!-- ══ TERMINAL ═══════════════════════════════════════ -->
+<div class="term-overlay" id="term-overlay" onclick="termOverlayClick(event)">
+  <div class="term-panel">
+    <div class="term-hdr">
+      <span class="spinner" id="term-spinner"></span>
+      <span class="term-label" id="term-label">Executando…</span>
+      <div class="term-actions">
+        <button class="term-copy-btn" onclick="copyTermOutput()" title="Copiar saída completa">⎘ copiar tudo</button>
+        <button class="term-close" onclick="closeTerm()">✕</button>
+      </div>
+    </div>
+    <div class="term-out" id="term-out"></div>
+  </div>
+</div>
+
+<!-- ══ TOASTS ═════════════════════════════════════════ -->
+<div class="toasts" id="toasts"></div>
+
+<script>
+// ─── state ────────────────────────────────────────────────────────────────────
+let catList  = [];
+let catCache = {};
+let selectedCat = { imagens:null, experimentar:null, prompts:null, categorias:null };
+let editState = null; // { type:'prompt'|'rascunho', cat, nomeOriginal }
+
+// ─── selection state ──────────────────────────────────────────────────────────
+// ctxId: 'pr-ctx' | 'ex-ctx' | 'cd-pr' | 'cd-ra'
+const _selMode  = {}; // ctxId -> bool
+const _selItems = {}; // ctxId -> Set<name>
+const _ctxData  = {}; // ctxId -> { cat, data, type:'prompt'|'rascunho' }
+
+function _initSel(ctxId) {
+  if (!_selItems[ctxId]) _selItems[ctxId] = new Set();
+  if (_selMode[ctxId]  === undefined) _selMode[ctxId] = false;
+}
+function toggleSelMode(ctxId) {
+  _initSel(ctxId); _selMode[ctxId] = !_selMode[ctxId]; _selItems[ctxId].clear(); _reRenderCtx(ctxId);
+}
+function toggleSelItem(ctxId, name) {
+  _initSel(ctxId);
+  if (_selItems[ctxId].has(name)) _selItems[ctxId].delete(name); else _selItems[ctxId].add(name);
+  _reRenderCtx(ctxId);
+}
+function selectAll(ctxId) {
+  _initSel(ctxId);
+  const d = _ctxData[ctxId]; if (!d) return;
+  const items = d.type === 'prompt' ? (d.data?.cfg?.prompts||[]) : (d.data?.rascunhos||[]);
+  items.forEach(i => _selItems[ctxId].add(i.name));
+  _reRenderCtx(ctxId);
+}
+function clearSel(ctxId) { _initSel(ctxId); _selItems[ctxId].clear(); _reRenderCtx(ctxId); }
+
+async function bulkDelete(ctxId) {
+  const d = _ctxData[ctxId]; if (!d) return;
+  const names = [...(_selItems[ctxId]||[])];
+  if (!names.length) return;
+  if (!confirm(`Remover ${names.length} item${names.length!==1?'s':''} permanentemente?`)) return;
+  const endpoint = d.type === 'prompt'
+    ? `/api/prompts/${enc(d.cat)}/bulk-delete`
+    : `/api/rascunhos/${enc(d.cat)}/bulk-delete`;
+  try {
+    const r = await api(endpoint, 'POST', { names });
+    if (r.ok) {
+      toast(`${names.length} item${names.length!==1?'s':''} removido${names.length!==1?'s':''}`, 'ok');
+      _selMode[ctxId] = false; _selItems[ctxId].clear();
+      invalidateCache(d.cat);
+      loadCtx('prompts', d.cat); loadCtx('imagens', d.cat);
+      if (d.type === 'rascunho') loadCtx('experimentar', d.cat);
+      if (selectedCat.categorias === d.cat) {
+        const nd = await getCatDetail(d.cat); renderCatDetailBox(nd); renderCatsGrid();
+      }
+    } else { toast('Erro ao remover', 'err'); }
+  } catch { toast('Erro ao remover', 'err'); }
+}
+
+function _reRenderCtx(ctxId) {
+  const d = _ctxData[ctxId]; if (!d) return;
+  if      (ctxId === 'pr-ctx') renderPrCtx(d.data);
+  else if (ctxId === 'ex-ctx') renderExCtx(d.data);
+  else {
+    const el = document.getElementById(ctxId); if (!el) return;
+    if (d.type === 'prompt')   el.innerHTML = renderPromptsFull(d.cat, d.data?.cfg?.prompts||[]);
+    if (d.type === 'rascunho') el.innerHTML = renderDraftsFull(d.cat, d.data?.rascunhos||[]);
+  }
+}
+
+function _selToolbar(ctxId) {
+  _initSel(ctxId);
+  const on  = _selMode[ctxId];
+  const cnt = (_selItems[ctxId]||new Set()).size;
+  const btn = `<button class="btn btn-sm btn-ghost sel-toggle" onclick="toggleSelMode('${ctxId}')">${on?'✕ Cancelar':'☐ Selecionar'}</button>`;
+  const bar = on ? `<div class="sel-bar">
+    <span class="sel-count">${cnt} selecionado${cnt!==1?'s':''}</span>
+    <button class="btn btn-sm btn-ghost" onclick="selectAll('${ctxId}')">Todos</button>
+    <button class="btn btn-sm btn-ghost" onclick="clearSel('${ctxId}')">Nenhum</button>
+    <button class="btn btn-sm btn-err" onclick="bulkDelete('${ctxId}')"${!cnt?' disabled':''}>✕ Remover${cnt?' ('+cnt+')':''}</button>
+  </div>` : '';
+  return btn + bar;
+}
+function _chk(ctxId, name) {
+  if (!_selMode[ctxId]) return '';
+  const on = (_selItems[ctxId]||new Set()).has(name);
+  return `<input type="checkbox" ${on?'checked':''} onchange="toggleSelItem('${ctxId}','${esc(name)}')" style="flex-shrink:0;margin-top:3px;cursor:pointer;accent-color:var(--accent)">`;
+}
+function _sCls(ctxId, name, base) {
+  return base + ((_selItems[ctxId]||new Set()).has(name) ? ' sel-on' : '');
+}
+
+// Cache para dados de edição — evita passar texto longo via atributo onclick
+// (aspas duplas do JSON.stringify quebrariam o atributo HTML)
+const _ed = {}; // { key: { cat, nome, text, type } }
+function _store(cat, nome, text, type) {
+  const k = `${type}|${cat}|${nome}`;
+  _ed[k] = { cat, nome, text, type };
+  return k;
+}
+function _openEdit(k) {
+  const d = _ed[k];
+  if (!d) return;
+  if (d.type === 'rascunho') openEditRascunho(d.cat, d.nome, d.text);
+  else                       openEditPrompt(d.cat, d.nome, d.text);
+}
+
+// ─── boot ─────────────────────────────────────────────────────────────────────
+(async () => { await Promise.all([refreshStatus(), loadCategorias()]); })();
+
+// ─── status ───────────────────────────────────────────────────────────────────
+async function refreshStatus() {
+  try {
+    const s = await api('/api/status');
+    const pc = document.getElementById('pill-comfy');
+    const po = document.getElementById('pill-ollama');
+    pc.className = 'pill ' + (s.comfy  ? 'ok' : 'err');
+    po.className = 'pill ' + (s.ollama ? 'ok' : 'err');
+    document.getElementById('ollama-lbl').textContent =
+      s.modelo ? `Ollama · ${s.modelo}` : 'Ollama';
+  } catch {}
+}
+
+// ─── nav ──────────────────────────────────────────────────────────────────────
+function switchPanel(name, el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'categorias') renderCatsGrid();
+}
+
+// ─── categories ───────────────────────────────────────────────────────────────
+async function loadCategorias() {
+  catList = await api('/api/categorias');
+  const opts = catList.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+  ['im-cat','ex-cat','pr-cat'].forEach(id => {
+    const s = document.getElementById(id); if (s) s.innerHTML = opts;
+  });
+  if (catList.length) {
+    const first = catList[0].nome;
+    ['imagens','experimentar','prompts'].forEach(p => { if (!selectedCat[p]) selectedCat[p] = first; });
+    syncSelects();
+    loadCtx('imagens',      selectedCat.imagens);
+    loadCtx('experimentar', selectedCat.experimentar);
+    loadCtx('prompts',      selectedCat.prompts);
+  }
+}
+
+function syncSelects() {
+  const map = { 'im-cat':'imagens','ex-cat':'experimentar','pr-cat':'prompts' };
+  Object.entries(map).forEach(([id,panel]) => {
+    const s = document.getElementById(id);
+    if (s && selectedCat[panel]) s.value = selectedCat[panel];
+  });
+}
+
+function invalidateCache(nome) {
+  delete catCache[nome];
+  api('/api/categorias').then(list => {
+    catList = list;
+    const opts = catList.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+    ['im-cat','ex-cat','pr-cat'].forEach(id => {
+      const s = document.getElementById(id); if (!s) return;
+      const cur = s.value; s.innerHTML = opts; s.value = cur;
+    });
+  });
+}
+
+async function getCatDetail(nome) {
+  if (!catCache[nome]) catCache[nome] = await api(`/api/categoria/${enc(nome)}`);
+  return catCache[nome];
+}
+
+// ─── contextual panels ────────────────────────────────────────────────────────
+async function loadCtx(panel, cat) {
+  if (!cat) return;
+  selectedCat[panel] = cat;
+  const data = await getCatDetail(cat);
+  if (panel === 'imagens')      renderImCtx(data);
+  if (panel === 'experimentar') renderExCtx(data);
+  if (panel === 'prompts')      renderPrCtx(data);
+}
+
+// imagens
+function onImagesTodasChange() {
+  const t = document.getElementById('im-todas').checked;
+  document.getElementById('im-cat-group').style.display  = t ? 'none':'';
+  document.getElementById('im-cats-multi').style.display = t ? '':'none';
+  document.getElementById('im-ctx').style.display        = t ? 'none':'';
+}
+function onImagesCatChange() {
+  const cat = document.getElementById('im-cat').value;
+  selectedCat.imagens = cat;
+  loadCtx('imagens', cat);
+}
+function renderImCtx(data) {
+  const prompts = data?.cfg?.prompts || [];
+  document.getElementById('im-ctx-cat').textContent   = data?.nome || '—';
+  document.getElementById('im-ctx-count').textContent = `${prompts.length} prompt${prompts.length!==1?'s':''}`;
+  const body = document.getElementById('im-ctx-body');
+  if (!prompts.length) {
+    body.innerHTML = '<div class="empty"><span class="empty-icon">🎬</span>Nenhum prompt salvo nesta categoria.</div>';
+    return;
+  }
+  body.innerHTML = `<div class="plist">${prompts.map(p => `
+    <div class="pitem">
+      <div class="pinfo">
+        <div class="pname">${esc(p.name)}</div>
+        <div class="ptext">${esc(p.text)}</div>
+      </div>
+      <div class="pacts">
+        <button class="btn btn-sm btn-accent" onclick="selectForImagens('${esc(p.name)}')">usar</button>
+        <button class="btn btn-sm btn-warn"   onclick="_openEdit('${_store(data.nome,p.name,p.text,'prompt')}')">✎</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+function selectForImagens(nome) {
+  document.getElementById('im-pnome').value = nome;
+  const bar = document.getElementById('im-spbar');
+  bar.style.display = 'flex';
+  bar.innerHTML = `
+    <span style="font-size:10px;color:var(--muted)">prompt fixo:</span>
+    <span class="spbar-name">${esc(nome)}</span>
+    <button class="spbar-clear" onclick="clearImPrompt()" title="Limpar seleção">✕</button>`;
+}
+function clearImPrompt() {
+  document.getElementById('im-pnome').value = '';
+  document.getElementById('im-spbar').style.display = 'none';
+}
+
+// experimentar
+function onExCatChange() {
+  const cat = document.getElementById('ex-cat').value;
+  selectedCat.experimentar = cat;
+  loadCtx('experimentar', cat);
+}
+function renderExCtx(data) {
+  const ctxId = 'ex-ctx';
+  _ctxData[ctxId] = { cat: data?.nome, data, type: 'rascunho' };
+  _initSel(ctxId);
+  const rascunhos = data?.rascunhos || [];
+  document.getElementById('ex-ctx-cat').textContent   = data?.nome || '—';
+  document.getElementById('ex-ctx-count').textContent = `${rascunhos.length} rascunho${rascunhos.length!==1?'s':''}`;
+  const body = document.getElementById('ex-ctx-body');
+  if (!rascunhos.length) {
+    _selMode[ctxId] = false; _selItems[ctxId].clear();
+    body.innerHTML = '<div class="empty"><span class="empty-icon">📝</span>Nenhum rascunho pendente.<br>Execute Experimentar para criar.</div>';
+    return;
+  }
+  const selMode = _selMode[ctxId];
+  const cat     = data.nome;
+  body.innerHTML = _selToolbar(ctxId) + `<div class="plist">${rascunhos.map(r => `
+    <div class="${_sCls(ctxId,r.name,'ditem')}">
+      ${_chk(ctxId,r.name)}
+      <span class="dbadge">draft</span>
+      <div class="pinfo">
+        <div class="pname">${esc(r.name)}</div>
+        <div class="ptext">${esc(r.text)}</div>
+      </div>
+      ${selMode ? '' : `<div class="pacts">
+        <button class="btn btn-sm btn-warn" onclick="_openEdit('${_store(cat,r.name,r.text,'rascunho')}')">✎</button>
+        <button class="btn btn-sm btn-ok"   onclick="promover('${esc(cat)}','${esc(r.name)}')">✓</button>
+        <button class="btn btn-sm btn-err"  onclick="descartarRascunho('${esc(cat)}','${esc(r.name)}')">✕</button>
+      </div>`}
+    </div>`).join('')}</div>`;
+}
+
+// prompts
+function onPrCatChange() {
+  const cat = document.getElementById('pr-cat').value;
+  selectedCat.prompts = cat;
+  loadCtx('prompts', cat);
+}
+function renderPrCtx(data) {
+  const ctxId = 'pr-ctx';
+  _ctxData[ctxId] = { cat: data?.nome, data, type: 'prompt' };
+  _initSel(ctxId);
+  const prompts = data?.cfg?.prompts || [];
+  document.getElementById('pr-ctx-cat').textContent   = data?.nome || '—';
+  document.getElementById('pr-ctx-count').textContent = `${prompts.length} prompt${prompts.length!==1?'s':''}`;
+  const body = document.getElementById('pr-ctx-body');
+  if (!prompts.length) {
+    _selMode[ctxId] = false; _selItems[ctxId].clear();
+    body.innerHTML = '<div class="empty"><span class="empty-icon">✎</span>Nenhum prompt salvo ainda.<br>Gere prompts ao lado.</div>';
+    return;
+  }
+  const selMode = _selMode[ctxId];
+  const cat     = data.nome;
+  body.innerHTML = _selToolbar(ctxId) + `<div class="plist">${prompts.map(p => `
+    <div class="${_sCls(ctxId,p.name,'pitem')}">
+      ${_chk(ctxId,p.name)}
+      <div class="pinfo">
+        <div class="pname">${esc(p.name)}</div>
+        <div class="ptext">${esc(p.text)}</div>
+      </div>
+      ${selMode ? '' : `<div class="pacts">
+        <button class="btn btn-sm btn-warn" onclick="_openEdit('${_store(cat,p.name,p.text,'prompt')}')">✎</button>
+        <button class="btn btn-sm btn-err"  onclick="removePrompt('${esc(cat)}','${esc(p.name)}')">✕</button>
+      </div>`}
+    </div>`).join('')}</div>`;
+}
+
+// ─── categorias panel ─────────────────────────────────────────────────────────
+function renderCatsGrid() {
+  const grid = document.getElementById('cats-grid');
+  if (!catList.length) { grid.innerHTML = '<div class="empty">Nenhuma categoria encontrada.</div>'; return; }
+  grid.innerHTML = catList.map(c => `
+    <div class="cat-card${selectedCat.categorias===c.nome?' selected':''}" onclick="selectCatPanel('${c.nome}')">
+      <div class="cc-name">${c.nome}</div>
+      <div class="cc-stats">
+        <span class="badge badge-p">${c.n_prompts} prompt${c.n_prompts!==1?'s':''}</span>
+        ${c.n_rascunhos ? `<span class="badge badge-r">${c.n_rascunhos} rascunho${c.n_rascunhos!==1?'s':''}</span>` : ''}
+      </div>
+      <div class="cc-cfg">${cfgSummary(c.cfg)}</div>
+      ${c.tags && c.tags.length ? `<div style="margin-top:7px;display:flex;flex-wrap:wrap;gap:4px">${c.tags.map(t=>`<span style="background:var(--surf3);border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-size:9px;color:var(--muted);font-family:var(--mono)">#${esc(t)}</span>`).join('')}</div>` : ''}
+      ${!(c.cfg?.biomas?.length) ? `<div style="margin-top:6px;font-size:10px;color:var(--warn);opacity:.8">⚠ sem tema combinatório</div>` : ''}
+    </div>`).join('');
+}
+
+function cfgSummary(cfg) {
+  if (!cfg) return '';
+  return [cfg.cfg!=null?`cfg ${cfg.cfg}`:null, cfg.steps!=null?`${cfg.steps} steps`:null,
+          cfg.sampler||null, cfg.width&&cfg.height?`${cfg.width}×${cfg.height}`:null]
+    .filter(Boolean).join('  ·  ');
+}
+
+async function selectCatPanel(nome) {
+  selectedCat.categorias = nome;
+  renderCatsGrid();
+  const data = await getCatDetail(nome);
+  renderCatDetailBox(data);
+}
+
+function renderCatDetailBox(data) {
+  const box = document.getElementById('cat-detail-box');
+  box.style.display = '';
+  const prompts   = data?.cfg?.prompts || [];
+  const rascunhos = data?.rascunhos    || [];
+  // Reset selection state when switching category detail
+  ['cd-pr','cd-ra'].forEach(id => { _selMode[id] = false; _selItems[id] = new Set(); });
+  _ctxData['cd-pr'] = { cat: data?.nome, data, type: 'prompt' };
+  _ctxData['cd-ra'] = { cat: data?.nome, data, type: 'rascunho' };
+  box.innerHTML = `
+    <div class="cat-detail-hd">
+      <h2>${data.nome}</h2>
+      <div class="cfg-pills">${cfgPills(data.cfg)}</div>
+      <button class="btn btn-sm btn-err" style="margin-left:auto" onclick="deletarCategoria('${esc(data.nome)}')">✕ deletar</button>
+    </div>
+    <div style="padding:14px 18px 0">
+      <div class="subtabs">
+        <button class="stab active" onclick="catSubTab(this,'cd-pr')">Prompts (${prompts.length})</button>
+        <button class="stab" onclick="catSubTab(this,'cd-ra')">Rascunhos (${rascunhos.length})</button>
+        <button class="stab" onclick="catSubTab(this,'cd-cfg')">Config</button>
+      </div>
+    </div>
+    <div class="cat-detail-body">
+      <div id="cd-pr">${renderPromptsFull(data.nome, prompts)}</div>
+      <div id="cd-ra" style="display:none">${renderDraftsFull(data.nome, rascunhos)}</div>
+      <div id="cd-cfg" style="display:none">${renderCfgForm(data.nome, data.cfg)}</div>
+    </div>`;
+  box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function catSubTab(btn, showId) {
+  const box = document.getElementById('cat-detail-box');
+  box.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['cd-pr','cd-ra','cd-cfg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = el.id === showId ? '' : 'none';
+  });
+}
+
+function renderPromptsFull(cat, prompts) {
+  const ctxId = 'cd-pr';
+  _initSel(ctxId);
+  if (!prompts.length) return '<div class="empty">Nenhum prompt salvo nesta categoria.</div>';
+  const selMode = _selMode[ctxId];
+  return _selToolbar(ctxId) + `<div class="plist">${prompts.map(p => `
+    <div class="${_sCls(ctxId,p.name,'pitem')}">
+      ${_chk(ctxId,p.name)}
+      <div class="pinfo">
+        <div class="pname">${esc(p.name)}</div>
+        <div class="ptext">${esc(p.text)}</div>
+      </div>
+      ${selMode ? '' : `<div class="pacts">
+        <button class="btn btn-sm btn-warn" onclick="_openEdit('${_store(cat,p.name,p.text,'prompt')}')">✎ editar</button>
+        <button class="btn btn-sm btn-err"  onclick="removePrompt('${esc(cat)}','${esc(p.name)}')">✕ remover</button>
+      </div>`}
+    </div>`).join('')}</div>`;
+}
+
+function renderDraftsFull(cat, rascunhos) {
+  const ctxId = 'cd-ra';
+  _initSel(ctxId);
+  if (!rascunhos.length) return '<div class="empty">Nenhum rascunho pendente nesta categoria.</div>';
+  const selMode = _selMode[ctxId];
+  return _selToolbar(ctxId) + `<div class="plist">${rascunhos.map(r => `
+    <div class="${_sCls(ctxId,r.name,'ditem')}">
+      ${_chk(ctxId,r.name)}
+      <span class="dbadge">draft</span>
+      <div class="pinfo">
+        <div class="pname">${esc(r.name)}</div>
+        <div class="ptext">${esc(r.text)}</div>
+      </div>
+      ${selMode ? '' : `<div class="pacts">
+        <button class="btn btn-sm btn-warn" onclick="_openEdit('${_store(cat,r.name,r.text,'rascunho')}')">✎</button>
+        <button class="btn btn-sm btn-ok"   onclick="promover('${esc(cat)}','${esc(r.name)}')">✓ promover</button>
+        <button class="btn btn-sm btn-err"  onclick="descartarRascunho('${esc(cat)}','${esc(r.name)}')">✕</button>
+      </div>`}
+    </div>`).join('')}</div>`;
+}
+
+// ─── Config form (editable) ────────────────────────────────────────────────────
+function renderCfgForm(cat, cfg) {
+  if (!cfg) return '<div class="empty">Config não encontrada.</div>';
+  return `
+    <div class="cfg-form-grid">
+      <div class="fg"><label class="fl">CFG (guidance)</label>
+        <input class="fc" type="number" id="cfe-cfg"    value="${cfg.cfg ?? ''}" step="0.1"></div>
+      <div class="fg"><label class="fl">STEPS</label>
+        <input class="fc" type="number" id="cfe-steps"  value="${cfg.steps ?? ''}"></div>
+      <div class="fg"><label class="fl">LORA NATURE</label>
+        <input class="fc" type="number" id="cfe-nature" value="${cfg.lora_nature ?? ''}" step="0.05"></div>
+      <div class="fg"><label class="fl">LORA DETAIL</label>
+        <input class="fc" type="number" id="cfe-detail" value="${cfg.lora_detail ?? ''}" step="0.05"></div>
+      <div class="fg"><label class="fl">LARGURA (px)</label>
+        <input class="fc" type="number" id="cfe-width"  value="${cfg.width ?? ''}"></div>
+      <div class="fg"><label class="fl">ALTURA (px)</label>
+        <input class="fc" type="number" id="cfe-height" value="${cfg.height ?? ''}"></div>
+    </div>
+    <div class="cfg-form-grid-2">
+      <div class="fg"><label class="fl">SAMPLER</label>
+        <input class="fc" type="text" id="cfe-sampler"   value="${esc(cfg.sampler ?? '')}"></div>
+      <div class="fg"><label class="fl">SCHEDULER</label>
+        <input class="fc" type="text" id="cfe-scheduler" value="${esc(cfg.scheduler ?? '')}"></div>
+    </div>
+    <div class="fg"><label class="fl">OUTPUT SUBDIR</label>
+      <input class="fc" type="text" id="cfe-subdir" value="${esc(cfg.output_subdir ?? '')}"></div>
+    <div class="fg"><label class="fl">TAGS <span style="font-weight:400;color:var(--muted)">(palavras-chave para direcionar o Ollama — separadas por vírgula)</span></label>
+      <input class="fc" type="text" id="cfe-tags" value="${esc((cfg.tags||[]).join(', '))}" placeholder="ex: coral reef, bioluminescent, deep sea">
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5">Injetadas nos prompts do Ollama. Devem estar em inglês — se inserir em português, clique em "↺ Gerar com Ollama" para normalizar automaticamente.</div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:12px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">TEMA COMBINATÓRIO</span>
+        <button class="btn btn-sm btn-accent" onclick="gerarTema('${esc(cat)}')">↺ Gerar com Ollama</button>
+        <span style="font-size:10px;color:var(--muted)">${renderTemaStatus(cfg)}</span>
+      </div>
+      ${renderTemaListas(cfg)}
+      <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5">
+        O tema define os pools de biomas e elementos usados pelo modo combinatório.
+        Sem tema, a categoria cai nos pools globais (não temáticos).
+      </div>
+    </div>
+    <div class="fg"><label class="fl">PROMPT NEGATIVO</label>
+      <textarea class="fc" id="cfe-negative" rows="4">${esc(cfg.negative ?? '')}</textarea></div>
+    <div class="cfg-save-row">
+      <button class="btn btn-primary" onclick="saveCfg('${esc(cat)}')">Salvar configurações</button>
+      <span class="cfg-saved-msg" id="cfg-saved-msg">✓ salvo</span>
+    </div>`;
+}
+
+async function saveCfg(cat) {
+  const get = id => document.getElementById(id)?.value ?? '';
+  const payload = {
+    cfg:          get('cfe-cfg'),
+    steps:        get('cfe-steps'),
+    lora_nature:  get('cfe-nature'),
+    lora_detail:  get('cfe-detail'),
+    width:        get('cfe-width'),
+    height:       get('cfe-height'),
+    sampler:      get('cfe-sampler'),
+    scheduler:    get('cfe-scheduler'),
+    output_subdir:get('cfe-subdir'),
+    negative:     get('cfe-negative'),
+    tags:         get('cfe-tags'),
+  };
+  try {
+    const r = await api(`/api/categoria/${enc(cat)}/cfg`, 'PUT', payload);
+    if (r.ok) {
+      const msg = document.getElementById('cfg-saved-msg');
+      if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
+      invalidateCache(cat);
+      toast('Config salva', 'ok');
+    } else { toast('Erro ao salvar config', 'err'); }
+  } catch { toast('Erro ao salvar config', 'err'); }
+}
+
+// ─── Edit Drawer ──────────────────────────────────────────────────────────────
+function openEditPrompt(cat, nome, texto) {
+  editState = { type: 'prompt', cat, nomeOriginal: nome };
+  document.getElementById('drawer-title').textContent = 'Editar Prompt';
+  _populateDrawer(nome, texto, 'Edite livremente o prompt. O nome é o identificador no JSON.');
+  openDrawer();
+}
+
+function openEditRascunho(cat, nome, texto) {
+  editState = { type: 'rascunho', cat, nomeOriginal: nome };
+  document.getElementById('drawer-title').textContent = 'Editar Rascunho';
+  _populateDrawer(nome, texto, 'Rascunhos editados ficam pendentes até você promover ou descartar.');
+  openDrawer();
+}
+
+function _populateDrawer(nome, texto, nota) {
+  document.getElementById('drawer-body').innerHTML = `
+    <div class="fg">
+      <label class="fl">NOME</label>
+      <input class="fc" type="text" id="edit-nome">
+    </div>
+    <div class="fg" style="margin-top:4px">
+      <label class="fl">TEXTO DO PROMPT</label>
+      <textarea class="fc" id="edit-text" rows="14" style="min-height:220px"></textarea>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">${esc(nota)}</p>`;
+  // Preenche via .value para não passar texto longo como atributo HTML
+  document.getElementById('edit-nome').value = nome;
+  document.getElementById('edit-text').value = texto;
+  document.getElementById('drawer-foot').innerHTML = `
+    <button class="btn btn-primary" onclick="saveEditPrompt()">Salvar</button>
+    <button class="btn btn-ghost"   onclick="closeDrawer()">Cancelar</button>`;
+}
+
+async function saveEditPrompt() {
+  if (!editState) return;
+  const novoNome = document.getElementById('edit-nome')?.value.trim();
+  const novoText = document.getElementById('edit-text')?.value.trim();
+  if (!novoNome || !novoText) { toast('Nome e texto são obrigatórios', 'err'); return; }
+
+  const { type, cat, nomeOriginal } = editState;
+  const endpoint = type === 'rascunho'
+    ? `/api/rascunhos/${enc(cat)}/${enc(nomeOriginal)}`
+    : `/api/prompts/${enc(cat)}/${enc(nomeOriginal)}`;
+
+  try {
+    const r = await api(endpoint, 'PUT', { name: novoNome, text: novoText });
+    if (r.ok) {
+      toast('Salvo com sucesso', 'ok');
+      closeDrawer();
+      invalidateCache(cat);
+      // Refresh all panels that show this category
+      loadCtx('imagens',      cat);
+      loadCtx('experimentar', cat);
+      loadCtx('prompts',      cat);
+      if (selectedCat.categorias === cat) {
+        const d = await getCatDetail(cat);
+        renderCatDetailBox(d);
+        renderCatsGrid();
+      }
+    } else { toast('Erro ao salvar', 'err'); }
+  } catch { toast('Erro ao salvar', 'err'); }
+}
+
+function openDrawer() {
+  document.getElementById('drawer-overlay').classList.add('visible');
+  // Focus first input after transition
+  setTimeout(() => document.getElementById('edit-nome')?.focus(), 260);
+}
+function closeDrawer() {
+  document.getElementById('drawer-overlay').classList.remove('visible');
+  editState = null;
+}
+function drawerOverlayClick(e) {
+  if (e.target === document.getElementById('drawer-overlay')) closeDrawer();
+}
+
+// ─── actions ──────────────────────────────────────────────────────────────────
+const _orient = { im: 'vertical', ex: 'vertical' };
+function setOrient(prefix, val) {
+  _orient[prefix] = val;
+  document.getElementById(`${prefix}-orient-v`).classList.toggle('active', val === 'vertical');
+  document.getElementById(`${prefix}-orient-h`).classList.toggle('active', val === 'horizontal');
+}
+
+function runImagens() {
+  const todas = document.getElementById('im-todas').checked;
+  const cat   = document.getElementById('im-cat').value;
+  const cats  = document.getElementById('im-cats-txt').value.trim();
+  if (!todas && !cat) { toast('Selecione uma categoria', 'err'); return; }
+  const payload = {
+    todas, categorias: todas ? (cats||null) : cat,
+    quantidade:   parseInt(document.getElementById('im-qtd').value) || 1,
+    prompt_nome:  document.getElementById('im-pnome').value.trim() || null,
+    orientacao:   _orient.im,
+  };
+  sseAction('/api/imagens/gerar', payload, 'Gerando imagens…', async () => {
+    if (!todas) { invalidateCache(cat); loadCtx('imagens', cat); }
+    refreshStatus();
+  });
+}
+
+function runExperimentar() {
+  const cat = document.getElementById('ex-cat').value;
+  if (!cat) { toast('Selecione uma categoria', 'err'); return; }
+  sseAction('/api/experimentar', {
+    categoria:   cat,
+    quantidade:  parseInt(document.getElementById('ex-qtd').value) || 1,
+    modo:        document.getElementById('ex-modo').value,
+    livre:       document.getElementById('ex-livre').checked,
+    estilo:      document.getElementById('ex-estilo').value || null,
+    bioma:       document.getElementById('ex-bioma').value.trim()  || null,
+    hora:        document.getElementById('ex-hora').value.trim()   || null,
+    clima:       document.getElementById('ex-clima').value.trim()  || null,
+    perspectiva: document.getElementById('ex-persp').value.trim()  || null,
+    elemento:    document.getElementById('ex-elem').value.trim()   || null,
+    orientacao:  _orient.ex,
+  }, 'Experimentando…', async () => {
+    invalidateCache(cat); loadCtx('experimentar', cat); refreshStatus();
+  });
+}
+
+function runPrompts() {
+  const cat = document.getElementById('pr-cat').value;
+  if (!cat) { toast('Selecione uma categoria', 'err'); return; }
+  sseAction('/api/prompts/gerar', {
+    categoria:   cat,
+    quantidade:  parseInt(document.getElementById('pr-qtd').value) || 3,
+    modo:        document.getElementById('pr-modo').value,
+    livre:       document.getElementById('pr-livre').checked,
+    simular:     document.getElementById('pr-simular').checked,
+    estilo:      document.getElementById('pr-estilo').value || null,
+    bioma:       document.getElementById('pr-bioma').value.trim()  || null,
+    hora:        document.getElementById('pr-hora').value.trim()   || null,
+    clima:       document.getElementById('pr-clima').value.trim()  || null,
+    perspectiva: document.getElementById('pr-persp').value.trim()  || null,
+    elemento:    document.getElementById('pr-elem').value.trim()   || null,
+  }, 'Gerando prompts…', async () => {
+    invalidateCache(cat); loadCtx('prompts', cat); loadCtx('imagens', cat);
+  });
+}
+
+async function promover(cat, nome) {
+  try {
+    const r = await api('/api/promover', 'POST', { categoria: cat, nome });
+    toast(r.ok ? `Promovido: ${nome}` : 'Erro ao promover', r.ok ? 'ok' : 'err');
+    if (r.ok) {
+      invalidateCache(cat);
+      loadCtx('experimentar', cat); loadCtx('prompts', cat); loadCtx('imagens', cat);
+      if (selectedCat.categorias === cat) {
+        const d = await getCatDetail(cat); renderCatDetailBox(d); renderCatsGrid();
+      }
+    }
+  } catch { toast('Erro ao promover', 'err'); }
+}
+
+async function descartarRascunho(cat, nome) {
+  try {
+    const r = await api(`/api/rascunhos/${enc(cat)}/${enc(nome)}`, 'DELETE');
+    toast(r.ok ? `Descartado: ${nome}` : 'Erro', r.ok ? 'ok' : 'err');
+    if (r.ok) {
+      invalidateCache(cat); loadCtx('experimentar', cat);
+      if (selectedCat.categorias === cat) {
+        const d = await getCatDetail(cat); renderCatDetailBox(d); renderCatsGrid();
+      }
+    }
+  } catch { toast('Erro', 'err'); }
+}
+
+async function removePrompt(cat, nome) {
+  if (!confirm(`Remover prompt "${nome}" de "${cat}"?`)) return;
+  try {
+    const r = await api(`/api/prompts/${enc(cat)}/${enc(nome)}`, 'DELETE');
+    toast(r.ok ? `Removido: ${nome}` : 'Erro: ' + r.stderr, r.ok ? 'ok' : 'err');
+    if (r.ok) {
+      invalidateCache(cat); loadCtx('prompts', cat); loadCtx('imagens', cat);
+      if (selectedCat.categorias === cat) {
+        const d = await getCatDetail(cat); renderCatDetailBox(d); renderCatsGrid();
+      }
+    }
+  } catch { toast('Erro ao remover', 'err'); }
+}
+
+// ─── SSE / terminal ───────────────────────────────────────────────────────────
+async function sseAction(url, payload, label, onDone) {
+  openTerm(label);
+  try {
+    const resp = await fetch(url, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload),
+    });
+    const reader = resp.body.getReader();
+    const dec    = new TextDecoder();
+    let buf = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream:true });
+      const parts = buf.split('\n'); buf = parts.pop();
+      for (const line of parts) {
+        if (!line.startsWith('data: ')) continue;
+        let msg; try { msg = JSON.parse(line.slice(6)); } catch { continue; }
+        if (msg.t === 'o') termLine(msg.s, '');
+        if (msg.t === 'e') termLine(msg.s, 'e');
+        if (msg.t === 'done') {
+          const ok = msg.code === 0;
+          termLine(ok ? '✓ Concluído.' : `✗ Saiu com código ${msg.code}`, ok ? 'done-ok':'done-err');
+          document.getElementById('term-spinner').classList.add('done');
+          if (ok && onDone) await onDone();
+        }
+      }
+    }
+  } catch(e) {
+    termLine('Erro: ' + e.message, 'e');
+    document.getElementById('term-spinner').classList.add('done');
+  }
+}
+
+function openTerm(label) {
+  document.getElementById('term-label').textContent = label;
+  document.getElementById('term-out').innerHTML = '';
+  document.getElementById('term-spinner').classList.remove('done');
+  document.getElementById('term-overlay').classList.add('visible');
+}
+function closeTerm() { document.getElementById('term-overlay').classList.remove('visible'); }
+function termOverlayClick(e) { if (e.target === document.getElementById('term-overlay')) closeTerm(); }
+function termLine(text, cls) {
+  const out = document.getElementById('term-out');
+  const d = document.createElement('div');
+  d.className = 'tline ' + cls;
+  d.textContent = text;
+  out.appendChild(d);
+  out.scrollTop = out.scrollHeight;
+}
+function copyTermOutput() {
+  const lines = [...document.querySelectorAll('#term-out .tline')].map(l => l.textContent).join('\n');
+  navigator.clipboard.writeText(lines).then(
+    () => toast('Saída copiada', 'ok'),
+    () => toast('Falha ao copiar', 'err')
+  );
+}
+
+// ─── nova / deletar categoria ─────────────────────────────────────────────────
+function openNewCatDrawer() {
+  editState = null;
+  document.getElementById('drawer-title').textContent = 'Nova Categoria';
+  document.getElementById('drawer-body').innerHTML = `
+    <div class="fg">
+      <label class="fl">NOME <span style="font-weight:400;color:var(--muted)">(convertido para slug automaticamente)</span></label>
+      <input class="fc" type="text" id="nc-nome" placeholder="ex: deserto, floresta_fria, vulcao">
+    </div>
+    <div class="cfg-form-grid" style="margin-top:8px">
+      <div class="fg"><label class="fl">CFG (guidance)</label>
+        <input class="fc" type="number" id="nc-cfg" value="1.8" step="0.1"></div>
+      <div class="fg"><label class="fl">STEPS</label>
+        <input class="fc" type="number" id="nc-steps" value="8"></div>
+      <div class="fg"><label class="fl">LORA NATURE</label>
+        <input class="fc" type="number" id="nc-nature" value="0.4" step="0.05"></div>
+      <div class="fg"><label class="fl">LORA DETAIL</label>
+        <input class="fc" type="number" id="nc-detail" value="0.6" step="0.05"></div>
+      <div class="fg"><label class="fl">LARGURA (px)</label>
+        <input class="fc" type="number" id="nc-width" value="768"></div>
+      <div class="fg"><label class="fl">ALTURA (px)</label>
+        <input class="fc" type="number" id="nc-height" value="1344"></div>
+    </div>
+    <div class="fg" style="margin-top:4px">
+      <label class="fl">TAGS <span style="font-weight:400;color:var(--muted)">(opcional — geradas automaticamente pelo Ollama se não preenchidas)</span></label>
+      <input class="fc" type="text" id="nc-tags" placeholder="deixe em branco para gerar automaticamente…">
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5">
+        Se o Ollama estiver disponível, tags, biomas e elementos serão gerados automaticamente no momento da criação.
+        Você pode editar tudo depois na aba Config da categoria.
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">
+      Os demais parâmetros (sampler, scheduler, prompt negativo) usam os padrões e podem ser editados depois em Config.
+    </p>`;
+  document.getElementById('drawer-foot').innerHTML = `
+    <button class="btn btn-primary" onclick="saveNewCat()">Criar categoria</button>
+    <button class="btn btn-ghost"   onclick="closeDrawer()">Cancelar</button>`;
+  openDrawer();
+  setTimeout(() => document.getElementById('nc-nome')?.focus(), 260);
+}
+
+function renderTemaStatus(cfg) {
+  const b = (cfg?.biomas   || []).length;
+  const e = (cfg?.elementos || []).length;
+  if (b && e) return `${b} biomas · ${e} elementos`;
+  return '<span style="color:var(--warn)">sem tema — modo combinatório usará pools globais</span>';
+}
+
+function renderTemaListas(cfg) {
+  const biomas    = cfg?.biomas    || [];
+  const elementos = cfg?.elementos || [];
+  if (!biomas.length && !elementos.length) return '';
+  const pill = v => `<span style="background:var(--surf3);border:1px solid var(--border);border-radius:3px;padding:1px 7px;font-size:10px;color:var(--dim);font-family:var(--mono)">${esc(v)}</span>`;
+  return `
+    <div style="margin-bottom:6px">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">Biomas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${biomas.map(pill).join('')}</div>
+    </div>
+    <div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:4px">Elementos</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px">${elementos.map(pill).join('')}</div>
+    </div>`;
+}
+
+async function gerarTema(cat) {
+  sseAction(`/api/categoria/${enc(cat)}/tema`, {}, `Gerando tema para '${cat}'…`, async () => {
+    invalidateCache(cat);
+    const d = await getCatDetail(cat);
+    renderCatDetailBox(d);
+    renderCatsGrid();
+    toast('Tema gerado e salvo', 'ok');
+  });
+}
+
+function saveNewCat() {
+  const nome = document.getElementById('nc-nome')?.value.trim();
+  if (!nome) { toast('Informe o nome da categoria', 'err'); return; }
+  const payload = {
+    nome,
+    cfg:         document.getElementById('nc-cfg')?.value,
+    steps:       document.getElementById('nc-steps')?.value,
+    lora_nature: document.getElementById('nc-nature')?.value,
+    lora_detail: document.getElementById('nc-detail')?.value,
+    width:       document.getElementById('nc-width')?.value,
+    height:      document.getElementById('nc-height')?.value,
+    tags:        document.getElementById('nc-tags')?.value.trim() || '',
+  };
+  closeDrawer();
+  sseAction('/api/categorias', payload, `Criando categoria '${nome}'…`, async () => {
+    await loadCategorias();
+    renderCatsGrid();
+  });
+}
+
+async function deletarCategoria(nome) {
+  if (!confirm(`Deletar permanentemente a categoria "${nome}" e todos os seus prompts e rascunhos?`)) return;
+  try {
+    const r = await api(`/api/categorias/${enc(nome)}`, 'DELETE');
+    if (r.ok) {
+      toast(`Categoria '${nome}' removida`, 'ok');
+      document.getElementById('cat-detail-box').style.display = 'none';
+      selectedCat.categorias = null;
+      delete catCache[nome];
+      await loadCategorias();
+      renderCatsGrid();
+    } else { toast(r.error || 'Erro ao deletar', 'err'); }
+  } catch { toast('Erro ao deletar', 'err'); }
+}
+
+// ─── collapse ─────────────────────────────────────────────────────────────────
+function adv(prefix) {
+  document.getElementById(prefix+'-adv').classList.toggle('open');
+  document.getElementById(prefix+'-arrow').classList.toggle('open');
+}
+
+// ─── helpers ──────────────────────────────────────────────────────────────────
+function cfgPills(cfg) {
+  if (!cfg) return '';
+  return [['cfg',cfg.cfg],['steps',cfg.steps],['sampler',cfg.sampler],
+    ['scheduler',cfg.scheduler],[null,cfg.width&&cfg.height?`${cfg.width}×${cfg.height}`:null],
+    ['nature',cfg.lora_nature],['detail',cfg.lora_detail]]
+    .filter(([,v])=>v!=null)
+    .map(([k,v])=>`<span class="cfg-pill">${k?k+' ':''}${esc(String(v))}</span>`)
+    .join('');
+}
+async function api(url, method='GET', body=null) {
+  const opts = { method, headers:{} };
+  if (body) { opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
+  return (await fetch(url, opts)).json();
+}
+function toast(msg, type='ok') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`; el.textContent = msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const enc = s => encodeURIComponent(s);
+</script>
+</body>
+</html>

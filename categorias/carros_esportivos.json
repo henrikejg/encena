@@ -1,0 +1,85 @@
+{
+  "category": "carros_esportivos",
+  "cfg": 1.8,
+  "lora_nature": 0.4,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/carros_esportivos",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "tags": [
+    "Speed",
+    "Adrenaline",
+    "Technology",
+    "Contest",
+    "Race Circuit",
+    "Performance",
+    "Racing Cars",
+    "Motorsports"
+  ],
+  "biomas": [
+    "Race Circuit",
+    "Highway at Sunset",
+    "Urban Street Race",
+    "Cockpit Interior View",
+    "Mountain Hairpin Road",
+    "Car Showroom",
+    "Underground Parking Garage",
+    "Tunnel in Rain"
+  ],
+  "elementos": [
+    "High-speed Motion Blur",
+    "Laser Focused Headlights",
+    "Sleek Car Bodies",
+    "Detailed Engine Components",
+    "Racers in Action",
+    "Reflections off Polished Surfaces",
+    "Tires Screeching on Tarmac",
+    "Pit Crew Preparing Cars"
+  ],
+  "prompts": [
+    {
+      "name": "tunnel_in_rain_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, High-Tech Racing Cars illuminated by the golden light of sunset breaking through a damp tunnel, misty ambiance, dramatic close detail emphasizing sleek mechanics and adrenaline-fueled preparation of pit crew, Raindrops glistening on polished surfaces, Race Circuit backdrop hinting at the thrilling speed and performance, Canon EOS R5, f/11, 30s long exposure, ISO 100, ND filter for enhanced contrast, ultra realistic, National Geographic."
+    },
+    {
+      "name": "tunnel_in_rain_stormy_overcast",
+      "text": "RAW photo, professional nature photography\nPulsating Light and Drizzle-kissed Asphalt: High-Speed Adrenaline Fusion at the Sleek Race Circuit Twilight, Capturing the Pinnacle of Motorsports Technology - Contest in Motion, Racing Cars Illuminated by a Spectral Dance of Headlights and Strobe Lights under a Stormy Sky, Canon EOS R5, f/8, ultra realistic, National Geographic. (carros_esportivos category)"
+    },
+    {
+      "name": "car_showroom_blue_hour",
+      "text": "RAW photo, professional nature photography, Dusk-lit Race Pit Garage, atmospheric and tense, dramatic wide angle shot, Polished Car Exteriors glistening under powerful spotlights, Canon EOS R5, f/1.2, ultra realistic, Adrenaline-pumping Motorsports Spectacle, National Geographic"
+    },
+    {
+      "name": "race_circuit_late_afternoon",
+      "text": "RAW photo, professional nature photography, Dusk Race Circuit with low-lying sun casting long shadows and breaking through scattered clouds to create a dramatic play of light and shadow, grand panoramic vista filled with the roar of racing engines and the adrenaline rush of high-speed motorsports, Racing Cars weaving through turns with Motion Blur emphasizing their speed and performance, Canon EOS R5, f/4, ISO 800, ultra realistic, National Geographic."
+    },
+    {
+      "name": "highway_at_sunset_early_morning_g",
+      "text": "RAW photo, professional nature photography, High-tech Racing Cars silhouetted against a vibrant sunrise on the sleek concrete race circuit at dawn, with ominous cumulonimbus clouds casting long shadows and reflecting off the polished surfaces of the gleaming vehicles. The scene captures the thrill of speed, adrenaline, technology, contest, and performance in the heart of a pulsating motorsport event. Canon EOS R5, 24-70mm f/2.8, f/8, ultra realistic, National Geographic."
+    },
+    {
+      "name": "race_circuit_blue_hour",
+      "text": "High-resolution medium format RAW capture, professional nature photography at the bustling Race Circuit under the magical blue hour. A thin veil of morning mist drapes over the circuit, catching the glow from the powerful headlights of racing cars, creating a surreal atmosphere. A dynamic wide establishing shot captures the adrenaline-pumping spectacle, with racing cars roaring around sharp turns and sleek lines cutting through the cool mist. Captured using Hasselblad X2D, 45mm f/3.5 lens, expertly balanced at f/8, ISO 64 for crisp detail and ultra-realistic imagery fit for National Geographic."
+    },
+    {
+      "name": "urban_street_race_aurora_night",
+      "text": "High-resolution medium format RAW capture, professional nature photography. Urban Street Race under the glow of aurora, post-rain twilight. A wide-angle, atmospheric perspective capturing the adrenaline-fueled contest on a neon-lit race circuit. Racing cars in full throttle performance, a spectacle of technology and motorsports excellence. Hasselblad X2D, 45mm f/3.5, f/8, ISO 64, ultra-realistic, National Geographic."
+    },
+    {
+      "name": "race_circuit_midday_harsh_li",
+      "text": "RAW photo, professional nature photography, High-speed Adrenaline on a Race Circuit under intense midday sunlight, towering cumulonimbus casting dramatic shadows, panoramic vista of pit stops and racing cars, Pit Crew in action with sleek racing machines, Sony A7R V, 400mm f/2.8, f/4, ISO 400, ultra realistic, National Geographic."
+    },
+    {
+      "name": "cockpit_interior_vie_misty_morning",
+      "text": "Carros Esportivos: RAW photo, professional nature photography, Cockpit Interior View at misty dawn on a world-class race circuit, engine roaring with adrenaline-induced intensity. Rain-slicked asphalt leads the eye towards sleek racing cars lined up in a grid of precision and technology. Detailed engine components glisten under studio-like lighting, casting long shadows that echo the contestant's anticipation. Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
+    },
+    {
+      "name": "underground_parking__starry_night",
+      "text": "RAW photo, professional nature photography: Nighttime Race Circuit Underground Garage, Dramatic silhouettes of racing cars under a star-studded sky with scattered clouds releasing rays of light, Pit Crew in action against the backdrop of cutting-edge technology and high-octane atmosphere, Hasselblad X2D 45mm f/3.5, f/8, ISO 64, ultra-realistic, National Geographic"
+    }
+  ]
+}

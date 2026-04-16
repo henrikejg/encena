@@ -24,16 +24,40 @@
       "text": "photorealistic bamboo grove at dawn, thick atmospheric morning mist drifting between tall bamboo trunks, soft diffused golden light beginning to break through, forest floor covered in fallen leaves and moss, ethereal and tranquil atmosphere, deep greens, ultra-detailed, award-winning nature photography, National Geographic style, 8k, Canon EOS R5, f/4"
     },
     {
-      "name": "mongolian_steppe_midday_harsh_li",
-      "text": "RAW photo, professional nature photography, Mongolian steppe under scorching midday sun, a solitary gnarled tree stands amidst vast golden waves in the foreground, ominous cumulonimbus loom on the horizon, dust devils dance across the scene as the atmosphere hums with anticipation, Canon EOS R5, f/8, ultra realistic, National Geographic."
+      "name": "yunnan_bamboo_highla_aurora_night",
+      "text": "RAW photo, professional nature photography, misty Yunnan bamboo highlands under the aurora-lit sky of China, towering cumulonimbus casting long shadows, intimate ground-level perspective capturing textured bamboo grove illuminated by dappled light filtering through canopy, Canon EOS R5, 400mm f/2.8, f/4, ISO 400, ultra realistic, National Geographic"
     },
     {
-      "name": "norwegian_fjord_midday_harsh_li",
-      "text": "RAW photo, professional nature photography: Norwegian Fjord under a brilliant midday sun, rainbow arching over ancient, moss-covered rock formations, dramatic play of light and texture in the misty atmosphere, Canon EOS R5, f/8, ultra realistic, National Geographic."
+      "name": "yunnan_bamboo_highla_blue_hour",
+      "text": "RAW photo, professional nature photography, Yunnan bamboo highlands of China at the mystical blue hour. The dense bamboo forest shrouded in heavy fog, creating an ethereal atmosphere as if stepping into a dream. Composition focuses on leading lines formed by towering bamboo stalks, their texture accentuated by the soft, diffused light filtering through the misty air. Canon EOS R5, 24mm f/1.8, f/4, ISO 6400, ultra realistic, National Geographic."
     },
     {
-      "name": "tropical_beach_blue_hour",
-      "text": "Tropical beach at twilight's peak, a fleeting moment of azure and gold illuminates a shell half-buried in the warm sand. Frozen alpine lake, serene and icy, captures a single droplet as it hangs onto life. Canon EOS R5, f/8, ultra realistic, National Geographic."
+      "name": "sagano_bamboo_forest_sunset_golden_h",
+      "text": "RAW photo, professional nature photography, Sagano Bamboo Forest at dusk during golden hour, ethereal light filters through dense bamboo stalks casting long shadows, the atmosphere heavy with a misty tranquility, Canon EOS R5, 24-70mm f/2.8, f/8, ISO 100, ultra realistic, National Geographic."
     }
+  ],
+  "tags": [
+    "bamboo forest",
+    "dense bamboo stalks",
+    "dappled light through canopy",
+    "misty bamboo grove",
+    "stone path",
+    "japanese forest",
+    "green bamboo tunnel"
+  ],
+  "biomas": [
+    "arashiyama bamboo grove japan",
+    "chinese bamboo forest",
+    "tropical bamboo jungle asia",
+    "yunnan bamboo highlands china",
+    "sagano bamboo forest kyoto"
+  ],
+  "elementos": [
+    "dense bamboo stalks",
+    "dappled light through bamboo canopy",
+    "stone path through bamboo",
+    "mist between bamboo trunks",
+    "single bamboo leaf close-up",
+    "bamboo grove curving tunnel"
   ]
 }

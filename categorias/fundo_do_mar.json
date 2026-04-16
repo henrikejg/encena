@@ -1,0 +1,34 @@
+{
+  "category": "fundo_do_mar",
+  "cfg": 1.8,
+  "lora_nature": 0.4,
+  "lora_detail": 0.6,
+  "steps": 8,
+  "sampler": "dpmpp_2m_sde",
+  "scheduler": "karras",
+  "width": 768,
+  "height": 1344,
+  "output_subdir": "landscapes/fundo_do_mar",
+  "negative": "dark, gloomy, horror, people, text, watermark, blurry, ugly, disturbing, violence, cartoon, anime, painting, illustration, drawing, 3d render, cgi, artificial, fake, overexposed, underexposed, bad composition, deformed, noise, artifacts, glitch, pixelated, compression artifacts, jpeg artifacts, distortion, splashing water, water spray, frozen water, crashing waves, sea foam, turbulent water, motion blur, buildings, urban, roads, floating objects, objects out of place, misplaced reflections, impossible reflections",
+  "prompts": [
+    {
+      "name": "fundo_do_mar_livre",
+      "text": "aerial drone RAW photograph, professional photography\nFrench Polynesia, Moorea Island, Toopua Marine Nature Reserve\nSunset golden hues illuminate the surface of the deep blue sea, casting long shadows over the vibrant kelp forest that thrives on the shoreline. A cluster of coral reefs sprawls outward from the island's edge, teeming with colorful marine life. Bioluminescent fish begin to dance in the twilight, their ethereal glow creating a mesmerizing underwater ballet beneath the ocean's surface. The composition showcases the juxtaposition of the lush vegetation on land against the mysterious beauty of the deep sea below, with dramatic compositional lines leading from the shore to the distant coral reefs.\nNational Geographic, DJI Mavic 3 Pro, 24mm equivalent, f/8, ISO 100, ultra realistic"
+    },
+    {
+      "name": "fundo_do_mar_livre_2",
+      "text": "RAW photo, professional photography.\nCoral Reef: Palau's Jellyfish Lake, a unique marine lake with thousands of non-stinging jellyfish and vibrant corals illuminated by the sunlight filtering through the water.\nBioluminescent Fish: Manta Ray Bay in Yap, Micronesia, where you'll find mating Mandarinfish glowing with a soft bioluminescence.\nDeep Sea: Abyssal Seamounts of the Clarion-Clipperton Zone, an underwater mountain range filled with mysterious deep sea life.\nUnderwater Light: The light from above is filtered through layers of water, creating a surreal, ethereal glow that highlights the vibrant colors of the marine life and the texture of the kelp forest.\nAtmosphere: A sense of wonder and discovery, as if diving into another world untouched by time.\nColors: Rich blues, greens, purples, and reds from the diverse coral reef, jellyfish, and bioluminescent fish.\nComposition: The foreground focuses on a group of Mandarinfish amidst the glowing kelp forest. In the background, a school of bioluminescent fish swims past a vibrant coral reef against the backdrop of the deep sea Abyssal Seamounts.\nCanon EOS R5, 24mm f/11, 30s long exposure, ISO 100, ND filter, ultra realistic, National Geographic."
+    },
+    {
+      "name": "fundo_do_mar_livre_3",
+      "text": "RAW photo, professional photography:\nCoral reef shimmering with iridescent life amidst a deep sea kelp forest in the Sipadan-Kapalai Marine Reserve, Malaysia. As twilight descends, bioluminescent fish dance through the underwater landscape, casting an ethereal glow upon vibrant corals and swaying fronds of kelp. The composition frames a dramatic tunnel formed by intertwining seaweed, with a lone swim-through illuminated by a single shaft of sunlight filtering through the ocean's surface above, creating a surreal balance between light and darkness.\nSony A7R V, 16-35mm f/2.8, f/8, ISO 200, ultra realistic, National Geographic."
+    }
+  ],
+  "tags": [
+    "coral reef",
+    "bioluminescent fish",
+    "deep sea",
+    "underwater light",
+    "kelp forest"
+  ]
+}

@@ -259,6 +259,15 @@ def slugify(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
+def _tema_do_json(dados: dict) -> dict | None:
+    """Extrai biomas/elementos do JSON da categoria, se existirem e forem válidos."""
+    biomas    = dados.get("biomas") or []
+    elementos = dados.get("elementos") or []
+    if biomas and elementos:
+        return {"biomas": biomas, "elementos": elementos}
+    return None
+
+
 def make_name(base_a: str, base_b: str, existentes: set[str]) -> str:
     base = f"{slugify(base_a)[:20]}_{slugify(base_b)[:15]}"
     nome, contador = base, 2
@@ -359,15 +368,35 @@ def ollama_escolher_modelo() -> str | None:
         return None
 
 
-def ollama_refinar(base: str, modelo: str, categoria: str | None = None) -> str:
-    """Reescreve um prompt base com mais detalhes. Mantém o tema da categoria."""
+def _tags_hint(tags: list[str] | None, modo: str = "refinar") -> str:
+    """Gera a instrução de tags para o Ollama."""
+    if not tags:
+        return ""
+    joined = ", ".join(tags)
+    if modo == "refinar":
+        return (
+            f" The scene MUST incorporate these mandatory visual elements and themes: {joined}. "
+            "Do NOT deviate from these themes — they define what this category is about."
+        )
+    # modo == "livre"
+    return (
+        f"\n\nMANDATORY VISUAL THEMES — your scene MUST include ALL of these elements: {joined}. "
+        "These tags define the category. Ignoring them is not allowed."
+    )
+
+
+def ollama_refinar(base: str, modelo: str, categoria: str | None = None,
+                   tags: list[str] | None = None) -> str:
+    """Reescreve um prompt base com mais detalhes. Mantém o tema da categoria e as tags."""
     dica_tema = (
-        f" The scene must belong to the '{categoria}' category — "
+        f" The scene must belong to the '{categoria}' category "
+        f"({_cat_hint(categoria)}) — "
         "keep all details thematically consistent with this theme."
     ) if categoria else ""
+    dica_tags = _tags_hint(tags, "refinar")
     mensagem = (
         "Rewrite this nature photography prompt with more specific, evocative details "
-        f"about light, texture, atmosphere and geography.{dica_tema} "
+        f"about light, texture, atmosphere and geography.{dica_tema}{dica_tags} "
         "Return ONLY the improved prompt — no explanation, no quotes, no extra lines.\n\n"
         f"{base}"
     )
@@ -389,14 +418,117 @@ def ollama_refinar(base: str, modelo: str, categoria: str | None = None) -> str:
     return base
 
 
-def ollama_livre(categoria: str, modelo: str, captura: str, abertura: str) -> str:
-    """Ollama escolhe o cenário completo sem base fixo."""
+def _cat_hint(categoria: str) -> str:
+    """Adiciona nota de interpretação para nomes de categoria em português."""
+    return (
+        f"The category name '{categoria}' may be in Portuguese or another language — "
+        "interpret it correctly into its English meaning before generating content. "
+        "ALL output must be in English regardless of the category name's language."
+    )
+
+
+def ollama_normalizar_tags(tags: list[str], modelo: str) -> list[str]:
+    """Traduz tags para inglês se necessário. Retorna a lista original em caso de falha."""
     mensagem = (
-        f"Create an original Stable Diffusion XL prompt for a '{categoria}' landscape photography scene. "
-        "You are free to choose any real location in the world that fits this theme — "
-        "explore lesser-known or surprising places, not just the obvious ones. "
-        "Be specific: name the exact location, describe light quality, textures, atmosphere, "
-        "colors and composition. "
+        "Translate the following photography keywords to English if they are not already. "
+        "Keep the same meaning and level of specificity. "
+        "Return ONLY a JSON array with the same number of items, in the same order.\n\n"
+        f"Input: {json.dumps(tags, ensure_ascii=False)}"
+    )
+    try:
+        resp = _ollama_post("/api/generate", {
+            "model": modelo, "prompt": mensagem, "stream": False,
+            "system": "You are a translator. Return ONLY a valid JSON array of strings, nothing else.",
+        }, timeout=30)
+        texto = resp.get("response", "").strip()
+        match = re.search(r'\[.*\]', texto, re.DOTALL)
+        if match:
+            traduzidas = json.loads(match.group())
+            if isinstance(traduzidas, list) and len(traduzidas) == len(tags):
+                resultado = [str(t).strip() for t in traduzidas if str(t).strip()]
+                print(f"  [ollama] tags normalizadas: {', '.join(resultado)}", flush=True)
+                return resultado
+    except Exception as e:
+        print(f"  [ollama] erro ao normalizar tags: {e} — mantendo originais", flush=True)
+    return tags
+
+
+def ollama_gerar_tema(categoria: str, tags: list[str] | None,
+                      modelo: str) -> dict | None:
+    """Pede ao Ollama que gere biomas, elementos e tags para a categoria numa única chamada.
+    Retorna {"biomas": [...], "elementos": [...], "tags": [...]} ou None em caso de falha."""
+    tags_hint = f" Key visual themes already known: {', '.join(tags)}." if tags else ""
+    mensagem = (
+        f"Generate a complete visual profile for a '{categoria}' photography category.{tags_hint}\n\n"
+        f"Note: {_cat_hint(categoria)}\n\n"
+        "Return ONLY a JSON object with this exact structure — no markdown, no explanation:\n"
+        '{"biomas": ["setting 1", ..., "setting 8"], '
+        '"elementos": ["visual element 1", ..., "element 8"], '
+        '"tags": ["keyword 1", ..., "keyword 8"]}\n\n'
+        "Rules:\n"
+        "- biomas: 8 DIVERSE settings or environments — this is critical:\n"
+        "  * Cover a WIDE range: indoor AND outdoor, day AND night, action AND static\n"
+        "  * Include both OBVIOUS settings (the first thing that comes to mind) AND "
+        "SURPRISING/NON-OBVIOUS ones (interiors, unusual angles, unexpected contexts)\n"
+        "  * Do NOT list 8 variations of the same setting type\n"
+        "  * Example for 'sports cars': racing circuit, mountain hairpin road, "
+        "showroom interior, cockpit interior view, underground parking, city boulevard at night, "
+        "coastal highway, rainy tunnel\n"
+        "- elementos: 8 specific visual subjects or focal points iconic to this category, "
+        "also varied in scale and perspective (close-up details, wide establishing shots, etc.)\n"
+        "- tags: 8 short keywords (1-3 words each) that define the visual identity of this category\n"
+        "- All items in English, specific and visually evocative"
+    )
+    print("  [ollama] gerando tema e tags…", flush=True)
+    try:
+        resp = _ollama_post("/api/generate", {
+            "model": modelo, "prompt": mensagem, "stream": False,
+            "system": (
+                "You are a geography and visual arts expert specialising in photography. "
+                "You ONLY return valid JSON objects, nothing else — no prose, no markdown fences."
+            ),
+        }, timeout=60)
+        texto = resp.get("response", "").strip()
+        match = re.search(r'\{.*\}', texto, re.DOTALL)
+        if not match:
+            print(f"  [ollama] resposta sem JSON válido: {texto[:120]}", flush=True)
+            return None
+        data = json.loads(match.group())
+        biomas    = [b.strip() for b in data.get("biomas",    []) if b.strip()]
+        elementos = [e.strip() for e in data.get("elementos", []) if e.strip()]
+        tags_geradas = [t.strip() for t in data.get("tags",   []) if t.strip()]
+        if not biomas or not elementos:
+            print("  [ollama] JSON incompleto — sem biomas ou elementos", flush=True)
+            return None
+        print(f"  [ollama] gerado: {len(biomas)} biomas, {len(elementos)} elementos, "
+              f"{len(tags_geradas)} tags", flush=True)
+        return {"biomas": biomas, "elementos": elementos, "tags": tags_geradas}
+    except json.JSONDecodeError as e:
+        print(f"  [ollama] JSON inválido: {e}", flush=True)
+    except Exception as e:
+        print(f"  [ollama] erro ao gerar tema: {e}", flush=True)
+    return None
+
+
+def ollama_livre(categoria: str, modelo: str, captura: str, abertura: str,
+                 tags: list[str] | None = None,
+                 bioma_forcado: str | None = None,
+                 anti_repeticao: list[str] | None = None) -> str:
+    """Ollama escolhe o cenário completo sem base fixo."""
+    dica_tags = _tags_hint(tags, "livre")
+    dica_bioma = (
+        f" The scene MUST be set in/at this specific environment: '{bioma_forcado}'. "
+        "Interpret it creatively but stay true to this setting."
+    ) if bioma_forcado else ""
+    dica_anti = (
+        f"\n\nDo NOT repeat or closely resemble any of these already-used settings: "
+        f"{'; '.join(anti_repeticao)}. Choose something clearly different."
+    ) if anti_repeticao else ""
+    mensagem = (
+        f"Create an original Stable Diffusion XL prompt for a '{categoria}' photography scene. "
+        f"{_cat_hint(categoria)}{dica_bioma} "
+        "Be specific: name the exact setting, describe light quality, textures, atmosphere, "
+        f"colors and composition.{dica_tags}{dica_anti} "
         "Return ONLY the prompt — no explanation, no quotes, no extra lines."
     )
     try:
@@ -404,9 +536,9 @@ def ollama_livre(categoria: str, modelo: str, captura: str, abertura: str) -> st
             "model": modelo, "prompt": mensagem, "stream": False,
             "system": (
                 "You are an expert Stable Diffusion XL prompt engineer specialising in "
-                "photorealistic nature and landscape photography. You have deep geographical "
-                "knowledge and always pick specific, real locations with evocative visual details. "
-                f"Always start responses with '{abertura} professional nature photography,' "
+                "photorealistic photography. You have deep knowledge of visual subjects "
+                "and always produce specific, vivid scenes with strong visual identity. "
+                f"Always start responses with '{abertura} professional photography,' "
                 f"and end with '{captura}, ultra realistic, National Geographic'."
             ),
         })
@@ -443,7 +575,8 @@ def comfy_disponivel() -> bool:
 
 
 def comfy_montar_workflow(cfg: dict, positivo: str, negativo: str,
-                          prefixo: str, seed: int) -> dict:
+                          prefixo: str, seed: int,
+                          orientacao: str = "vertical") -> dict:
     """
     Grafo ComfyUI:
       1  CheckpointLoader
@@ -476,8 +609,8 @@ def comfy_montar_workflow(cfg: dict, positivo: str, negativo: str,
         "5":  {"class_type": "CLIPTextEncode",
                "inputs": {"text": negativo, "clip": ["3", 1]}},
         "6":  {"class_type": "EmptyLatentImage",
-               "inputs": {"width": cfg.get("width", 768),
-                          "height": cfg.get("height", 1344),
+               "inputs": {"width":  cfg.get("height", 1344) if orientacao == "horizontal" else cfg.get("width", 768),
+                          "height": cfg.get("width", 768)   if orientacao == "horizontal" else cfg.get("height", 1344),
                           "batch_size": 1}},
         "7":  {"class_type": "KSampler",
                "inputs": {"model": ["3", 0], "positive": ["4", 0],
@@ -563,15 +696,19 @@ def sortear_elementos(
     bioma: str | None, hora: str | None, clima: str | None,
     perspectiva: str | None, elemento: str | None,
     abertura: str, captura: str,
+    tema_json: dict | None = None,
 ) -> dict:
-    tema = TEMAS.get(categoria or "", {})
+    # Prioridade: JSON da categoria > TEMAS hardcoded > pools globais
+    tema_code = TEMAS.get(categoria or "", {})
+    biomas_pool    = (tema_json or {}).get("biomas")    or tema_code.get("biomas")    or BIOMAS
+    elementos_pool = (tema_json or {}).get("elementos") or tema_code.get("elementos") or ELEMENTOS_FOCAIS
     return {
         "abertura":       abertura,
-        "bioma":          bioma       or random.choice(tema.get("biomas",    BIOMAS)),
+        "bioma":          bioma       or random.choice(biomas_pool),
         "hora":           hora        or random.choice(HORAS),
         "clima":          clima       or random.choice(CLIMAS),
         "perspectiva":    perspectiva or random.choice(PERSPECTIVAS),
-        "elemento_focal": elemento    or random.choice(tema.get("elementos", ELEMENTOS_FOCAIS)),
+        "elemento_focal": elemento    or random.choice(elementos_pool),
         "captura":        captura,
     }
 
@@ -603,22 +740,46 @@ def _gerar_um_prompt(
     perspectiva: str | None, elemento: str | None,
     existentes: set[str],
     estilo: str | None = None,
+    tags: list[str] | None = None,
+    tema_json: dict | None = None,
+    prompts_anteriores: list[dict] | None = None,
 ) -> tuple[str, str]:
     """Gera um único (nome, texto) de prompt."""
     estilo_chave, abertura, captura = resolver_estilo(estilo)
     descricao_estilo = ESTILOS_FOTO[estilo_chave]["descricao"]
 
     if livre and modelo:
-        texto = ollama_livre(categoria, modelo, captura, abertura)
+        # Força um bioma do pool temático para garantir diversidade
+        bioma_forcado = bioma
+        if not bioma_forcado and tema_json and tema_json.get("biomas"):
+            bioma_forcado = random.choice(tema_json["biomas"])
+
+        # Resume os últimos 5 prompts como contexto de anti-repetição
+        anti_rep = None
+        if prompts_anteriores:
+            resumos = [p["text"][:80].replace("\n", " ") for p in prompts_anteriores[-5:]]
+            anti_rep = resumos
+
+        print(f"\n  [{i + 1}/{total}] ambiente: {bioma_forcado or 'livre'}")
+        texto = ollama_livre(
+            categoria, modelo, captura, abertura,
+            tags=tags, bioma_forcado=bioma_forcado, anti_repeticao=anti_rep,
+        )
         if not texto:  # fallback se Ollama falhar
-            elementos = sortear_elementos(categoria, bioma, hora, clima, perspectiva, elemento, abertura, captura)
+            elementos = sortear_elementos(
+                categoria, bioma, hora, clima, perspectiva, elemento,
+                abertura, captura, tema_json=tema_json,
+            )
             texto = TEMPLATE.format(**elementos)
         nome = make_name(categoria, "livre", existentes)
-        print(f"\n  [{i + 1}/{total}] {nome}")
+        print(f"  nome      : {nome}")
     else:
-        elementos = sortear_elementos(categoria, bioma, hora, clima, perspectiva, elemento, abertura, captura)
+        elementos = sortear_elementos(
+            categoria, bioma, hora, clima, perspectiva, elemento,
+            abertura, captura, tema_json=tema_json,
+        )
         base = TEMPLATE.format(**elementos)
-        texto = ollama_refinar(base, modelo, categoria) if modelo else base
+        texto = ollama_refinar(base, modelo, categoria, tags=tags) if modelo else base
         nome = make_name(elementos["bioma"], elementos["hora"], existentes)
         print(f"\n  [{i + 1}/{total}] {nome}")
         print(f"  elementos : {elementos['bioma']} | {elementos['hora']} | {elementos['clima']}")
@@ -686,20 +847,35 @@ def cmd_prompts(
 ):
     dados = carregar_json(categoria)
     existentes: set[str] = {p["name"] for p in dados.get("prompts", [])}
+    tags: list[str] = dados.get("tags") or []
+    tema_json = _tema_do_json(dados)
 
     if livre and modo == "combinatorio":
         print("  Aviso: --livre ignorado com --modo combinatorio (requer Ollama)")
+    if tags:
+        print(f"  tags da categoria : {', '.join(tags)}")
+    if tema_json:
+        print(f"  tema (JSON)       : {len(tema_json['biomas'])} biomas, "
+              f"{len(tema_json['elementos'])} elementos")
+    elif categoria not in TEMAS:
+        print("  Aviso: categoria sem tema temático — modo combinatório usará pools globais")
 
     modelo = _resolver_modelo(modo, livre)
     novos: list[dict] = []
+    # Acumula já-existentes + novos gerados na sessão para anti-repetição
+    prompts_contexto: list[dict] = list(dados.get("prompts", []))
 
     for i in range(quantidade):
         nome, texto = _gerar_um_prompt(
             i, quantidade, categoria, modelo, livre,
             bioma, hora, clima, perspectiva, elemento, existentes, estilo,
+            tags=tags or None, tema_json=tema_json,
+            prompts_anteriores=prompts_contexto,
         )
         existentes.add(nome)
-        novos.append({"name": nome, "text": texto})
+        novo = {"name": nome, "text": texto}
+        novos.append(novo)
+        prompts_contexto.append(novo)  # alimenta anti-repetição das próximas iterações
 
     if simular:
         print("\n  [simulação] nenhuma alteração salva.")
@@ -713,6 +889,7 @@ def cmd_prompts(
 
 def cmd_imagens(
     categorias: list[str], quantidade: int, prompt_nome: str | None,
+    orientacao: str = "vertical",
 ):
     jobs = [(cat, carregar_json(cat)) for cat in categorias]
     total = len(jobs) * quantidade
@@ -721,7 +898,8 @@ def cmd_imagens(
     print(f"  {len(jobs)} categoria(s) × {quantidade} imagem(ns) = {total} total")
     print(f"  Checkpoint : {CHECKPOINT}")
     print(f"  LoRAs      : {LORA_DETAIL}  +  {LORA_NATURE}")
-    print(f"  Upscaler   : {UPSCALER}  |  Formato: 768×1344")
+    fmt = "1344×768 (horizontal)" if orientacao == "horizontal" else "768×1344 (vertical)"
+    print(f"  Upscaler   : {UPSCALER}  |  Formato: {fmt}")
     print("=" * 70)
     for cat, cfg in jobs:
         n = len(cfg.get("prompts", []))
@@ -761,7 +939,7 @@ def cmd_imagens(
             seed = random.randint(1, 2**32 - 1)
             prefixo = f"{subdir}/{cat}_{pnome}_seed{seed}"
             tag = f"[{idx + 1:02d}/{total}] {cat} / {pnome}"
-            wf = comfy_montar_workflow(cfg, ptexto, negativo, prefixo, seed)
+            wf = comfy_montar_workflow(cfg, ptexto, negativo, prefixo, seed, orientacao)
             pid = comfy_enfileirar(wf)
             fila.append((pid, tag))
             print(f"  Enfileirado {tag} | seed={seed} | id={pid[:8]}...")
@@ -781,13 +959,15 @@ def cmd_experimentar(
     categoria: str, quantidade: int, modo: str, livre: bool,
     bioma: str | None, hora: str | None, clima: str | None,
     perspectiva: str | None, elemento: str | None,
-    estilo: str | None,
+    estilo: str | None, orientacao: str = "vertical",
 ):
     dados = carregar_json(categoria)
     existentes: set[str] = (
         {p["name"] for p in dados.get("prompts", [])}
         | {r["name"] for r in carregar_rascunhos(categoria)}
     )
+    tags: list[str] = dados.get("tags") or []
+    tema_json = _tema_do_json(dados)
 
     if not comfy_disponivel():
         print(f"ERRO: ComfyUI não acessível em {COMFY_URL}")
@@ -796,25 +976,36 @@ def cmd_experimentar(
     modelo = _resolver_modelo(modo, livre)
     negativo = dados.get("negative", NEGATIVE_DEFAULT)
     subdir = dados.get("output_subdir", f"landscapes/{categoria}")
+    if tags:
+        print(f"  tags da categoria : {', '.join(tags)}")
+    if tema_json:
+        print(f"  tema (JSON)       : {len(tema_json['biomas'])} biomas, "
+              f"{len(tema_json['elementos'])} elementos")
     print(f"  ComfyUI: conectado — saída em output/{subdir}/experimentos/\n")
 
     novos: list[dict] = []
+    prompts_contexto: list[dict] = list(dados.get("prompts", []))
+
     for i in range(quantidade):
         nome, texto = _gerar_um_prompt(
             i, quantidade, categoria, modelo, livre,
             bioma, hora, clima, perspectiva, elemento, existentes, estilo,
+            tags=tags or None, tema_json=tema_json,
+            prompts_anteriores=prompts_contexto,
         )
         existentes.add(nome)
 
         seed = random.randint(1, 2**32 - 1)
         prefixo = f"{subdir}/experimentos/{nome}_seed{seed}"
-        wf = comfy_montar_workflow(dados, texto, negativo, prefixo, seed)
+        wf = comfy_montar_workflow(dados, texto, negativo, prefixo, seed, orientacao)
         pid = comfy_enfileirar(wf)
         comfy_aguardar(pid, f"[{i + 1}/{quantidade}] {nome}")
 
-        adicionar_rascunho(categoria, {"name": nome, "text": texto})
+        rascunho = {"name": nome, "text": texto}
+        adicionar_rascunho(categoria, rascunho)
         print(f"  Salvo em rascunhos: {nome}")
-        novos.append({"name": nome, "text": texto})
+        novos.append(rascunho)
+        prompts_contexto.append(rascunho)
 
     n_rasc = len(carregar_rascunhos(categoria))
     print(f"\n  {len(novos)} imagem(ns) gerada(s)  |  {n_rasc} rascunho(s) pendente(s)")
@@ -853,6 +1044,157 @@ def cmd_promover(categoria: str, nome: str):
         print(f"  Promovido → {categoria}.json : {n}")
     restantes = len(rascunhos) - len(alvos)
     print(f"  Rascunhos restantes: {restantes}" if restantes else "  Rascunhos limpos.")
+
+
+def cmd_gerar_tema(categoria: str):
+    """Gera biomas e elementos temáticos via Ollama e salva no JSON da categoria."""
+    if not ollama_disponivel():
+        print(f"ERRO: Ollama não acessível em {OLLAMA_URL}")
+        sys.exit(1)
+    modelo = ollama_escolher_modelo()
+    if not modelo:
+        print("ERRO: Ollama sem modelos instalados.")
+        sys.exit(1)
+
+    dados = carregar_json(categoria)
+    tags  = dados.get("tags") or []
+    print(f"\n  Gerando tema para '{categoria}' com {modelo}…")
+    if tags:
+        print(f"  Normalizando tags para inglês…")
+        tags = ollama_normalizar_tags(tags, modelo)
+        dados["tags"] = tags  # persiste a versão normalizada
+        print(f"  tags      : {', '.join(tags)}")
+
+    tema = ollama_gerar_tema(categoria, tags or None, modelo)
+    if not tema:
+        print("ERRO: Não foi possível gerar o tema. Tente novamente.")
+        sys.exit(1)
+
+    dados["biomas"]    = tema["biomas"]
+    dados["elementos"] = tema["elementos"]
+    # Atualiza tags apenas se a categoria não tiver nenhuma ainda
+    if not dados.get("tags") and tema.get("tags"):
+        dados["tags"] = tema["tags"]
+        print(f"  tags      : {', '.join(tema['tags'])}")
+    elif tema.get("tags"):
+        print(f"  tags (mantidas) : {', '.join(dados.get('tags', []))}")
+    salvar_json(categoria, dados)
+
+    print(f"\n  Biomas ({len(tema['biomas'])}):")
+    for b in tema["biomas"]:
+        print(f"    • {b}")
+    print(f"\n  Elementos ({len(tema['elementos'])}):")
+    for e in tema["elementos"]:
+        print(f"    • {e}")
+    print(f"\n  Tema salvo em {categoria}.json")
+
+    # Gera prompts iniciais se a categoria ainda não tiver nenhum
+    if not dados.get("prompts"):
+        print(f"\n  ── Gerando 3 prompts iniciais ──────────────────────────")
+        cmd_prompts(
+            categoria=categoria, quantidade=3, modo="ollama", livre=True,
+            bioma=None, hora=None, clima=None,
+            perspectiva=None, elemento=None,
+            simular=False, estilo=None,
+        )
+
+
+def cmd_nova_categoria(nome: str, cfg: float, lora_nature: float, lora_detail: float,
+                       steps: int, width: int, height: int,
+                       tags: list[str] | None = None):
+    slug = slugify(nome)
+    path = CONFIGS_DIR / f"{slug}.json"
+    if path.exists():
+        print(f"ERRO: categoria '{slug}' já existe em {path}")
+        sys.exit(1)
+    # Tenta gerar tema temático via Ollama antes de salvar
+    tema_gerado = None
+    modelo = None
+    if ollama_disponivel():
+        modelo = ollama_escolher_modelo()
+        if modelo:
+            # Normaliza tags do usuário para inglês antes de usar como contexto
+            if tags:
+                print(f"  Normalizando tags para inglês…")
+                tags = ollama_normalizar_tags(tags, modelo)
+            print(f"  Ollama disponível ({modelo}) — gerando tema temático…")
+            tema_gerado = ollama_gerar_tema(slug, tags or None, modelo)
+        else:
+            print("  Ollama sem modelos — tema será gerado manualmente depois.")
+    else:
+        print("  Ollama indisponível — tema será gerado quando disponível (use: gerar-tema).")
+
+    # Se o usuário não forneceu tags, usa as geradas pelo Ollama
+    tags_finais = tags or (tema_gerado.get("tags") if tema_gerado else None) or []
+
+    dados = {
+        "category": slug,
+        "cfg": cfg,
+        "lora_nature": lora_nature,
+        "lora_detail": lora_detail,
+        "steps": steps,
+        "sampler": "dpmpp_2m_sde",
+        "scheduler": "karras",
+        "width": width,
+        "height": height,
+        "output_subdir": f"landscapes/{slug}",
+        "negative": NEGATIVE_DEFAULT,
+        "tags": tags_finais,
+        "biomas": tema_gerado["biomas"]    if tema_gerado else [],
+        "elementos": tema_gerado["elementos"] if tema_gerado else [],
+        "prompts": [],
+    }
+    with open(path, "w") as f:
+        json.dump(dados, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print(f"\n  Categoria criada: {path}")
+    print(f"  cfg={cfg}  lora_nature={lora_nature}  lora_detail={lora_detail}  steps={steps}")
+    if tags_finais:
+        origem = "(usuário)" if tags else "(geradas pelo Ollama)"
+        print(f"  tags {origem} : {', '.join(tags_finais)}")
+    if tema_gerado:
+        print(f"  biomas    : {len(tema_gerado['biomas'])} locais gerados")
+        print(f"  elementos : {len(tema_gerado['elementos'])} elementos gerados")
+    else:
+        print(f"  Aviso: sem tema — use: encena.py gerar-tema -c {slug}")
+
+    # Gera prompts iniciais aproveitando o modelo já resolvido
+    modelo_disponivel = tema_gerado is not None  # True se Ollama funcionou
+    print(f"\n  ── Gerando 3 prompts iniciais ──────────────────────────")
+    cmd_prompts(
+        categoria=slug, quantidade=3,
+        modo="ollama" if modelo_disponivel else "combinatorio",
+        livre=modelo_disponivel,
+        bioma=None, hora=None, clima=None,
+        perspectiva=None, elemento=None,
+        simular=False, estilo=None,
+    )
+
+
+def cmd_deletar_categoria(nome: str):
+    path = CONFIGS_DIR / f"{nome}.json"
+    if not path.exists():
+        print(f"ERRO: categoria '{nome}' não encontrada.")
+        print(f"  Disponíveis: {listar_categorias()}")
+        sys.exit(1)
+    rascunhos_path = CONFIGS_DIR / f"{nome}_rascunhos.json"
+    dados = carregar_json(nome)
+    n_prompts = len(dados.get("prompts", []))
+    n_rasc = len(carregar_rascunhos(nome))
+    print(f"  Atenção: deletar a categoria '{nome}' removerá permanentemente:")
+    print(f"    • {path.name}  ({n_prompts} prompt(s))")
+    if rascunhos_path.exists():
+        print(f"    • {rascunhos_path.name}  ({n_rasc} rascunho(s))")
+    print("  Digite 'sim' para confirmar: ", end="", flush=True)
+    if input().strip().lower() != "sim":
+        print("  Cancelado.")
+        sys.exit(0)
+    path.unlink()
+    if rascunhos_path.exists():
+        rascunhos_path.unlink()
+        print(f"  Removido: {rascunhos_path.name}")
+    print(f"  Removido: {path.name}")
+    print(f"  Categoria '{nome}' deletada.")
 
 
 def cmd_remover(categoria: str, nome: str):
@@ -949,13 +1291,16 @@ class _Parser(argparse.ArgumentParser):
             print(f"\n  '{acao}' não é uma ação válida.\n")
             print("  Ações disponíveis:\n")
             acoes = [
-                ("prompts",      "pr",     "Gera prompts e salva no JSON da categoria"),
-                ("imagens",      "im",     "Gera imagens a partir dos prompts salvos"),
-                ("experimentar", "ex",     "Gera prompts + imagens sem salvar (guarda em rascunhos)"),
-                ("listar",       "ls",     "Lista categorias, prompts e rascunhos"),
-                ("promover",     "pv",     "Move rascunho para o JSON definitivo"),
-                ("remover",      "rm",     "Remove prompt do JSON definitivo"),
-                ("estilos",      "es",     "Lista os estilos fotográficos disponíveis"),
+                ("prompts",           "pr",  "Gera prompts e salva no JSON da categoria"),
+                ("imagens",           "im",  "Gera imagens a partir dos prompts salvos"),
+                ("experimentar",      "ex",  "Gera prompts + imagens sem salvar (guarda em rascunhos)"),
+                ("listar",            "ls",  "Lista categorias, prompts e rascunhos"),
+                ("promover",          "pv",  "Move rascunho para o JSON definitivo"),
+                ("remover",           "rm",  "Remove prompt do JSON definitivo"),
+                ("nova-categoria",    "nc",  "Cria uma nova categoria"),
+                ("gerar-tema",        "gt",  "Gera tema temático para categoria via Ollama"),
+                ("deletar-categoria", "dc",  "Remove uma categoria permanentemente"),
+                ("estilos",           "es",  "Lista os estilos fotográficos disponíveis"),
             ]
             for nome, alias, desc in acoes:
                 print(f"    {nome:<14} ({alias})   {desc}")
@@ -977,13 +1322,16 @@ def main():
         add_help=False,
         epilog=(
             "Ações disponíveis:\n"
-            "  prompts      Gera prompts e salva no JSON da categoria\n"
-            "  imagens      Gera imagens a partir dos prompts salvos\n"
-            "  experimentar Gera prompts + imagens sem salvar (guarda em rascunhos)\n"
-            "  listar       Lista categorias, prompts definitivos e rascunhos\n"
-            "  promover     Move rascunho para o JSON definitivo\n"
-            "  remover      Remove prompt do JSON definitivo\n"
-            "  estilos      Lista os estilos fotográficos disponíveis\n"
+            "  prompts           Gera prompts e salva no JSON da categoria\n"
+            "  imagens           Gera imagens a partir dos prompts salvos\n"
+            "  experimentar      Gera prompts + imagens sem salvar (guarda em rascunhos)\n"
+            "  listar            Lista categorias, prompts definitivos e rascunhos\n"
+            "  promover          Move rascunho para o JSON definitivo\n"
+            "  remover           Remove prompt do JSON definitivo\n"
+            "  nova-categoria    Cria uma nova categoria\n"
+            "  gerar-tema        Gera tema temático para categoria via Ollama\n"
+            "  deletar-categoria Remove uma categoria permanentemente\n"
+            "  estilos           Lista os estilos fotográficos disponíveis\n"
         ),
     )
     parser.add_argument("--ajuda", "-h", action="help",
@@ -1031,6 +1379,9 @@ def main():
     p_im.add_argument("--prompt-nome", "-pn", metavar="NOME",
                       help="Força um prompt específico pelo nome.\n"
                            "Use 'encena.py listar -c CATEGORIA' para ver os nomes.")
+    p_im.add_argument("--orientacao", "-o",
+                      choices=["vertical", "horizontal"], default="vertical",
+                      help="Orientação da imagem: vertical (768×1344, padrão) ou horizontal (1344×768)")
 
     # ── experimentar ──────────────────────────────────────────────────────────
     p_ex = _sub(sub, "experimentar", ["ex"],
@@ -1047,6 +1398,9 @@ def main():
     _arg_ajuda(p_ex)
     _arg_categoria(p_ex)
     _args_prompt(p_ex)
+    p_ex.add_argument("--orientacao", "-o",
+                      choices=["vertical", "horizontal"], default="vertical",
+                      help="Orientação da imagem: vertical (768×1344, padrão) ou horizontal (1344×768)")
 
     # ── listar ─────────────────────────────────────────────────────────────────
     p_ls = _sub(sub, "listar", ["ls", "l"],
@@ -1093,6 +1447,64 @@ def main():
                       help="Nome do prompt a remover, ou 'todos' para remover todos")
     _arg_categoria(p_rm)
 
+    # ── nova-categoria ─────────────────────────────────────────────────────────
+    p_nc = _sub(sub, "nova-categoria", ["nc"],
+        "Cria uma nova categoria com configurações padrão",
+        "Cria o arquivo JSON da categoria no diretório 'categorias/'.\n"
+        "As configurações podem ser ajustadas com os parâmetros opcionais.\n"
+        "O nome é convertido para slug automaticamente (ex: 'Floresta Fria' → 'floresta_fria').",
+        exemplos=(
+            "  encena.py nova-categoria -n deserto\n"
+            "  encena.py nova-categoria -n 'floresta_fria' --cfg 1.8 --lora-nature 0.4\n"
+        ),
+    )
+    _arg_ajuda(p_nc)
+    p_nc.add_argument("--nome", "-n", metavar="NOME", required=True,
+                      help="Nome da nova categoria (ex: deserto, floresta_fria)")
+    p_nc.add_argument("--cfg", type=float, default=1.8,
+                      help="Valor CFG do KSampler (default: 1.8)")
+    p_nc.add_argument("--lora-nature", type=float, default=0.4,
+                      dest="lora_nature",
+                      help="Força da LoRA de natureza (default: 0.4)")
+    p_nc.add_argument("--lora-detail", type=float, default=0.6,
+                      dest="lora_detail",
+                      help="Força da LoRA de detalhes (default: 0.6)")
+    p_nc.add_argument("--steps", type=int, default=8,
+                      help="Passos do KSampler (default: 8)")
+    p_nc.add_argument("--width", type=int, default=768,
+                      help="Largura em pixels (default: 768)")
+    p_nc.add_argument("--height", type=int, default=1344,
+                      help="Altura em pixels (default: 1344)")
+    p_nc.add_argument("--tags", "-t", metavar="TAGS",
+                      help="Palavras-chave separadas por vírgula que direcionam o Ollama.\n"
+                           "Ex: 'coral reef, bioluminescent fish, deep sea, underwater light'")
+
+    # ── gerar-tema ─────────────────────────────────────────────────────────────
+    p_gt = _sub(sub, "gerar-tema", ["gt"],
+        "Gera (ou regenera) o tema temático de uma categoria via Ollama",
+        "Usa o Ollama para criar listas de biomas e elementos visuais específicos\n"
+        "para a categoria. Salva no JSON e passa a ser usado pelo modo combinatório.\n"
+        "Use para categorias criadas sem Ollama disponível, ou para regenerar o tema.",
+        exemplos=(
+            "  encena.py gerar-tema -c fundo_do_mar\n"
+            "  encena.py gerar-tema -c deserto\n"
+        ),
+    )
+    _arg_ajuda(p_gt)
+    _arg_categoria(p_gt)
+
+    # ── deletar-categoria ──────────────────────────────────────────────────────
+    p_dc = _sub(sub, "deletar-categoria", ["dc"],
+        "Remove uma categoria e seus rascunhos permanentemente",
+        "Apaga o JSON da categoria e o arquivo de rascunhos (se existir).\n"
+        "Solicita confirmação antes de deletar.",
+        exemplos=(
+            "  encena.py deletar-categoria -c deserto\n"
+        ),
+    )
+    _arg_ajuda(p_dc)
+    _arg_categoria(p_dc)
+
     # ── estilos ────────────────────────────────────────────────────────────────
     p_es = _sub(sub, "estilos", ["es"],
         "Lista os estilos fotográficos disponíveis",
@@ -1121,6 +1533,33 @@ def main():
                 print(f"  Disponíveis: {disponiveis}")
                 sys.exit(1)
         return cats
+
+    if args.acao in ("nova-categoria", "nc"):
+        tags_parsed = (
+            [t.strip() for t in args.tags.split(",") if t.strip()]
+            if args.tags else None
+        )
+        cmd_nova_categoria(
+            nome=args.nome,
+            cfg=args.cfg,
+            lora_nature=args.lora_nature,
+            lora_detail=args.lora_detail,
+            steps=args.steps,
+            width=args.width,
+            height=args.height,
+            tags=tags_parsed,
+        )
+        return
+
+    if args.acao in ("gerar-tema", "gt"):
+        cats = validar_categorias(args.categoria)
+        cmd_gerar_tema(cats[0])
+        return
+
+    if args.acao in ("deletar-categoria", "dc"):
+        cats = validar_categorias(args.categoria)
+        cmd_deletar_categoria(cats[0])
+        return
 
     if args.acao in ("estilos", "es"):
         print(f"\n  {'ESTILO':<16}  DESCRIÇÃO")
@@ -1152,7 +1591,8 @@ def main():
             print("ERRO: imagens requer --categoria CAT ou --todas")
             sys.exit(1)
         print(f"\n  Gerando {args.quantidade} imagem(ns) por categoria")
-        cmd_imagens(cats, args.quantidade, args.prompt_nome)
+        cmd_imagens(cats, args.quantidade, args.prompt_nome,
+                    orientacao=getattr(args, "orientacao", "vertical"))
         return
 
     if args.acao in ("prompts", "pr"):
@@ -1178,6 +1618,7 @@ def main():
             bioma=args.bioma, hora=args.hora, clima=args.clima,
             perspectiva=args.perspectiva, elemento=args.elemento,
             estilo=args.estilo,
+            orientacao=getattr(args, "orientacao", "vertical"),
         )
         return
 

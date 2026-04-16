@@ -13,7 +13,7 @@
   "prompts": [
     {
       "name": "bryce_sunrise",
-      "text": "RAW photo, professional nature photography, Bryce Canyon Utah at sunrise, tall orange and red hoodoo rock spires, dramatic morning light, blue sky above, wide open canyon view, natural desert tones, sandy ground, Canon EOS R5, f/8, ultra realistic, National Geographic"
+      "text": "RAW photo, professional nature photography, Bryce Canyon Utah at sunrise, tall orange hoodoo spires, Canon EOS R5, f/8, ultra realistic"
     },
     {
       "name": "grand_canyon_aerial",
@@ -47,5 +47,35 @@
       "name": "canyon_livre_6",
       "text": "RAW photo, professional nature photography:\nGrand Canyon de Chelly, Arizona, USA\nSunset glow illuminates the sandstone walls of this lesser-known canyon, casting warm shadows and revealing intricate textures. A winding Navajo trail snakes through the foreground, leading to the distant Spider Rock mesa. The atmosphere is serene yet powerful, with a rich color palette that ranges from fiery orange to deep purple. Compositionally, the shot focuses on the sweeping curve of the canyon floor, with the towering cliffs framing the scene and a lone cottonwood tree adding depth in the foreground. Canon EOS R5, f/8, ultra realistic, National Geographic."
     }
+  ],
+  "tags": [
+    "sandstone canyon",
+    "red rock formations",
+    "desert landscape",
+    "slot canyon",
+    "hoodoo spires",
+    "canyon rim",
+    "beam of light through rock",
+    "arid desert"
+  ],
+  "biomas": [
+    "arizona slot canyon",
+    "grand canyon south rim",
+    "bryce canyon hoodoos",
+    "zion narrow canyon",
+    "antelope canyon arizona",
+    "utah red rock desert",
+    "canyonlands mesa arch",
+    "escalante canyon utah"
+  ],
+  "elementos": [
+    "narrow sandstone walls",
+    "rock arch formation",
+    "canyon river bend",
+    "desert hoodoo spires",
+    "canyon rim overlook",
+    "beam of light through slot canyon",
+    "ancient petroglyphs on rock wall",
+    "dry desert riverbed"
   ]
 }
