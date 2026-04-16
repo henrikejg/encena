@@ -1,4 +1,4 @@
-# encena v2
+# encena v3
 
 Gerador de prompts e imagens fotorrealistas via Ollama + ComfyUI (Stable Diffusion XL).
 
@@ -6,12 +6,13 @@ Combina um LLM local (Ollama/Mistral) para criação de prompts temáticos com o
 
 ---
 
-## Interface Web (novo na v2)
+## Interface Web
 
 ```bash
 cd web
 node server.js
 # Acesse http://localhost:3131
+# Acesso pela rede local: http://<IP-DA-MÁQUINA>:3131
 ```
 
 Requer Node.js 18+. Nenhuma dependência npm — usa apenas a stdlib do Node.
@@ -24,14 +25,19 @@ Requer Node.js 18+. Nenhuma dependência npm — usa apenas a stdlib do Node.
 | **Experimentar** | Gera prompt + imagem sem comprometer o JSON definitivo |
 | **Prompts** | Gera e gerencia prompts salvos por categoria |
 | **Categorias** | CRUD completo de categorias com config, prompts, rascunhos |
+| **Galeria** | Visualiza, avalia e exclui imagens geradas por categoria |
 
 ### Destaques da interface
 
 - **Terminal em tempo real** — saídas do Python aparecem via SSE (Server-Sent Events) enquanto o processo executa
-- **Nova categoria com IA** — ao criar, o Ollama gera automaticamente tags temáticas, biomas, elementos e 3 prompts iniciais
+- **Nova categoria com IA** — ao criar, o Ollama gera automaticamente tags temáticas, biomas, elementos e 10 prompts iniciais
 - **Mass delete** — seleção múltipla de prompts e rascunhos com exclusão em lote
 - **Indicadores de status** — pills no header mostram se ComfyUI e Ollama estão online
 - **Tema combinatório por categoria** — cada categoria tem seus próprios pools de biomas e elementos (gerados via Ollama), garantindo diversidade temática nos prompts
+- **Checkpoint e LoRAs por categoria** — cada categoria pode ter seu próprio checkpoint e até 2 LoRAs configurados via combobox; os modelos disponíveis são carregados diretamente do ComfyUI
+- **Orientações separadas na geração** — ao gerar imagens, é possível definir quantidades independentes para orientação vertical e horizontal no mesmo pedido
+- **Sistema de votos em prompts** — cada prompt tem contadores de thumbs up/down; deletar uma imagem da galeria registra automaticamente um voto negativo no prompt que a gerou; os prompts são sempre exibidos ordenados por pontuação (up − down)
+- **Galeria com delete** — imagens podem ser excluídas diretamente da galeria (apaga o PNG em alta resolução e a thumbnail)
 
 ---
 
@@ -64,7 +70,7 @@ Use `encena.py --ajuda` para a ajuda geral, ou `encena.py AÇÃO --ajuda` para a
 
 ### ComfyUI (geração de imagens)
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) rodando em `http://localhost:8188`
-- Modelos necessários em `ComfyUI/models/`:
+- Modelos mínimos em `ComfyUI/models/`:
 
 | Tipo | Arquivo |
 |------|---------|
@@ -72,6 +78,8 @@ Use `encena.py --ajuda` para a ajuda geral, ou `encena.py AÇÃO --ajuda` para a
 | LoRA | `loras/add-detail-xl.safetensors` |
 | LoRA | `loras/LoRA-NaturePhotoreal-landscapes-SDXL-v1.safetensors` |
 | Upscaler | `upscale_models/RealESRGAN_x4plus.pth` |
+
+> Cada categoria pode referenciar seus próprios checkpoint e LoRAs. Todos os modelos instalados no ComfyUI aparecem automaticamente nos comboboxes da interface.
 
 ---
 
@@ -144,7 +152,7 @@ encena.py nova-categoria -n 'floresta_fria'
 encena.py nova-categoria -n 'deserto' --cfg 2.0 --steps 10 --tags 'dunes, heat haze, camels'
 ```
 
-Com Ollama disponível, gera automaticamente: tags temáticas, biomas, elementos e 3 prompts iniciais.
+Com Ollama disponível, gera automaticamente: tags temáticas, biomas, elementos e 10 prompts iniciais.
 
 ---
 
@@ -197,8 +205,22 @@ encena.py remover bryce_sunrise -c canyon
 | `carros_esportivos` | sports car, racing circuit, motion blur, urban streets |
 | `fundo_do_mar` | coral reef, bioluminescent fish, deep sea, underwater light |
 | `sala_de_estar` | living room, interior design, cozy lighting, architecture |
+| `avioes_de_guerra` | fighter jet, military aircraft, dogfight, afterburner, clouds |
+| `grandes_felinos` | big cat, wildlife photography, savanna, stalking, golden light |
+| `material_escolar` | school supplies, stationery, flat lay, colorful, desk |
+| `trens` | locomotive, railway, steam engine, countryside, motion |
 
 Cada categoria tem seu próprio tema combinatório (biomas + elementos) gerado via Ollama, garantindo diversidade nos prompts.
+
+---
+
+## Sistema de votos em prompts
+
+Cada prompt armazena contadores `up` e `down` diretamente no JSON da categoria. A pontuação para ordenação é `up − down`.
+
+- **Thumbs up** — disponível na galeria ao lado de cada imagem
+- **Thumbs down automático** — ao deletar uma imagem da galeria, o prompt que a gerou recebe um voto negativo automaticamente
+- **Ordenação** — em todos os painéis que exibem prompts (Prompts, Gerar Imagens, Galeria), os prompts são listados do maior para o menor score
 
 ---
 
@@ -225,7 +247,8 @@ encena/
 ├── README.md
 ├── web/
 │   ├── server.js          # Servidor web local (Node.js, zero dependências npm)
-│   └── index.html         # Interface single-page
+│   ├── index.html         # Interface single-page
+│   └── favicon.svg        # Ícone do projeto
 └── categorias/            # JSONs de configuração e prompts por categoria
     ├── canyon.json
     ├── aurora_boreal.json
@@ -236,10 +259,14 @@ encena/
     ├── cafe_da_manha.json
     ├── carros_esportivos.json
     ├── fundo_do_mar.json
-    └── sala_de_estar.json
+    ├── sala_de_estar.json
+    ├── avioes_de_guerra.json
+    ├── grandes_felinos.json
+    ├── material_escolar.json
+    └── trens.json
 ```
 
-Cada `<categoria>.json` contém: parâmetros do ComfyUI (cfg, LoRAs, steps, sampler), tags temáticas, pools de biomas e elementos, e os prompts salvos.
+Cada `<categoria>.json` contém: checkpoint e LoRAs específicos, parâmetros do KSampler (cfg, steps, sampler, scheduler), tags temáticas, pools de biomas e elementos, prompts salvos com contadores de votos.
 
 ---
 
