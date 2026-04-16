@@ -1,8 +1,8 @@
-# encena v3
+# encena v0.3.0
 
 Gerador de prompts e imagens fotorrealistas via Ollama + ComfyUI (Stable Diffusion XL).
 
-Combina um LLM local (Ollama/Mistral) para criação de prompts temáticos com o ComfyUI para renderização em alta resolução. A partir da **v2**, inclui uma **interface web** completa para gerenciar categorias, gerar prompts e imagens, revisar rascunhos e configurar parâmetros — sem precisar usar a linha de comando.
+Combina um LLM local (Ollama/Mistral) para criação de prompts temáticos com o ComfyUI para renderização em alta resolução. A partir da **v0.2.0**, inclui uma **interface web** completa para gerenciar categorias, gerar prompts e imagens, revisar rascunhos e configurar parâmetros — sem precisar usar a linha de comando.
 
 ---
 
